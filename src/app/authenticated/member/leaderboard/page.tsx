@@ -111,7 +111,7 @@ export default function Leaderboard({ }: LeaderboardProp) {
                             />
                         }
 
-                        <div className="text-right mb-3">
+                        <div className="text-right d-flex align-items-center justify-content-end mb-2">
                             <Tooltip title="Master the Ascension Hierarchy" arrow>
                                 <button data-toggle="modal"
                                     data-target={`#view_leaderboard_guide_0`}
@@ -119,7 +119,7 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                         setModalOpenData(null);
                                         setModalOpenId(0);
                                         setModalOpenIndex(2);
-                                    }} className="btn btn-danger btn-sm elevation-1 custom-bg-maroon custom-border-dark text-white">View Rank Protocol</button>
+                                    }} className="rpg-button px-3">View Rank Protocol</button>
                             </Tooltip>
                         </div>
 

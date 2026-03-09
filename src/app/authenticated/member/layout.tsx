@@ -41,9 +41,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             children={children}
             menuItems={
                 <>
-                    <Link href='/authenticated/member/profile' className={`nav-link-orbit ${currentActiveLink === 'profile' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}>Profile</Link>
-                    <Link href='/authenticated/member/leaderboard' className={`nav-link-orbit ${currentActiveLink === 'leaderboard' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}>Leaderboard</Link>
-                    <Link href='/authenticated/member/projects' className={`nav-link-orbit ${currentActiveLink === 'projects' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}>My Projects</Link>
+                    <Link href='/authenticated/member/profile' className={`nav-link-orbit ${currentActiveLink === 'profile' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Profile</Link>
+                    <Link href='/authenticated/member/leaderboard' className={`nav-link-orbit ${currentActiveLink === 'leaderboard' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Leaderboard</Link>
+                    <Link href='/authenticated/member/projects' className={`nav-link-orbit ${currentActiveLink === 'projects' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>My Projects</Link>
                 </>
             }
         />

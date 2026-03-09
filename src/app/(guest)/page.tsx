@@ -101,13 +101,9 @@ export default function Login({ }: Props) {
                                     </div>
 
                                     <div className="mt-3">
-                                        <button type="submit" disabled={!email || !password || isSubmitting} className="text--fontPos13--xW8hS w-100 btn btn-danger elevation-1 custom-border-dark custom-bg-maroon text-white">
+                                        <button type="submit" disabled={!email || !password || isSubmitting} className="rpg-button w-100">
                                             {isSubmitting ? 'PLEASE WAIT..' : 'LOG IN'}
                                         </button>
-
-                                        {/* <button className="rpg-button">
-                                            START QUEST
-                                        </button> */}
                                     </div>
                                 </form>
                             </div>

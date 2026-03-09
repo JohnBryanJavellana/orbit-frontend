@@ -54,7 +54,7 @@ export default function ForgotPassword({ }: PageProps) {
                                 <div className="mt-3">
                                     <button type="submit" disabled={!email || isSubmitting} onClick={() => {
                                         alert('Under Development');
-                                    }} className="text--fontPos13--xW8hS btn btn-danger w-100 elevation-1 custom-border-dark custom-bg-maroon text-white">
+                                    }} className="rpg-button w-100">
                                         {isSubmitting ? 'PLEASE WAIT..' : 'SUBMIT EMAIL'}
                                     </button>
                                 </div>

@@ -53,16 +53,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             children={children}
             menuItems={
                 <>
-                    <Link href='/authenticated/administrator/profile' className={`nav-link-orbit ${currentActiveLink === 'profile' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}>Profile</Link>
-                    <Link href='/authenticated/administrator/projects' className={`nav-link-orbit ${currentActiveLink === 'projects' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}>Projects</Link>
-                    <Link href='/authenticated/administrator/leaderboard' className={`nav-link-orbit ${currentActiveLink === 'leaderboard' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}>Leaderboard</Link>
+                    <Link href='/authenticated/administrator/profile' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'profile' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Profile</Link>
+                    <Link href='/authenticated/administrator/projects' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'projects' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Projects</Link>
+                    <Link href='/authenticated/administrator/leaderboard' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'leaderboard' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Leaderboard</Link>
 
                     {
                         userData?.role === "SUPERADMIN" &&
                         <>
                             <span
                                 onClick={handleOpenMembersMenu}
-                                className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'members' && 'rounded-sm elevation-2 custom-bg-maroon custom-border-dark text-white'}`}
+                                className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'members' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
                                 style={{ cursor: 'pointer' }}
                             >
                                 Members {anchorElMembers ? '▴' : '▾'}
