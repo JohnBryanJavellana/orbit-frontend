@@ -92,7 +92,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                             }
                         }
                     }
-                }, 60000);
+                }, 15000);
             } catch (error) {
                 console.error("Ping failed to initialize", error);
             }
