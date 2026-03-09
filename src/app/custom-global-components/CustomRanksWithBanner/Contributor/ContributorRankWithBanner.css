@@ -1,0 +1,63 @@
+#contributor-container {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+}
+
+#contributor-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    z-index: 999;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: rotate(30deg);
+    animation: shimmer2 4s infinite;
+    pointer-events: none;
+}
+
+#contributor-rank {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    z-index: 2;
+}
+
+#contributor-banner {
+    filter: brightness(1.1) contrast(1.1);
+    z-index: 1;
+}
+
+@keyframes shimmer2 {
+    0% {
+        left: -60%;
+    }
+
+    30% {
+        left: 120%;
+    }
+
+    100% {
+        left: 170%;
+    }
+}
+
+@keyframes rubyGlow2 {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 5px brown);
+    }
+
+    50% {
+        filter: drop-shadow(0 0 15px brown);
+    }
+}
+
+#contributor-rank {
+    animation: rubyGlow2 3s ease-in-out infinite;
+}

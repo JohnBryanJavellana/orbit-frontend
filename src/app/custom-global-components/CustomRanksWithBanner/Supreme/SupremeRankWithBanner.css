@@ -1,0 +1,109 @@
+#supreme-container {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* 1. The Divine Shimmer Layer (Chromatic/Prismatic) */
+#supreme-container::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -150%;
+    width: 40%;
+    height: 300%;
+    z-index: 999;
+    /* Multi-stop gradient for a 'magical' prismatic look */
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.2) 40%,
+            rgba(255, 230, 100, 0.8) 50%,
+            /* Bright Gold Core */
+            rgba(255, 255, 255, 0.2) 60%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: rotate(25deg);
+    animation: god-shimmer 3s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    pointer-events: none;
+    /* Adds a blur to make it feel like light energy rather than a solid bar */
+    filter: blur(5px);
+}
+
+/* 2. Background Pulse (The God Aura) */
+#supreme-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, transparent 70%);
+    animation: divine-pulse 4s ease-in-out infinite;
+}
+
+#supreme-rank {
+    /* High intensity golden drop shadow */
+    filter: drop-shadow(0 0 12px rgba(255, 223, 0, 0.8));
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+}
+
+#supreme-banner {
+    filter: brightness(1.2) contrast(1.1) saturate(1.2);
+    z-index: 1;
+}
+
+/* ANIMATIONS */
+
+/* Faster, more aggressive shimmer with a 'linger' */
+@keyframes god-shimmer {
+    0% {
+        left: -150%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    40% {
+        left: 150%;
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        left: 150%;
+        opacity: 0;
+    }
+}
+
+/* Breathing gold aura */
+@keyframes divine-pulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+/* Enhanced RubyGlow renamed to SupremeGlow */
+@keyframes supremeGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px #ffd700) brightness(1);
+    }
+
+    50% {
+        filter: drop-shadow(0 0 25px #fffce0) brightness(1.4);
+    }
+}
+
+#supreme-rank {
+    animation: supremeGlow 2s ease-in-out infinite;
+}

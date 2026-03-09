@@ -1,0 +1,176 @@
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
+}
+
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: 'Inter', Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        color-scheme: dark;
+    }
+}
+
+.custom-bg {
+    background-color: #3B3B3B !important;
+    background-image: none !important;
+}
+
+.custom-bg-maroon {
+    background-color: #800909 !important;
+    background-image: none !important;
+    color: #aaa !important;
+}
+
+.custom-border-dark {
+    border: 1.5px solid #525252 !important;
+}
+
+.custom-bottom-border-dark {
+    border-bottom: 1.5px solid #525252 !important;
+}
+
+.custom-top-border-dark {
+    border-top: 1.5px solid #525252 !important;
+}
+
+.custom-left-border-dark {
+    border-left: 1.5px solid #525252 !important;
+}
+
+.custom-label-color {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: var(--font-inter), sans-serif;
+}
+
+.custom-field-bg {
+    background-color: #2b3035 !important;
+    border: 1px solid #495057 !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-field-bg:focus-within:not(:has(.MuiSelect-select)) {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.custom-field-bg .MuiSelect-select:focus {
+    background-color: transparent !important;
+    outline: none !important;
+}
+
+.custom-field-bg:focus-within {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.custom-field-bg input {
+    padding: 14px 14px !important;
+    color: white !important;
+    font-family: var(--font-inter), sans-serif !important;
+    background: transparent !important;
+}
+
+.custom-field-bg .MuiInputAdornment-root {
+    padding-right: 12px !important;
+    margin-left: 0 !important;
+}
+
+.custom-field-bg .MuiIconButton-root {
+    padding: 8px !important;
+    color: #adb5bd !important;
+}
+
+.custom-field-bg input {
+    padding: 14px 0 14px 14px !important;
+}
+
+.orbit-logo-red {
+    filter: invert(27%) sepia(91%) saturate(2352%) hue-rotate(346deg) brightness(92%) contrast(85%);
+}
+
+.orbit-logo-white {
+    filter: brightness(0) invert(1);
+}
+
+.quill-content ol li[data-list="bullet"] {
+    list-style-type: none;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.quill-content ol li[data-list="bullet"]::before {
+    content: "•";
+    color: gray;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.quill-content ol li[data-list="ordered"] {
+    counter-increment: list-0;
+    list-style-type: none;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.quill-content ol li[data-list="ordered"]::before {
+    content: counter(list-0) ". ";
+    color: gray;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.quill-content .ql-ui {
+    display: none;
+}
+
+.quill-content code {
+    background-color: #1a1a1a;
+    color: #e83e8c;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.style-two {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #525252, rgba(0, 0, 0, 0));
+}

@@ -1,0 +1,62 @@
+/* Container */
+.with-shooting-star {
+    position: relative;
+    overflow: hidden;
+}
+
+/* STAR */
+.with-shooting-star::before,
+.with-shooting-star::after {
+    content: "";
+    position: absolute;
+
+    width: 3px;
+    height: 140px;
+
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 1),
+            rgba(255, 255, 255, 0));
+
+    filter: drop-shadow(0 0 6px white);
+    border-radius: 50%;
+
+    transform: rotate(225deg);
+    animation: meteorRain 2.8s linear infinite;
+}
+
+/* First meteor */
+.with-shooting-star::before {
+    top: -100px;
+    right: 40px;
+    animation-delay: 0s;
+}
+
+/* Second meteor */
+.with-shooting-star::after {
+    top: -200px;
+    right: 120px;
+    animation-delay: 1.3s;
+}
+
+/* Animation */
+@keyframes meteorRain {
+
+    0% {
+        transform: translate(0, 0) rotate(225deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-500px, 500px) rotate(225deg);
+        opacity: 0;
+    }
+
+}
