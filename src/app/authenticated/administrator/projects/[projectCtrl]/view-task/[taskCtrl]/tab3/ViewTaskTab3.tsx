@@ -69,22 +69,41 @@ export default function ViewTaskTab3({ projectCtrl, taskCtrl }: { projectCtrl: P
             name: "Collaborator",
             selector: (row: any) => `${row.initiator.user.first_name} ${row.initiator.user.middle_name} ${row.initiator.user.last_name} ${row.initiator.user.suffix ?? ''}`,
             sortable: true,
+            style: {
+                verticalAlign: 'top',
+                alignItems: 'flex-start',
+                paddingTop: '10px'
+            },
+            wrap: true
         },
         {
             name: "Activity",
-            selector: (row: any) => row.activity,
+            cell: (row: any) => <div className="pt-2" dangerouslySetInnerHTML={{ __html: row.activity }} />,
             sortable: true,
+            width: "300px"
         },
         {
             name: "Submitted at",
             selector: (row: any) => FormatDatetimeToHumanReadable(row.created_at, true),
-            sortable: true
+            sortable: true,
+            style: {
+                verticalAlign: 'top',
+                alignItems: 'flex-start',
+                paddingTop: '10px'
+            },
+            wrap: true
         },
         {
             name: "Status",
             selector: (row: any) => row.status,
             sortable: true,
-            width: "170px"
+            width: "170px",
+            style: {
+                verticalAlign: 'top',
+                alignItems: 'flex-start',
+                paddingTop: '10px'
+            },
+            wrap: true
         },
         {
             name: "Actions",
@@ -139,7 +158,13 @@ export default function ViewTaskTab3({ projectCtrl, taskCtrl }: { projectCtrl: P
 
                 return <DropdownMenu id={row.id} menuItems={menuItems} />;
             },
-            ignoreRowClick: true
+            ignoreRowClick: true,
+            style: {
+                verticalAlign: 'top',
+                alignItems: 'flex-start',
+                paddingTop: '10px'
+            },
+            wrap: true
         },
     ];
 
