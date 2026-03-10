@@ -28,13 +28,15 @@ interface CustomAvatarWithOnlineBadgeProps {
     src?: string;
     statusColor?: string;
     isOnline?: boolean;
+    isAdmin?: boolean;
 }
 
 export default function CustomAvatarWithOnlineBadge({
     height = 30,
     width = 30,
     src = "/static/images/avatar/1.jpg",
-    isOnline
+    isOnline,
+    isAdmin = false
 }: CustomAvatarWithOnlineBadgeProps) {
     return (
         <StyledBadge
@@ -55,7 +57,10 @@ export default function CustomAvatarWithOnlineBadge({
                 }
             }}
         >
-            <Avatar alt="User Profile" src={src} sx={{ width: width, height: height }} />
+            {
+                isAdmin ? <Avatar alt="User Profile" src={'/system-images/raw-images/9brubwu9u65f1.gif'} sx={{ width: width, height: height }} className='rounded-0' /> : <Avatar alt="User Profile" src={src} sx={{ width: width, height: height }} />
+            }
+
         </StyledBadge>
     );
 }

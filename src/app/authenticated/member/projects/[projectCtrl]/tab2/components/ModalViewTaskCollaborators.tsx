@@ -156,7 +156,7 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
                                                             }}>
                                                                 <div className="row">
                                                                     <div className={`col-${isMobileViewPort ? 3 : 1} d-flex align-items-center justify-content-center text-center`}>
-                                                                        <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} isOnline={friend.user.is_online} />
+                                                                        <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} isOnline={friend.user.is_online} isAdmin={friend.user.role === "SUPERADMIN"} />
                                                                     </div>
                                                                     <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
                                                                         <div className="w-100 mt-1">

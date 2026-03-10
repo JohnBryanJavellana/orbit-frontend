@@ -147,7 +147,7 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                                     <div className={`col-xl-12 py-1 custom-bg custom-border-dark ${friend.role === "SUPERADMIN" ? 'superadmin-glow' : friend.role === "ADMINISTRATOR" ? 'administrator-glow' : ''}`}>
                                                         <div className="row">
                                                             <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
-                                                                <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.profile_picture}`} isOnline={friend.is_online} />
+                                                                <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.profile_picture}`} isOnline={friend.is_online} isAdmin={friend.role === "SUPERADMIN"} />
                                                             </div>
                                                             <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
                                                                 <div className="w-100 mt-1">

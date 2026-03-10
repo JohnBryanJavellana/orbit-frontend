@@ -173,7 +173,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} src={`${urlWithoutApi}/user-images/${userData.profile_picture}`} />
+                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={userData.role === "SUPERADMIN" ? 'rounded-0' : ''} src={userData.role === "SUPERADMIN" ? '/system-images/raw-images/9brubwu9u65f1.gif' : `${urlWithoutApi}/user-images/${userData.profile_picture}`} />
                                             </IconButton>
                                         </Tooltip>
 

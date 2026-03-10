@@ -12,7 +12,7 @@ export default function CustomUserPill({ user }: { user: any }) {
             <div data-toggle="modal" data-target={`#view_user_details_${user?.id}`} className="custom-border-dark px-2 mt-1 py-1" style={{ borderRadius: '30px', cursor: 'pointer' }}>
                 <div className="row">
                     <div className="col-2">
-                        <CustomAvatarWithOnlineBadge height={48} width={48} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} />
+                        <CustomAvatarWithOnlineBadge height={48} width={48} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} isAdmin={user.role === "SUPERADMIN"} />
                     </div>
                     <div className="col-10 px-3">
                         {getRankAttribute(user.role === "ADMINISTRATOR" ? '∞' : user.role === "SUPERADMIN" ? 'Ω' : user.total_points || 0)}

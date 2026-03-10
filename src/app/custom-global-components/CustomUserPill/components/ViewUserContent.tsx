@@ -18,7 +18,7 @@ export default function ViewUserContent({ user }: { user: any }) {
     return (
         <>
             <div className="row custom-top-border-dark">
-                <div className="col-xl-9">
+                <div className="col-xl-8">
                     <Box sx={{
                         height: '120px',
                         background: `linear-gradient(180deg, rgba(220, 53, 69, 0.2) 0%, transparent 100%)`,
@@ -27,7 +27,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                         alignItems: 'flex-end'
                     }}>
                         <div style={{ transform: 'translateY(40px)' }}>
-                            <CustomAvatarWithOnlineBadge height={120} width={120} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} />
+                            <CustomAvatarWithOnlineBadge height={120} width={120} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} isAdmin={user.role === "SUPERADMIN"} />
                         </div>
                     </Box>
 
@@ -110,7 +110,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                     </Box>
                 </div>
 
-                <div className={`col-xl-3 p-0 text-center ${["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) ? 'with-shooting-star' : ''}`} style={{ userSelect: 'none' }}>
+                <div className={`col-xl-4 text-center ${["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) ? 'with-shooting-star' : ''}`} style={{ userSelect: 'none' }}>
                     {user.role === "SUPERADMIN" && <SupremeRankWithBanner />}
                     {user.role === "ADMINISTRATOR" && <SuperiorRankWithBanner />}
                     {(!["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) && user.total_points < 500) && <NoviceRankWithBanner />}
