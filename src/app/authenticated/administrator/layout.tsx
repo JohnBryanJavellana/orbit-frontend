@@ -34,6 +34,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return setCurrentActiveLink('leaderboard');
         } else if (location.includes('/authenticated/administrator/members')) {
             return setCurrentActiveLink('members');
+        } else if (userData?.role === "SUPERADMIN" && location.includes('/authenticated/administrator/announcements')) {
+            return setCurrentActiveLink('announcements');
         } else {
             return navigate.push('/access-denied');
         }
@@ -60,6 +62,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     {
                         userData?.role === "SUPERADMIN" &&
                         <>
+                            <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
+
                             <span
                                 onClick={handleOpenMembersMenu}
                                 className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'members' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}

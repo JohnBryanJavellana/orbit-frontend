@@ -17,6 +17,7 @@ export default function ViewUserContent({ user }: { user: any }) {
 
     return (
         <>
+
             <div className="row custom-top-border-dark">
                 <div className="col-xl-8">
                     <Box sx={{

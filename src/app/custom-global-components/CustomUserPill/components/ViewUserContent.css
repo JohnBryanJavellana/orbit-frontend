@@ -2,6 +2,8 @@
 .with-shooting-star {
     position: relative;
     overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
 }
 
 /* STAR */
