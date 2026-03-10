@@ -34,29 +34,61 @@ export default function CustomWYSIWYG({ value, onTextChange, minHeight = 320, ma
     return (
         <Box sx={{
             '& .p-editor-container': {
-                borderRadius: 2,
-                border: '1px solid',
+                borderRadius: '8px',
+                border: '1px solid gray',
                 borderColor: 'divider',
                 overflow: 'hidden'
             },
             '& .p-editor-toolbar': {
                 border: 'none',
-                borderBottom: '1px solid',
+                borderBottom: '1px solid gray',
                 borderColor: 'divider',
-                bgcolor: 'grey.50'
+                bgcolor: '#333',
+                display: 'flex',
+                alignItems: 'center',
+            },
+            '& .ql-stroke': {
+                stroke: '#fff !important',
+            },
+            '& .ql-fill': {
+                fill: '#fff !important',
+            },
+            '& .ql-picker': {
+                color: '#fff !important',
+            },
+            '& .ql-picker-label': {
+                color: '#fff !important',
+            },
+            '& .ql-picker-options': {
+                bgcolor: '#fff !important',
+                color: '#333333 !important',
+                padding: '8px !important',
+                borderRadius: '4px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            },
+            '& .ql-picker-item': {
+                color: '#333 !important',
+            },
+            '& .ql-picker-item:hover': {
+                color: '#007ad9 !important',
             },
             '& .p-editor-content': {
                 border: 'none',
                 '& .ql-editor': {
                     minHeight: `${minHeight}px`,
-                    fontSize: '0.95rem'
+                    fontSize: '0.95rem',
+                    bgcolor: 'background.paper',
+                    '&.ql-blank::before': {
+                        color: 'text.secondary',
+                        fontStyle: 'normal',
+                        opacity: 1,
+                    }
                 }
             }
         }}>
             <Editor
                 value={value}
                 onTextChange={(e: any) => onTextChange(e.htmlValue)}
-                style={{ minHeight: `${minHeight}px` }}
                 headerTemplate={header}
                 placeholder={placeholder}
                 maxLength={maxLength}
