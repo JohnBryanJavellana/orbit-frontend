@@ -5,10 +5,11 @@ interface CustomWYSIWYGProps {
     value?: string | undefined,
     onTextChange: (e: any) => void,
     minHeight?: number,
+    maxLength?: number,
     placeholder: string
 }
 
-export default function CustomWYSIWYG({ value, onTextChange, minHeight = 320, placeholder }: CustomWYSIWYGProps) {
+export default function CustomWYSIWYG({ value, onTextChange, minHeight = 320, maxLength, placeholder }: CustomWYSIWYGProps) {
     const renderHeader = () => {
         return (
             <span className="ql-formats">
@@ -58,6 +59,7 @@ export default function CustomWYSIWYG({ value, onTextChange, minHeight = 320, pl
                 style={{ minHeight: `${minHeight}px` }}
                 headerTemplate={header}
                 placeholder={placeholder}
+                maxLength={maxLength}
             />
         </Box>
     )

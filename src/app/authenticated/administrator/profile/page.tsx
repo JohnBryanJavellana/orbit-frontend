@@ -5,7 +5,6 @@ import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import { useEffect, useState } from "react";
 import ModalViewAnnouncement from "./components/ModalViewAnnouncement";
 import useGetNewAnnouncement from "@/app/hooks/useGetNewAnnouncement";
-import useDetectMobileViewport from "@/app/hooks/useDetectMobileViewport";
 
 interface Props { }
 
@@ -14,7 +13,6 @@ export default function AdminDashboard({ }: Props) {
     const { announcement } = useGetNewAnnouncement();
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
     const [hasShown, setHasShown] = useState(false);
-    const isMobileViewport = useDetectMobileViewport();
 
     useEffect(() => {
         if (announcement && !hasShown) {
@@ -38,9 +36,9 @@ export default function AdminDashboard({ }: Props) {
         {
             !userData
                 ? <p>Please wait...</p>
-                : <div>
+                : <>
                     <ViewUserContent user={userData} />
-                </div>
+                </>
         }
     </>;
 }

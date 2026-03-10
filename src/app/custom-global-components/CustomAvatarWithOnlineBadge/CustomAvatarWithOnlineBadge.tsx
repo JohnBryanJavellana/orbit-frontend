@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
+import Link from 'next/link';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -23,11 +24,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 interface CustomAvatarWithOnlineBadgeProps {
-    height?: number;
-    width?: number;
+    height?: any;
+    width?: any;
     src?: string;
     statusColor?: string;
     isOnline?: boolean;
+    withBadge?: boolean;
     isAdmin?: boolean;
 }
 
@@ -36,31 +38,52 @@ export default function CustomAvatarWithOnlineBadge({
     width = 30,
     src = "/static/images/avatar/1.jpg",
     isOnline,
+    withBadge = true,
     isAdmin = false
 }: CustomAvatarWithOnlineBadgeProps) {
-    return (
-        <StyledBadge
-            overlap="circular"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            variant="dot"
-            sx={{
-                '& .MuiBadge-badge': {
-                    width: width / 4,
-                    height: height / 4,
-                    borderRadius: '100%',
-                    backgroundColor: isOnline ? '#28963a' : 'gray',
-                    color: isOnline ? '#28963a' : 'gray',
-                    boxShadow: '0 0 0 2px #2b3035',
-                    '&::after': {
-                        animation: isOnline ? 'ripple 1.2s infinite ease-in-out' : 'none',
-                    }
-                }
-            }}
-        >
-            {
-                isAdmin ? <Avatar alt="User Profile" src={'/system-images/raw-images/9brubwu9u65f1.gif'} sx={{ width: width, height: height }} className='rounded-0' /> : <Avatar alt="User Profile" src={src} sx={{ width: width, height: height }} />
-            }
+    const displaySrc = isAdmin ? '/system-images/raw-images/9brubwu9u65f1.gif' : src;
 
-        </StyledBadge>
+    return (
+        withBadge
+            ? <StyledBadge
+                overlap="circular"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                variant="dot"
+                sx={{
+                    '& .MuiBadge-badge': {
+                        width: width / 4,
+                        height: height / 4,
+                        borderRadius: '50%',
+                        backgroundColor: isOnline ? '#28963a' : '#6c757d',
+                        color: isOnline ? '#28963a' : '#6c757d',
+                        boxShadow: '0 0 0 2px #2b3035',
+                        '&::after': {
+                            animation: isOnline ? 'ripple 1.2s infinite ease-in-out' : 'none',
+                        }
+                    }
+                }}
+            >
+                <Link href={displaySrc} target='_blank'>
+                    <Avatar
+                        alt="User Profile"
+                        src={displaySrc}
+                        sx={{
+                            width: width,
+                            height: height,
+                            borderRadius: isAdmin ? '0px !important' : '50%'
+                        }}
+                    />
+                </Link>
+            </StyledBadge> : <Link href={displaySrc} target='_blank'>
+                <Avatar
+                    alt="User Profile"
+                    src={displaySrc}
+                    sx={{
+                        width: width,
+                        height: height,
+                        borderRadius: isAdmin ? '0px !important' : '50%'
+                    }}
+                />
+            </Link>
     );
 }

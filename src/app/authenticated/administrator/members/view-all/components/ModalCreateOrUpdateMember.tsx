@@ -363,6 +363,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                                 value={bio}
                                 onTextChange={(e) => setBio(e)}
                                 placeholder="Enter member bio"
+                                maxLength={300}
                             />
                         </>
                 }
