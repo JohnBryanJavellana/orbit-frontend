@@ -23,7 +23,7 @@ export default function useGetNewAnnouncement() {
                 }
             });
 
-            setAnnouncement(response.data.announcement);
+            setAnnouncement(response.data.announcements);
         } catch (error) {
             removeToken('csrf-token');
             navigate.push('/access-denied');

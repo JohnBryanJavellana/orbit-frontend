@@ -2,36 +2,43 @@
 
 import ViewUserContent from "@/app/custom-global-components/CustomUserPill/components/ViewUserContent";
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
-import useGetRankAttribute2 from "@/app/hooks/useGetRankAttribute2";
-import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import { useEffect, useState } from "react";
 import ModalViewAnnouncement from "./components/ModalViewAnnouncement";
 import useGetNewAnnouncement from "@/app/hooks/useGetNewAnnouncement";
 
 interface Props { }
 
-export default function Dashboard({ }: Props) {
+export default function AdminDashboard({ }: Props) {
     const { userData } = useGetCurrentUser();
     const { announcement } = useGetNewAnnouncement();
+    const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
+    const [hasShown, setHasShown] = useState(false);
 
     useEffect(() => {
-        if (announcement) {
+        if (announcement && !hasShown) {
             const timer = setTimeout(() => {
-                $('#view_announcement_popup_0').modal('show');
+                setModalOpenIndex(0);
+                $(`#view_announcement_popup_0`).modal('show');
             }, 100);
             return () => clearTimeout(timer);
         }
-    }, [announcement]);
+    }, [announcement, hasShown]);
 
     return <>
-        <ModalViewAnnouncement data={announcement} id={0} />
+        {
+            modalOpenIndex === 0 &&
+            <ModalViewAnnouncement data={announcement} id={0} callbackFunction={() => {
+                setModalOpenIndex(null);
+                setHasShown(true);
+            }} />
+        }
 
         {
             !userData
                 ? <p>Please wait...</p>
-                : <>
+                : <div className="w-100" style={{ maxHeight: '85vh', overflow: 'hidden' }}>
                     <ViewUserContent user={userData} />
-                </>
+                </div>
         }
     </>;
 }

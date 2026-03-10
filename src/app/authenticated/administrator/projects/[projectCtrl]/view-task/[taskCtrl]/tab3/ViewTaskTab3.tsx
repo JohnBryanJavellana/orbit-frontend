@@ -139,7 +139,7 @@ export default function ViewTaskTab3({ projectCtrl, taskCtrl }: { projectCtrl: P
                     }
                 ];
 
-                if (row.status !== 'VERIFIED') {
+                if (!['VERIFIED', 'DECLINED'].includes(row.status)) {
                     menuItems.push({
                         'icon': 'launch',
                         'url': '#',

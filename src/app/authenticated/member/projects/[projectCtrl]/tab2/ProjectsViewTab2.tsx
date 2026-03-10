@@ -199,9 +199,9 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                             />
                         }
 
-                        <div className="custom-bottom-border-dark px-4 py-2">
-                            <button onClick={() => handleModeChange('tasks')} className={`btn btn-sm btn-${mode === 'tasks' ? 'danger custom-bg-maroon text-white custom-border-dark' : 'dark'} elevation-1 rounded-sm mr-1`}>Available</button>
-                            <button onClick={() => handleModeChange('applied')} className={`btn btn-sm btn-${mode === 'applied' ? 'danger custom-bg-maroon text-white custom-border-dark' : 'dark'} elevation-1 rounded-sm`}>Applied Tasks</button>
+                        <div className="custom-bottom-border-dark d-flex align-items-center px-4 py-2">
+                            <button onClick={() => handleModeChange('tasks')} style={{ height: '40px' }} className={`${mode === 'tasks' ? 'px-3 rpg-button' : 'nav-link-orbit bg-dark custom-border-dark'} mr-1`}>Available</button>
+                            <button onClick={() => handleModeChange('applied')} style={{ height: '40px' }} className={`${mode === 'applied' ? 'px-3 rpg-button' : 'nav-link-orbit bg-dark custom-border-dark'}`}>Applied Tasks</button>
                         </div>
 
                         <div className="px-3 pb-4 pt-3 bg-dark">
@@ -222,7 +222,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                             {
                                 filterTasks.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((taskOverview: any, index: number) => (
                                     <div className={`${taskOverview.members[0]?.status === "CANCELLED" && mode === 'applied' ? 'bg-muted text-muted' : 'custom-bg'} custom-border-dark px-5 pb-5 mb-2 text-white`} key={index}>
-                                        <div className="pt-2 text-right">
+                                        <div className="pt-2 text-right d-flex align-items-center justify-content-end">
                                             {
                                                 (mode === 'applied' && ["PENDING", "CANCELLED", "TERMINATED"].includes(taskOverview.members[0]?.status)) && <>
                                                     <button onClick={() => CancelApplication(taskOverview.id)} disabled={isSubmitting || ["CANCELLED", "TERMINATED"].includes(taskOverview.members[0]?.status)} className="btn btn-danger custom-bg-maroon elevation-1 btn-sm custom-border-dark rounded-sm text-white">
@@ -234,9 +234,9 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                                             }
 
                                             {
-                                                (taskOverview.members.length <= 0 && !['CLOSED', 'COMPLETED'].includes(taskOverview.status)) && <>
-                                                    <button disabled={isSubmitting} onClick={() => ApplyToATask(taskOverview.id)} className="btn btn-danger custom-bg-maroon elevation-1 btn-sm custom-border-dark rounded-sm text-white">Apply on this task</button>
-                                                </>
+                                                (taskOverview.members.length <= 0 && !['CLOSED', 'COMPLETED'].includes(taskOverview.status)) && <div className="">
+                                                    <button disabled={isSubmitting} onClick={() => ApplyToATask(taskOverview.id)} style={{ height: '40px' }} className="rpg-button px-3">Apply on this task</button>
+                                                </div>
                                             }
 
                                             {
@@ -267,6 +267,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                                                 </IconButton>
                                             </Tooltip>
                                         </div>
+
                                         <hr className="style-two" />
 
                                         <div className={`mb-2 ${(!["PENDING", "CANCELLED"].includes(taskOverview.members[0]?.status) || mode === 'tasks') && 'mt-4'}`}>
