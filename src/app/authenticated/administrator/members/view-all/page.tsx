@@ -14,6 +14,7 @@ import ModalCreateOrUpdateMember from "./components/ModalCreateOrUpdateMember";
 import CustomAvatarWithOnlineBadge from "@/app/custom-global-components/CustomAvatarWithOnlineBadge/CustomAvatarWithOnlineBadge";
 import useGetRankAttribute from "@/app/hooks/useGetRankAttribute";
 import ModalViewUser from "@/app/custom-global-components/CustomUserPill/components/ModalViewUser";
+import ModalViewUserInAdmin from "./components/ModalViewUserInAdmin";
 
 export default function Members() {
     const { getToken } = useWebToken();
@@ -98,7 +99,7 @@ export default function Members() {
                         'icon': 'launch',
                         'url': '#',
                         'data-toggle': 'modal',
-                        'data-target': `#view_user_details_${row.id}`,
+                        'data-target': `#view_user_in_admin_${row.id}`,
                         'id': 'f',
                         'textColor': '',
                         'label': 'View Member',
@@ -116,7 +117,10 @@ export default function Members() {
                         'textColor': '',
                         'label': 'Update Member',
                         'onClick': () => {
-                            setModalOpenData(row);
+                            setModalOpenData({
+                                ...row,
+                                editor: 'OMEGA'
+                            });
                             setModalOpenId(row.id);
                             setModalOpenIndex(0);
                         }
@@ -170,8 +174,11 @@ export default function Members() {
 
         {
             modalOpenIndex === 1 &&
-            <ModalViewUser
-                user={modalOpenData}
+            <ModalViewUserInAdmin
+                data={modalOpenData}
+                id={modalOpenId}
+                titleHeader={'Member Information'}
+                httpMethod={modalOpenData ? 'UPDATE' : 'POST'}
                 callbackFunction={() => {
                     GetMembers(false);
                     setModalOpenData(null);

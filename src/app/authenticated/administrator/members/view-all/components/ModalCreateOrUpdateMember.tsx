@@ -237,13 +237,14 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                             </FormControl>
 
                             <label htmlFor="birthday" className='custom-label-color mb-0'>
-                                Birthday <span className="text-danger">*</span>
+                                Birthday {data?.editor !== 'OMEGA' ? <span className="text-muted">(If wrong, please talk to the Supreme)</span> : <span className="text-danger">*</span>}
                             </label>
 
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     maxDate={dayjs()}
                                     value={birthday}
+                                    disabled={data?.editor !== 'OMEGA'}
                                     onChange={(newValue) => setBirthday(newValue)}
                                     slotProps={{
                                         textField: {
