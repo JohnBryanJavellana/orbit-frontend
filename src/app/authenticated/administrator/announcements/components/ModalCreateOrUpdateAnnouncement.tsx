@@ -9,6 +9,11 @@ import { FormControl, Input, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from "dayjs";
 
 interface ModalCreateOrUpdateAnnouncementProps {
     data: any | null,
@@ -22,6 +27,8 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
     const [status, setStatus] = useState<string>('');
     const [announcement, setAnnouncement] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [removalDate, setRemovalDate] = useState<any>(null);
+
     const { getToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
@@ -38,6 +45,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
             const token = getToken('csrf-token');
             const formData = new FormData();
             formData.append('contentText', announcement);
+            formData.append('removalDate', removalDate.format('YYYY-MM-DD HH:mm:ss'));
             formData.append('httpMethod', httpMethod);
 
             if (data) {
@@ -70,6 +78,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
         if (data) {
             setStatus(data.status);
             setAnnouncement(data.content);
+            setRemovalDate(dayjs(data.removal_date));
         }
     }, [data]);
 
@@ -99,30 +108,69 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                             placeholder="Enter announcement"
                         />
 
-                        {
-                            httpMethod === "UPDATE" &&
-                            <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
-                                <Select
-                                    id="status"
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                    className='custom-field-bg custom-border-dark'
-                                    variant="standard"
-                                    disableUnderline
-                                    sx={{
-                                        px: 1.5,
-                                        py: 1.0,
-                                        borderRadius: '4px',
-                                        color: 'white',
-                                        '& .MuiSvgIcon-root': {
-                                            color: 'white',
+                        <label htmlFor="remove_date" className='custom-label-color mb-0 mt-3'>
+                            Auto Remove Date
+                        </label>
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                                minDate={removalDate || dayjs()}
+                                value={removalDate}
+                                onChange={(newValue: any) => setRemovalDate(newValue)}
+                                slotProps={{
+                                    textField: {
+                                        fullWidth: true,
+                                        variant: 'standard',
+                                        InputProps: {
+                                            disableUnderline: true,
+                                            className: 'custom-field-bg',
+                                            sx: {
+                                                pl: 1.5,
+                                                pr: 1.0,
+                                                py: 1.4,
+                                                borderRadius: '4px'
+                                            }
                                         },
-                                    }}
-                                >
-                                    <MenuItem disabled={data?.status === 'SHOW'} value="SHOW">SHOW</MenuItem>,
-                                    <MenuItem disabled={data?.status === 'HIDE'} value="HIDE">HIDE</MenuItem>
-                                </Select>
-                            </FormControl>
+                                    },
+                                }}
+                                sx={{
+                                    width: '100%',
+                                    mt: 1,
+                                    '& .MuiInputBase-root': {
+                                        height: '60px',
+                                    }
+                                }}
+                            />
+                        </LocalizationProvider>
+
+                        {
+                            httpMethod === "UPDATE" && <>
+                                <label htmlFor="remove_date" className='custom-label-color mb-0 mt-3'>
+                                    Status
+                                </label>
+                                <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
+                                    <Select
+                                        id="status"
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        className='custom-field-bg custom-border-dark'
+                                        variant="standard"
+                                        disableUnderline
+                                        sx={{
+                                            px: 1.5,
+                                            py: 1.0,
+                                            borderRadius: '4px',
+                                            color: 'white',
+                                            '& .MuiSvgIcon-root': {
+                                                color: 'white',
+                                            },
+                                        }}
+                                    >
+                                        <MenuItem disabled={data?.status === 'SHOW'} value="SHOW">SHOW</MenuItem>,
+                                        <MenuItem disabled={data?.status === 'HIDE'} value="HIDE">HIDE</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </>
                         }
                     </>
                 }

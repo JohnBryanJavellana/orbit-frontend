@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import ModalCreateOrUpdateAnnouncement from "./components/ModalCreateOrUpdateAnnouncement";
+import useDateFormat from "@/app/hooks/useDateFormat";
 
 export default function Announcements() {
     const { getToken, removeToken } = useWebToken();
@@ -19,7 +20,7 @@ export default function Announcements() {
     const [announcements, setAnnouncements] = useState<any>([]);
     const navigate = useRouter();
     const [isFetching, setIsFetching] = useState<boolean>(true);
-
+    const { FormatDatetimeToHumanReadable } = useDateFormat();
     const [modalOpenData, setModalOpenData] = useState<any>(null);
     const [modalOpenId, setModalOpenId] = useState<null | number>(null);
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
@@ -71,6 +72,18 @@ export default function Announcements() {
             cell: (row: any) => {
                 return <span className={`text-bold text-${['SHOW'].includes(row.status) ? 'warning' : 'danger'}`}>{row.status}</span>
             },
+            sortable: true,
+            width: "230px",
+            style: {
+                verticalAlign: 'top',
+                alignItems: 'flex-start',
+                paddingTop: '10px'
+            },
+            wrap: true
+        },
+        {
+            name: "Auto Remove Date",
+            selector: (row: any) => row.removal_date ? FormatDatetimeToHumanReadable(row.removal_date, true) : <i className="text-muted">-- None --</i>,
             sortable: true,
             width: "230px",
             style: {
