@@ -14,6 +14,7 @@ import axios from "axios";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import ProfileParchment from "@/app/authenticated/member/leaderboard/components/ProfileParchment";
 
 interface ModalViewTaskCollaboratorsProps {
     data: any | null,
@@ -78,11 +79,11 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
 
         if (searchText.trim()) {
             result = result.filter(friend =>
-                String(friend?.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.email || '').toLowerCase().includes(searchText.toLowerCase())
+                String(friend?.user.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.email || '').toLowerCase().includes(searchText.toLowerCase())
             );
         }
 
@@ -98,7 +99,7 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
         <>
             <ModalTemplate
                 id={`view_task_collaborators_${id}`}
-                size={"lg"}
+                size={"xl"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
                 header={
@@ -148,32 +149,8 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
 
                                                 {
                                                     filteredCollaborators.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
-                                                        <div key={index} className="row px-2 my-2">
-                                                            <div style={{ cursor: 'pointer' }} className="col-xl-12 py-1 custom-bg custom-border-dark" data-toggle="modal" data-target={`#view_user_details_${friend.user.id}`} onClick={() => {
-                                                                setModalOpenData(friend.user);
-                                                                setModalOpenId(friend.user.id);
-                                                                setModalOpenIndex(1);
-                                                            }}>
-                                                                <div className="row">
-                                                                    <div className={`col-${isMobileViewPort ? 3 : 2} d-flex align-items-center justify-content-center text-center`}>
-                                                                        <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} data={friend.user} isOnline={friend.user.is_online} isAdmin={friend.user.role === "SUPERADMIN"} />
-                                                                    </div>
-                                                                    <div className={`col-${isMobileViewPort ? 6 : 7} d-flex align-items-center justify-content-center`}>
-                                                                        <div className="w-100 mt-1">
-                                                                            <div className="text-bold text-truncate">{`${friend.user.first_name} ${friend.user.middle_name} ${friend.user.last_name} ${friend.user.suffix ?? ''}`}</div>
-                                                                            <div className="text-sm text-muted text-truncate">{friend.user.email}</div>
-                                                                            <div className={`text-sm text-${friend.user.gender === "MALE" ? 'primary' : 'danger'}`}>
-                                                                                <span className="material-icons-outlined" style={{ fontSize: '15px' }}>{String(friend.user.gender).toLowerCase()}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className={`col-3 d-flex align-items-center justify-content-center`}>
-                                                                        <div className="w-100">
-                                                                            {getRankAttribute(["ADMINISTRATOR"].includes(friend.user.role) ? '∞' : ["SUPERADMIN"].includes(friend.user.role) ? 'Ω' : friend.user.total_points || 0, !isMobileViewPort)}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        <div key={index} className="my-2">
+                                                            <ProfileParchment user={friend.user} callbackFunction={(e) => GetSpecificTaskCollaborators(e)} />
                                                         </div>
                                                     ))
                                                 }

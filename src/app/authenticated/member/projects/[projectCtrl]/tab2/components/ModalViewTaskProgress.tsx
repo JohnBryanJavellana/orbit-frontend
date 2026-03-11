@@ -192,13 +192,23 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                                                 <div className="col-xl-12 custom-border-dark">
                                                                     <div className="row p-3">
                                                                         <div className={`col-2 d-flex align-items-center justify-content-center text-center`}>
-                                                                            <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${progress.initiator.user.profile_picture}`} isOnline={progress.initiator.user.is_online} isAdmin={progress.initiator.user.role === "SUPERADMIN"} />
+                                                                            <CustomAvatarWithOnlineBadge height={50} width={50} data={progress.initiator.user} src={`${urlWithoutApi}/user-images/${progress.initiator.user.profile_picture}`} isOnline={progress.initiator.user.is_online} isAdmin={progress.initiator.user.role === "SUPERADMIN"} />
                                                                         </div>
 
                                                                         <div className="col-10">
                                                                             <div className="text-bold">{`${progress.initiator.user.first_name} ${progress.initiator.user.middle_name} ${progress.initiator.user.last_name} ${progress.initiator.user.suffix ?? ''}`}</div>
                                                                             <div dangerouslySetInnerHTML={{ __html: progress.activity }} />
                                                                             <div className="mt-1 text-muted">{FormatDatetimeToHumanReadable(progress.created_at, true)} • {progress.status}</div>
+
+                                                                            {
+                                                                                progress.remarks &&
+                                                                                <>
+                                                                                    <div className="d-flex align-items-center">
+                                                                                        <img src="/system-images/15d4793a-150f-47e0-9a61-b8d0557d7ae5_removalai_preview.png" height={'20px'} alt="" />
+                                                                                        <div className="ml-2 pt-4" dangerouslySetInnerHTML={{ __html: progress.remarks }} />
+                                                                                    </div>
+                                                                                </>
+                                                                            }
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -15,6 +15,7 @@ import TablePaginationTemplate from "@/app/custom-global-components/CustomTableP
 import './leaderboard.css';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import ModalViewLeaderboardGuide from "./components/ModalViewLeaderboardGuide";
+import ProfileParchment from "./components/ProfileParchment";
 
 interface LeaderboardProp { }
 
@@ -85,19 +86,6 @@ export default function Leaderboard({ }: LeaderboardProp) {
                     ? <p>Please wait...</p>
                     : <>
                         {
-                            modalOpenIndex === 1 &&
-                            <ModalViewUser
-                                user={modalOpenData}
-                                callbackFunction={() => {
-                                    GetFriends(false);
-                                    setModalOpenData(null);
-                                    setModalOpenId(null);
-                                    setModalOpenIndex(null);
-                                }}
-                            />
-                        }
-
-                        {
                             modalOpenIndex === 2 &&
                             <ModalViewLeaderboardGuide
                                 titleHeader="Master the Ascension Hierarchy"
@@ -143,41 +131,7 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                     {
                                         filteredFriends.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
                                             <div key={index} className={`mb-2`}>
-                                                <div className={`px-2 row`}>
-                                                    <div className={`col-xl-12 py-1 custom-bg custom-border-dark`}>
-                                                        <div className="row">
-                                                            <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
-                                                                <CustomAvatarWithOnlineBadge data={friend} height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.profile_picture}`} isOnline={friend.is_online} isAdmin={friend.role === "SUPERADMIN"} />
-                                                            </div>
-                                                            <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
-                                                                <div className="w-100 mt-1">
-                                                                    <div className="text-bold text-truncate">{`${friend.first_name} ${friend.middle_name} ${friend.last_name} ${friend.suffix ?? ''}`}</div>
-                                                                    <div className="text-sm text-muted text-truncate">{friend.email}</div>
-                                                                    <div className={`text-sm d-flex align-items-center text-${friend.gender === "MALE" ? 'primary' : 'danger'}`}>
-                                                                        <span className="material-icons-outlined mr-2" style={{ fontSize: '15px' }}>{String(friend.gender).toLowerCase()}</span> <span className="text-muted">•</span> <small className={`text-small ml-2 text-${friend.is_online ? 'success' : 'muted'}`}>{friend.is_online ? 'ONLINE' : 'OFFLINE'}</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className={`col-2 d-flex align-items-center justify-content-center`}>
-                                                                <div className="w-100">
-                                                                    {getRankAttribute(["ADMINISTRATOR"].includes(friend.role) ? '∞' : ["SUPERADMIN"].includes(friend.role) ? 'Ω' : friend.total_points || 0, !isMobileViewPort)}
-                                                                </div>
-                                                            </div>
-
-                                                            <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center`}>
-                                                                <Tooltip title="View Friend">
-                                                                    <IconButton data-toggle="modal" data-target={`#view_user_details_${friend.id}`} onClick={() => {
-                                                                        setModalOpenData(friend);
-                                                                        setModalOpenId(friend.id);
-                                                                        setModalOpenIndex(1);
-                                                                    }}>
-                                                                        <OpenInNewIcon color='inherit' />
-                                                                    </IconButton>
-                                                                </Tooltip>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <ProfileParchment user={friend} callbackFunction={(e) => GetFriends(e)} />
                                             </div>
                                         ))
                                     }

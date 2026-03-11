@@ -12,6 +12,7 @@ import ModalViewUser from "@/app/custom-global-components/CustomUserPill/compone
 import TablePaginationTemplate from "@/app/custom-global-components/CustomTablePaginationTemplate/CustomTablePaginationTemplate";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import useDetectMobileViewport from "@/app/hooks/useDetectMobileViewport";
+import ProfileParchment from "../../../leaderboard/components/ProfileParchment";
 
 export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamValue }) {
     const { getToken } = useWebToken();
@@ -72,11 +73,11 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
 
         if (searchText.trim()) {
             result = result.filter(friend =>
-                String(friend?.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                String(friend?.email || '').toLowerCase().includes(searchText.toLowerCase())
+                String(friend?.user.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.user.email || '').toLowerCase().includes(searchText.toLowerCase())
             );
         }
 
@@ -123,40 +124,8 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
 
                                     {
                                         filteredCollaborators.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
-                                            <div key={index} className="row px-2 my-2">
-                                                <div className="col-xl-12 py-1 custom-bg custom-border-dark">
-                                                    <div className="row">
-                                                        <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
-                                                            <CustomAvatarWithOnlineBadge height={50} width={50} data={friend.user} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} isOnline={friend.user.is_online} isAdmin={friend.user.role === "SUPERADMIN"} />
-                                                        </div>
-                                                        <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
-                                                            <div className="w-100 mt-1">
-                                                                <div className="text-bold text-truncate">{`${friend.user.first_name} ${friend.user.middle_name} ${friend.user.last_name} ${friend.user.suffix ?? ''}`}</div>
-                                                                <div className="text-sm text-muted text-truncate">{friend.user.email}</div>
-                                                                <div className={`text-sm text-${friend.user.gender === "MALE" ? 'primary' : 'danger'}`}>
-                                                                    <span className="material-icons-outlined" style={{ fontSize: '15px' }}>{String(friend.user.gender).toLowerCase()}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={`col-2 d-flex align-items-center justify-content-center`}>
-                                                            <div className="w-100">
-                                                                {getRankAttribute(["ADMINISTRATOR"].includes(friend.user.role) ? '∞' : ["SUPERADMIN"].includes(friend.user.role) ? 'Ω' : friend.user.total_points || 0, !isMobileViewPort)}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center`}>
-                                                            <Tooltip title="View Friend">
-                                                                <IconButton data-toggle="modal" data-target={`#view_user_details_${friend.user.id}`} onClick={() => {
-                                                                    setModalOpenData(friend.user);
-                                                                    setModalOpenId(friend.user.id);
-                                                                    setModalOpenIndex(1);
-                                                                }}>
-                                                                    <OpenInNewIcon color='inherit' />
-                                                                </IconButton>
-                                                            </Tooltip>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div key={index} className="my-2">
+                                                <ProfileParchment user={friend.user} callbackFunction={(e) => GetProjectCollaborators(e)} />
                                             </div>
                                         ))
                                     }
