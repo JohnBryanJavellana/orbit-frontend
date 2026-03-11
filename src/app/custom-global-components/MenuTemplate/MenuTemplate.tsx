@@ -219,7 +219,10 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                         >
                                             <MenuItem className='custom-bottom-border-dark' onClick={() => {
                                                 handleCloseUserMenu();
-                                                setModalOpenData(userData);
+                                                setModalOpenData({
+                                                    ...userData,
+                                                    reloadAfter: true
+                                                });
                                                 setModalOpenId(userData.id);
                                                 setModalOpenIndex(0);
                                             }} data-toggle="modal" data-target={`#create_or_update_member_${userData?.id}`}>
