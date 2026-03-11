@@ -18,20 +18,33 @@ export default function ViewUserContent({ user }: { user: any }) {
     return (
         <>
             <div className="row custom-top-border-dark">
-                <div className="col-xl-8">
+                <div className="col-xl-12">
                     <Box sx={{
                         height: '120px',
                         background: `linear-gradient(180deg, rgba(220, 53, 69, 0.2) 0%, transparent 100%)`,
                         display: 'flex',
                         justifyContent: 'center',
-                        alignItems: 'flex-end'
+                        alignItems: 'flex-end',
+                        position: 'relative',
+                        zIndex: 10
                     }}>
-                        <div style={{ transform: 'translateY(40px)' }}>
-                            <CustomAvatarWithOnlineBadge height={120} width={120} data={user} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} isAdmin={user.role === "SUPERADMIN"} />
+                        <div style={{ transform: 'translateY(60px)' }}>
+                            <CustomAvatarWithOnlineBadge
+                                height={120}
+                                width={120}
+                                data={user}
+                                src={`${urlWithoutApi}/user-images/${user.profile_picture}`}
+                                isOnline={user.is_online}
+                                isAdmin={user.role === "SUPERADMIN"}
+                            />
                         </div>
                     </Box>
 
-                    <Box sx={{ p: 4, pt: '12%', textAlign: 'center' }}>
+                    <Box sx={{
+                        p: 4,
+                        pt: '120px',
+                        textAlign: 'center'
+                    }}>
                         <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold' }}>
                             {user.first_name} {user.middle_name} {user.last_name} {user.suffix ?? ''}
                         </Typography>
@@ -108,9 +121,9 @@ export default function ViewUserContent({ user }: { user: any }) {
                             }
                         </div>
                     </Box>
-                </div>
+                </div >
 
-                <div className={`col-xl-4 text-center ${["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) ? 'with-shooting-star' : ''}`} style={{ userSelect: 'none' }}>
+                {/* <div className={`col-xl-4 text-center ${["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) ? 'with-shooting-star' : ''}`} style={{ userSelect: 'none' }}>
                     {user.role === "SUPERADMIN" && <SupremeRankWithBanner />}
                     {user.role === "ADMINISTRATOR" && <SuperiorRankWithBanner />}
                     {(!["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) && user.total_points < 500) && <NoviceRankWithBanner />}
@@ -118,8 +131,8 @@ export default function ViewUserContent({ user }: { user: any }) {
                     {(!["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) && user.total_points < 3000 && user.total_points >= 1500) && <SpecialistRankWithBanner />}
                     {(!["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) && user.total_points < 5000 && user.total_points >= 3000) && <LeadRankWithBanner />}
                     {(!["ADMINISTRATOR", "SUPERADMIN"].includes(user.role) && user.total_points >= 5000) && <ArchitectRankWithBanner />}
-                </div>
-            </div>
+                </div> */}
+            </div >
         </>
     );
 }

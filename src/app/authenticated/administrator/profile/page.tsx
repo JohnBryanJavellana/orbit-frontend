@@ -36,9 +36,9 @@ export default function AdminDashboard({ }: Props) {
         {
             !userData
                 ? <p>Please wait...</p>
-                : <>
+                : <div className="pt-3">
                     <ViewUserContent user={userData} />
-                </>
+                </div>
         }
     </>;
 }
