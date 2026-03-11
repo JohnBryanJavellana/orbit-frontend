@@ -45,7 +45,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
             const token = getToken('csrf-token');
             const formData = new FormData();
             formData.append('contentText', announcement);
-            formData.append('removalDate', removalDate.format('YYYY-MM-DD HH:mm:ss'));
+            formData.append('removalDate', removalDate ? removalDate.format('YYYY-MM-DD HH:mm:ss') : null);
             formData.append('httpMethod', httpMethod);
 
             if (data) {
