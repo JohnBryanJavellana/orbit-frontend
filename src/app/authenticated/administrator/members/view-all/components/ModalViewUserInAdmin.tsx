@@ -42,18 +42,25 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                     <>
                         <CustomTab
                             tabId={tabId}
-                            tabs={[
-                                {
-                                    icon: "info",
-                                    label: "Member Details",
-                                    index: 0
-                                },
-                                {
-                                    icon: "insights",
-                                    label: "Aura Points Record",
-                                    index: 1
+                            tabs={(() => {
+                                const menuItems = [
+                                    {
+                                        icon: "info",
+                                        label: "Member Details",
+                                        index: 0
+                                    }
+                                ];
+
+                                if (data?.role === "MEMBER") {
+                                    menuItems.push({
+                                        icon: "insights",
+                                        label: "Aura Points Record",
+                                        index: 1
+                                    });
                                 }
-                            ]}
+
+                                return menuItems;
+                            })()}
                             callbackFunction={(e) => setTabId(e)}
                         />
 

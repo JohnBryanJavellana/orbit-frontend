@@ -15,6 +15,7 @@ import DropdownMenu from "@/app/custom-global-components/DropdownMenu/DropdowMen
 import OrbitDatatable from "@/app/custom-global-components/OrbitDatatable/OrbitDatatable";
 import ModalAddCollaborator from "@/app/custom-global-components/ModalAddCollaborator/ModalAddCollaborator";
 import ModalUpdateCollaboratorStatus from "@/app/custom-global-components/ModalUpdateCollaboratorStatus/ModalUpdateCollaboratorStatus";
+import ModalViewUser from "@/app/custom-global-components/CustomUserPill/components/ModalViewUser";
 
 export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: ParamValue, taskCtrl: ParamValue }) {
     const { getToken } = useWebToken();
@@ -68,10 +69,17 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
         {
             name: "Avatar",
             cell: (row: any) => {
-                return <CustomAvatarWithOnlineBadge data={row.user} src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`} isOnline={row.user.is_online} />
+                return <div className="w-100 d-flex align-items-center justify-content-center">
+                    <CustomAvatarWithOnlineBadge
+                        data={row.user}
+                        src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`}
+                        isOnline={row.user.is_online}
+                        isAdmin={row.user.role === "SUPERADMIN"}
+                    />
+                </div>
             },
             sortable: true,
-            width: "130px"
+            width: "100px"
         },
         {
             name: "Status",
@@ -106,13 +114,13 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
                         'icon': 'launch',
                         'url': '#',
                         'data-toggle': 'modal',
-                        'data-target': `#view_user_details_${row.id}`,
+                        'data-target': `#view_user_details_${row.user.id}`,
                         'id': 'f',
                         'textColor': '',
                         'label': 'View Collaborator',
                         'onClick': () => {
-                            setModalOpenData(row);
-                            setModalOpenId(row.id);
+                            setModalOpenData(row.user);
+                            setModalOpenId(row.user.id);
                             setModalOpenIndex(1);
                         }
                     }, {
@@ -151,6 +159,19 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
                     src="administrator/projects/get_projects/get_future_collaborators"
                     titleHeader={'Add Collaborator'}
                     httpMethod={'POST'}
+                    callbackFunction={() => {
+                        GetSpecificTaskCollaborators(false);
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+                    }}
+                />
+            }
+
+            {
+                modalOpenIndex === 1 &&
+                <ModalViewUser
+                    user={modalOpenData}
                     callbackFunction={() => {
                         GetSpecificTaskCollaborators(false);
                         setModalOpenData(null);

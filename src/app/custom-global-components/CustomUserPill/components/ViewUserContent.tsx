@@ -17,7 +17,7 @@ export default function ViewUserContent({ user }: { user: any }) {
 
     return (
         <>
-            <div className="row custom-top-border-dark">
+            <div className="row">
                 <div className="col-xl-12">
                     <Box sx={{
                         height: '120px',

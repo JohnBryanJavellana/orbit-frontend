@@ -73,7 +73,9 @@ export default function CustomAvatarWithOnlineBadge({
     const scale = getFrameScale();
 
     return (
-        <div
+        <Link
+            href={displaySrc}
+            target='_blank'
             className="position-relative d-flex align-items-center justify-content-center"
             style={{
                 width: width * (frame === 'SUPREME' ? 1.5 : 1.1),
@@ -109,6 +111,6 @@ export default function CustomAvatarWithOnlineBadge({
                     }}
                 />
             )}
-        </div>
+        </Link>
     );
 }

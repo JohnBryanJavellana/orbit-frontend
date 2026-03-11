@@ -70,10 +70,17 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
         {
             name: "Avatar",
             cell: (row: any) => {
-                return <CustomAvatarWithOnlineBadge data={row.user} src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`} isOnline={row.user.is_online} isAdmin={row.user.role === "SUPERADMIN"} />
+                return <div className="w-100 d-flex align-items-center justify-content-center">
+                    <CustomAvatarWithOnlineBadge
+                        data={row.user}
+                        src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`}
+                        isOnline={row.user.is_online}
+                        isAdmin={row.user.role === "SUPERADMIN"}
+                    />
+                </div>
             },
             sortable: true,
-            width: "130px"
+            width: "100px"
         },
         {
             name: "Status",
