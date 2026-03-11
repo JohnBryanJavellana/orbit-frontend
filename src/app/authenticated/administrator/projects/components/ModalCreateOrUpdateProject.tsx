@@ -21,6 +21,7 @@ interface ModalCreateOrUpdateTaskProps {
 export default function ModalCreateOrUpdateProject({ data, id, titleHeader, httpMethod, callbackFunction }: ModalCreateOrUpdateTaskProps) {
     const [status, setStatus] = useState<string>('');
     const [name, setName] = useState<string>('');
+    const [completionPoints, setCompletionPoints] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { getToken } = useWebToken();
@@ -40,6 +41,7 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
             const formData = new FormData();
             formData.append('name', name);
             formData.append('description', description);
+            formData.append('completionPoints', completionPoints);
             formData.append('httpMethod', httpMethod);
 
             if (data) {
@@ -72,6 +74,7 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
         if (data && data.trueData) {
             setStatus(data.status);
             setName(data.name);
+            setCompletionPoints(data.completion_points);
             setDescription(data.description);
         }
     }, [data]);
@@ -103,6 +106,22 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
                                 className='custom-field-bg'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                disableUnderline
+                                autoComplete='off'
+                            />
+                        </FormControl>
+
+                        <label htmlFor="number" className='custom-label-color'>
+                            Completion Points <span className="text-danger">*</span>
+                        </label>
+
+                        <FormControl fullWidth sx={{ mb: 2 }}>
+                            <Input
+                                id="number"
+                                type="number"
+                                className='custom-field-bg'
+                                value={completionPoints}
+                                onChange={(e) => setCompletionPoints(e.target.value)}
                                 disableUnderline
                                 autoComplete='off'
                             />
@@ -154,7 +173,7 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
                             Close
                         </button>
 
-                        <button type="button" onClick={() => SubmitTask()} disabled={!name || !description || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => SubmitTask()} disabled={!name || !description || !completionPoints || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
                     </>

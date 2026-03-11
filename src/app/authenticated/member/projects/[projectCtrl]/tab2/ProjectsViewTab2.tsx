@@ -221,7 +221,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
 
                             {
                                 filterTasks.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((taskOverview: any, index: number) => (
-                                    <div className={`${taskOverview.members[0]?.status === "CANCELLED" && mode === 'applied' ? 'bg-muted text-muted' : 'custom-bg'} custom-border-dark px-5 pb-5 mb-2 text-white`} key={index}>
+                                    <div className={`${taskOverview.members[0]?.status === "CANCELLED" && mode === 'applied' ? 'bg-muted text-muted' : 'custom-bg'} custom-border-dark px-5 pb-5 mb-2 text-white`} key={index} style={{ userSelect: 'none' }}>
                                         <div className="pt-2 text-right d-flex align-items-center justify-content-end">
                                             {
                                                 (mode === 'applied' && ["PENDING", "CANCELLED", "TERMINATED"].includes(taskOverview.members[0]?.status)) && <>

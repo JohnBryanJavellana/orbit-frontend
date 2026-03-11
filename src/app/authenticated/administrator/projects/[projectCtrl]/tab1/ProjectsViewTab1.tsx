@@ -80,7 +80,7 @@ export default function ProjectsViewTab1({ projectCtrl, isFromNonAdmin = false }
                             />
                         }
 
-                        <div className="card rounded-0 custom-bg elevation-0 mb-0">
+                        <div className="card rounded-0 custom-bg elevation-0 mb-0" style={{ userSelect: 'none' }}>
                             {
                                 !isFromNonAdmin &&
                                 <div className="card-header custom-bottom-border-dark py-1">
@@ -130,6 +130,15 @@ export default function ProjectsViewTab1({ projectCtrl, isFromNonAdmin = false }
                                         className="bg-dark custom-border-dark px-6 quill-content px-4 pt-3 my-3"
                                         dangerouslySetInnerHTML={{ __html: projectDetails.description }}
                                     />
+
+                                    <div className="bg-dark custom-border-dark mb-3">
+                                        <div className="row">
+                                            <div className="col-12 p-4 text-center">
+                                                <h5 className="text-bold text-muted">Completion Points</h5>
+                                                <div className="h3">+{projectDetails.completion_points}</div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div className="text-sm text-muted">
                                         <div className="col-xl-3 pr-5">
