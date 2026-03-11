@@ -110,8 +110,8 @@ export default function Projects({ }: ProjectsProp) {
                                                             <div className="text-muted text-sm">{project.ctrl}</div>
 
                                                             <div className="row mt-3">
-                                                                <div className="col-xl-3">
-                                                                    <div className="text-sm text-muted mb-2">Creator</div>
+                                                                <div className="col-xl-3 pr-5">
+                                                                    <div className="text-sm text-muted mb-3">Creator</div>
                                                                     <CustomUserPill user={project.creator} />
                                                                 </div>
                                                             </div>

@@ -155,10 +155,10 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
                                                                 setModalOpenIndex(1);
                                                             }}>
                                                                 <div className="row">
-                                                                    <div className={`col-${isMobileViewPort ? 3 : 1} d-flex align-items-center justify-content-center text-center`}>
+                                                                    <div className={`col-${isMobileViewPort ? 3 : 2} d-flex align-items-center justify-content-center text-center`}>
                                                                         <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} data={friend.user} isOnline={friend.user.is_online} isAdmin={friend.user.role === "SUPERADMIN"} />
                                                                     </div>
-                                                                    <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
+                                                                    <div className={`col-${isMobileViewPort ? 6 : 7} d-flex align-items-center justify-content-center`}>
                                                                         <div className="w-100 mt-1">
                                                                             <div className="text-bold text-truncate">{`${friend.user.first_name} ${friend.user.middle_name} ${friend.user.last_name} ${friend.user.suffix ?? ''}`}</div>
                                                                             <div className="text-sm text-muted text-truncate">{friend.user.email}</div>
