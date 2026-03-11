@@ -80,6 +80,10 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
             });
 
             alert(response.data.message);
+
+            if (data?.editor !== 'OMEGA' || data?.reloadAfter) {
+                window.location.reload();
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
