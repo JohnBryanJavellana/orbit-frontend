@@ -75,10 +75,11 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
 
     useEffect(() => {
         let intervalId: any;
+        const token = getToken('csrf-token');
 
         const PingUser = async () => {
             try {
-                const token = getToken('csrf-token');
+
                 if (!token) return;
 
                 intervalId = setInterval(async () => {
@@ -99,12 +100,12 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
         };
 
-        if (userData) {
+        if (userData && token) {
             PingUser();
         }
 
         return () => {
-            if (intervalId) {
+            if (intervalId || !token) {
                 clearInterval(intervalId);
             }
         };
