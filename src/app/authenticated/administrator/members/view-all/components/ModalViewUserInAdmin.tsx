@@ -5,6 +5,7 @@ import ViewUserContent from "@/app/custom-global-components/CustomUserPill/compo
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
 import { useState } from "react";
+import ViewUserAuraPointsRecordInAdmin from "./ViewUserAuraPointsRecordInAdmin";
 
 interface ModalViewUserInAdminProps {
     data: any | null,
@@ -36,7 +37,7 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                         </span>
                     </>
                 }
-                bodyClassName="p-4 bg-dark"
+                bodyClassName="px-4 pt-4 bg-dark"
                 body={
                     <>
                         <CustomTab
@@ -48,7 +49,7 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                                     index: 0
                                 },
                                 {
-                                    icon: "task",
+                                    icon: "insights",
                                     label: "Aura Points Record",
                                     index: 1
                                 }
@@ -63,7 +64,7 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                                 </div>
 
                                 <div role="tabpanel" hidden={tabId !== 1} id={`simple-tabpanel-1`} aria-labelledby={`simple-tab-1`}>
-                                    {(tabId === 1) && <p>1111</p>}
+                                    {(tabId === 1) && <ViewUserAuraPointsRecordInAdmin userId={data?.id} />}
                                 </div>
                             </div>
                         </div>

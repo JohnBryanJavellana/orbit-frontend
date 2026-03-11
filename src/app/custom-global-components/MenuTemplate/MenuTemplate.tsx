@@ -13,6 +13,7 @@ import useDetectMobileViewport from '@/app/hooks/useDetectMobileViewport';
 import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
 import ModalViewUser from '../CustomUserPill/components/ModalViewUser';
 import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members/view-all/components/ModalCreateOrUpdateMember';
+import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -128,6 +129,21 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
+                modalOpenIndex === 1 &&
+                <ModalShowMyPointsRecord
+                    data={modalOpenData}
+                    id={modalOpenId}
+                    titleHeader={'My Points Record'}
+                    callbackFunction={() => {
+                        refreshUser();
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+                    }}
+                />
+            }
+
+            {
                 !userData
                     ? <p className='p-4'>Please wait...</p>
                     : <>
@@ -201,16 +217,31 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 }
                                             }}
                                         >
-                                            <MenuItem onClick={() => {
+                                            <MenuItem className='custom-bottom-border-dark' onClick={() => {
                                                 handleCloseUserMenu();
                                                 setModalOpenData(userData);
                                                 setModalOpenId(userData.id);
                                                 setModalOpenIndex(0);
                                             }} data-toggle="modal" data-target={`#create_or_update_member_${userData?.id}`}>
-                                                <Typography sx={{ textAlign: 'left' }}>Update Profile</Typography>
+                                                <Typography className='text-sm' sx={{ textAlign: 'left' }}>Update Profile</Typography>
                                             </MenuItem>
+
+                                            {
+                                                userData.role === 'MEMBER' &&
+
+                                                <MenuItem className='custom-bottom-border-dark' onClick={() => {
+                                                    handleCloseUserMenu();
+                                                    setModalOpenId(userData.id);
+                                                    setModalOpenIndex(1);
+                                                }} data-toggle="modal" data-target={`#show_my_points_record_${userData?.id}`}>
+                                                    <Typography className='text-sm' sx={{ textAlign: 'left' }}>Points Record</Typography>
+                                                </MenuItem>
+                                            }
+
                                             <MenuItem onClick={() => LogoutUser()}>
-                                                <Typography sx={{ textAlign: 'left' }}>Logout</Typography>
+                                                <Typography className='text-sm' sx={{ textAlign: 'left' }}>
+                                                    <i className="fas fa-sign-out-alt text-danger mr-1"></i> Logout
+                                                </Typography>
                                             </MenuItem>
                                         </Menu>
                                     </Box>

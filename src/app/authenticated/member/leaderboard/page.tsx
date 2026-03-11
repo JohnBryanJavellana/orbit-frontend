@@ -67,11 +67,11 @@ export default function Leaderboard({ }: LeaderboardProp) {
 
         if (searchText.trim()) {
             result = result.filter(friend =>
-                (friend?.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.email || '').toLowerCase().includes(searchText.toLowerCase())
+                String(friend?.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.email || '').toLowerCase().includes(searchText.toLowerCase())
             );
         }
 
@@ -183,7 +183,7 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                     }
 
                                     <TablePaginationTemplate
-                                        dataset={friends}
+                                        dataset={filteredFriends}
                                         rowsPerPage={rowsPerPage}
                                         rowsPerPageOptions={[12, 24, 36, 50]}
                                         page={page}

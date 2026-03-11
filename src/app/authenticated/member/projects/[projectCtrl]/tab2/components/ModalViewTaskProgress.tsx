@@ -115,11 +115,11 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
 
         if (searchText.trim()) {
             result = result.filter(task =>
-                (task?.initiator.user.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (task?.initiator.user.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (task?.initiator.user.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (task?.initiator.user.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (task?.activity || '').toLowerCase().includes(searchText.toLowerCase())
+                String(task?.initiator.user.first_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(task?.initiator.user.middle_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(task?.initiator.user.last_name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(task?.initiator.user.suffix || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(task?.activity || '').toLowerCase().includes(searchText.toLowerCase())
             );
         }
 

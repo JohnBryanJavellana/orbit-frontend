@@ -145,10 +145,10 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
 
         if (searchText.trim()) {
             result = result.filter(friend =>
-                (friend?.name || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.description || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.ctrl || '').toLowerCase().includes(searchText.toLowerCase()) ||
-                (friend?.status || '').toLowerCase().includes(searchText.toLowerCase())
+                String(friend?.name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.description || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.ctrl || '').toLowerCase().includes(searchText.toLowerCase()) ||
+                String(friend?.status || '').toLowerCase().includes(searchText.toLowerCase())
             );
         }
 
