@@ -143,7 +143,7 @@ export default function ProjectsViewTab1({ projectCtrl, isFromNonAdmin = false }
                                     <div className="text-sm text-muted">
                                         <div className="col-xl-3 pr-5">
                                             <div className="pr-5">
-                                                Creator
+                                                <div className="mb-3">Creator</div>
                                                 <CustomUserPill user={projectDetails.creator} />
                                             </div>
                                         </div>

@@ -68,7 +68,7 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
         {
             name: "Avatar",
             cell: (row: any) => {
-                return <CustomAvatarWithOnlineBadge src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`} isOnline={row.user.is_online} />
+                return <CustomAvatarWithOnlineBadge data={row.user} src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`} isOnline={row.user.is_online} />
             },
             sortable: true,
             width: "130px"

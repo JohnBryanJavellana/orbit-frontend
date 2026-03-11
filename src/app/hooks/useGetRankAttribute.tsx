@@ -1,5 +1,5 @@
 export default function useGetRankAttribute() {
-    const getRankAttribute = (points: number | '∞' | 'Ω', showLabel: boolean = true) => {
+    const getRankAttribute = (points: number | '∞' | 'Ω', showLabel: boolean = true, showEmblem: boolean = true) => {
         let tierName = "Novice";
         let tierColor = "cyan";
         let iconPath = "/system-images/ranks/1._NOVICE_v1.png";
@@ -103,23 +103,27 @@ export default function useGetRankAttribute() {
                     `}
                 </style>
 
-                <img
-                    src={iconPath}
-                    alt={tierName}
-                    style={{
-                        width: '38px',
-                        height: '38px',
-                        objectFit: 'contain',
-                        zIndex: 2,
-                        animation: isOmega
-                            ? 'royal-pulse 1.5s infinite ease-in-out'
-                            : isSuperior
-                                ? 'fire-flicker 0.8s infinite alternate ease-in-out'
-                                : isArchitect
-                                    ? 'architect-pulse 2s infinite ease-in-out'
-                                    : 'none',
-                    }}
-                />
+                {
+                    showEmblem &&
+                    <img
+                        src={iconPath}
+                        alt={tierName}
+                        style={{
+                            width: '38px',
+                            height: '38px',
+                            objectFit: 'contain',
+                            zIndex: 2,
+                            animation: isOmega
+                                ? 'royal-pulse 1.5s infinite ease-in-out'
+                                : isSuperior
+                                    ? 'fire-flicker 0.8s infinite alternate ease-in-out'
+                                    : isArchitect
+                                        ? 'architect-pulse 2s infinite ease-in-out'
+                                        : 'none',
+                        }}
+                    />
+
+                }
 
                 {
                     showLabel &&

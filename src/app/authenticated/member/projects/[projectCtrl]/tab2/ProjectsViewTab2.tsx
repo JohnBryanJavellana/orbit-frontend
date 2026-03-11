@@ -311,7 +311,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                                             <div className="row mb-3">
                                                 <div className="col-xl-3 pr-5">
                                                     <div className="pr-5">
-                                                        Creator
+                                                        <div className="mb-3">Creator</div>
                                                         <CustomUserPill user={taskOverview.creator} />
                                                     </div>
                                                 </div>

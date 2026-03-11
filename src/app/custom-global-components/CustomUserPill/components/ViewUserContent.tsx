@@ -27,11 +27,11 @@ export default function ViewUserContent({ user }: { user: any }) {
                         alignItems: 'flex-end'
                     }}>
                         <div style={{ transform: 'translateY(40px)' }}>
-                            <CustomAvatarWithOnlineBadge height={120} width={120} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} isAdmin={user.role === "SUPERADMIN"} />
+                            <CustomAvatarWithOnlineBadge height={120} width={120} data={user} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} isAdmin={user.role === "SUPERADMIN"} />
                         </div>
                     </Box>
 
-                    <Box sx={{ p: 4, pt: 6, textAlign: 'center' }}>
+                    <Box sx={{ p: 4, pt: '12%', textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold' }}>
                             {user.first_name} {user.middle_name} {user.last_name} {user.suffix ?? ''}
                         </Typography>

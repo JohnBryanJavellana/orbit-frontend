@@ -221,6 +221,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 handleCloseUserMenu();
                                                 setModalOpenData({
                                                     ...userData,
+                                                    editor: ["SUPERADMIN", "ADMINISTRATOR"].includes(userData?.role) ? 'OMEGA' : 'MEMBER',
                                                     reloadAfter: true
                                                 });
                                                 setModalOpenId(userData.id);

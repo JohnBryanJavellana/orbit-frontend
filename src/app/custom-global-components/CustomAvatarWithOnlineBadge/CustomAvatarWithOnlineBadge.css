@@ -1,0 +1,125 @@
+/* SUPREME: Divine Flare
+   Focuses on a high-intensity white-to-gold light pulse. */
+.frame-anim-supreme {
+    animation: supreme-flare 2.5s ease-in-out infinite;
+}
+
+@keyframes supreme-flare {
+
+    0%,
+    100% {
+        filter: brightness(1) drop-shadow(0 0 5px gold);
+    }
+
+    50% {
+        filter: brightness(1.4) drop-shadow(0 0 25px #fff7bc) contrast(1.2);
+    }
+}
+
+/* SUPERIOR: Crystal Glint
+   Simulates light catching the blue gems using hue-rotation and brightness. */
+.frame-anim-superior {
+    animation: superior-glint 3s ease-in-out infinite;
+}
+
+@keyframes superior-glint {
+
+    0%,
+    100% {
+        filter: brightness(1) hue-rotate(0deg);
+    }
+
+    50% {
+        filter: brightness(1.2) hue-rotate(15deg) drop-shadow(0 0 15px skyblue);
+    }
+}
+
+/* ARCHITECT: Deep Sea Pulse
+   A rhythmic saturation shift that makes the blue and gold feel like liquid energy. */
+.frame-anim-architect {
+    animation: architect-energy 4s ease-in-out infinite;
+}
+
+@keyframes architect-energy {
+
+    0%,
+    100% {
+        filter: saturate(1) contrast(1);
+    }
+
+    50% {
+        filter: saturate(2) contrast(1.3) drop-shadow(0 0 10px cyan);
+    }
+}
+
+/* LEAD: Molten Glow
+   A "heat" effect that makes the tiger-theme red/orange colors look like burning embers. */
+.frame-anim-lead {
+    animation: lead-heat 1.5s ease-in-out infinite;
+}
+
+@keyframes lead-heat {
+
+    0%,
+    100% {
+        filter: saturate(1) brightness(1);
+    }
+
+    50% {
+        filter: saturate(2.5) brightness(1.1) drop-shadow(0 0 10px red);
+    }
+}
+
+/* SPECIALIST: Ethereal Shadow
+   A mystical purple pulse using contrast and opacity. */
+.frame-anim-specialist {
+    animation: specialist-aura 3s ease-in-out infinite;
+}
+
+@keyframes specialist-aura {
+
+    0%,
+    100% {
+        filter: contrast(1) opacity(0.8);
+    }
+
+    50% {
+        filter: contrast(1.5) opacity(1) drop-shadow(0 0 12px purple);
+    }
+}
+
+/* CONTRIBUTOR: Nature's Breath
+   A subtle green hue shift to make the leaves feel like they are photosynthesizing. */
+.frame-anim-contributor {
+    animation: contributor-bloom 4s ease-in-out infinite;
+}
+
+@keyframes contributor-bloom {
+
+    0%,
+    100% {
+        filter: hue-rotate(0deg) brightness(1);
+    }
+
+    50% {
+        filter: hue-rotate(-20deg) brightness(1.1) drop-shadow(0 0 8px green);
+    }
+}
+
+/* NOVICE: Cold Steel
+   A simple metallic sheen effect. */
+.frame-anim-novice {
+    animation: novice-sheen 5s ease-in-out infinite;
+}
+
+@keyframes novice-sheen {
+
+    0%,
+    100% {
+        filter: grayscale(0.2) brightness(0.9);
+    }
+
+    50% {
+        filter: grayscale(0) brightness(1.2) drop-shadow(0 0 5px white);
+    }
+}

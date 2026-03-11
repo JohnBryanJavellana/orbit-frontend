@@ -127,7 +127,7 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                                                 <div className="col-xl-12 py-1 custom-bg custom-border-dark">
                                                     <div className="row">
                                                         <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
-                                                            <CustomAvatarWithOnlineBadge height={50} width={50} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} isOnline={friend.user.is_online} isAdmin={friend.user.role === "SUPERADMIN"} />
+                                                            <CustomAvatarWithOnlineBadge height={50} width={50} data={friend.user} src={`${urlWithoutApi}/user-images/${friend.user.profile_picture}`} isOnline={friend.user.is_online} isAdmin={friend.user.role === "SUPERADMIN"} />
                                                         </div>
                                                         <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
                                                             <div className="w-100 mt-1">
