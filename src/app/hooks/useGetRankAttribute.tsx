@@ -10,7 +10,7 @@ export default function useGetRankAttribute() {
 
         if (isOmega) {
             tierName = "Supreme";
-            tierColor = "#f01048";
+            tierColor = "#f0a210";
             iconPath = "/system-images/ranks/7._SUPREME_v1.png";
         } else if (isSuperior) {
             tierName = "Superior";
@@ -47,7 +47,7 @@ export default function useGetRankAttribute() {
                     borderRadius: '12px',
                     overflow: 'visible',
                     background: isOmega
-                        ? 'radial-gradient(circle, rgba(240, 16, 72, 0.25) 0%, rgba(240, 16, 72, 0.05) 70%, transparent 100%)'
+                        ? 'radial-gradient(circle, rgba(240, 150, 16, 0.25) 0%, rgba(240, 162, 16, 0.05) 70%, transparent 100%)'
                         : isSuperior
                             ? 'radial-gradient(circle, rgba(255, 140, 0, 0.3) 0%, rgba(220, 217, 53, 0.1) 60%, transparent 100%)'
                             : 'transparent',

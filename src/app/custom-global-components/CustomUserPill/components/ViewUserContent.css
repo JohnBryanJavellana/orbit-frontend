@@ -2,6 +2,7 @@
 .with-shooting-star {
     position: relative;
     overflow: hidden;
+    z-index: 99;
 }
 
 /* STAR */

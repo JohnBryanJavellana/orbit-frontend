@@ -19,7 +19,7 @@ export default function ModalViewUser({ user, callbackFunction }: ModalViewUserP
                 size={"xl"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
-                bodyClassName="pb-0"
+                bodyClassName="pb-0 bg-dark"
                 body={
                     <>
                         <ViewUserContent user={user} />

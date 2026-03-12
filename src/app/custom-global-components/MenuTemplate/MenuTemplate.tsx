@@ -14,6 +14,7 @@ import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
 import ModalViewUser from '../CustomUserPill/components/ModalViewUser';
 import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members/view-all/components/ModalCreateOrUpdateMember';
 import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
+import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -50,7 +51,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
     const navigate = useRouter();
 
     const LogoutUser = async () => {
-        const confirmed = window.confirm("Are you sure you want to logout? 😭");
+        const confirmed = window.confirm("Are you sure you want to logout?");
         if (!confirmed) return;
 
         try {
@@ -75,10 +76,10 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
 
     useEffect(() => {
         let intervalId: any;
+        const token = getToken('csrf-token');
 
         const PingUser = async () => {
             try {
-                const token = getToken('csrf-token');
                 if (!token) return;
 
                 intervalId = setInterval(async () => {
@@ -99,7 +100,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
         };
 
-        if (userData) {
+        if (userData && token) {
             PingUser();
         }
 
@@ -139,6 +140,23 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                         setModalOpenData(null);
                         setModalOpenId(null);
                         setModalOpenIndex(null);
+                    }}
+                />
+            }
+
+            {
+                modalOpenIndex === 2 &&
+                <ModalChangeAvatarBorder
+                    userBorderId={userData?.custom_border_id}
+                    id={modalOpenId}
+                    titleHeader={'Change Avatar Border'}
+                    callbackFunction={(e) => {
+                        refreshUser();
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+
+                        if (e) window.location.reload();
                     }}
                 />
             }
@@ -189,7 +207,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={userData.role === "SUPERADMIN" ? 'rounded-0' : ''} src={userData.role === "SUPERADMIN" ? '/system-images/raw-images/9brubwu9u65f1.gif' : `${urlWithoutApi}/user-images/${userData.profile_picture}`} />
+                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={'rounded-circle'} src={`${urlWithoutApi}/user-images/${userData.profile_picture}`} />
                                             </IconButton>
                                         </Tooltip>
 
@@ -228,6 +246,15 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 setModalOpenIndex(0);
                                             }} data-toggle="modal" data-target={`#create_or_update_member_${userData?.id}`}>
                                                 <Typography className='text-sm' sx={{ textAlign: 'left' }}>Update Profile</Typography>
+                                            </MenuItem>
+
+                                            <MenuItem className='custom-bottom-border-dark' onClick={() => {
+                                                handleCloseUserMenu();
+                                                setModalOpenData(userData);
+                                                setModalOpenId(userData.id);
+                                                setModalOpenIndex(2);
+                                            }} data-toggle="modal" data-target={`#change_avatar_border_${userData?.id}`}>
+                                                <Typography className='text-sm' sx={{ textAlign: 'left' }}>Change Avatar Border</Typography>
                                             </MenuItem>
 
                                             {

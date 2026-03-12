@@ -34,8 +34,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return setCurrentActiveLink('leaderboard');
         } else if (location.includes('/authenticated/administrator/members')) {
             return setCurrentActiveLink('members');
-        } else if (userData?.role === "SUPERADMIN" && location.includes('/authenticated/administrator/announcements')) {
+        } else if (location.includes('/authenticated/administrator/announcements')) {
             return setCurrentActiveLink('announcements');
+        } else if (location.includes('/authenticated/administrator/borders')) {
+            return setCurrentActiveLink('borders');
         } else {
             return navigate.push('/access-denied');
         }
@@ -63,6 +65,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         userData?.role === "SUPERADMIN" &&
                         <>
                             <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
+                            <Link href='/authenticated/administrator/borders' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'borders' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Custom Borders</Link>
 
                             <span
                                 onClick={handleOpenMembersMenu}

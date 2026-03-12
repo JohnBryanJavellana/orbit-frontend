@@ -32,7 +32,7 @@ export default function useGetNewAnnouncement() {
 
     useEffect(() => {
         GetNewAnnouncement();
-    }, [GetNewAnnouncement]);
+    }, []);
 
     return { announcement, refreshAnnouncement: GetNewAnnouncement };
 }
