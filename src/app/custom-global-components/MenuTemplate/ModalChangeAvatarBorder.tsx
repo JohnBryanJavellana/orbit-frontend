@@ -207,7 +207,7 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
                             Close
                         </button>
 
-                        <button type='button' className='btn btn-danger btn-sm' disabled={isSubmitting} onClick={() => SetAsCurrentBorder()}>
+                        <button type='button' className='btn btn-danger btn-sm elevation-1' disabled={isSubmitting} onClick={() => SetAsCurrentBorder()}>
                             Save Changes
                         </button>
                     </>

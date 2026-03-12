@@ -70,6 +70,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
             name: "Name",
             selector: (row: any) => row.name,
             sortable: true,
+            width: "270px"
         },
         {
             name: "Members",

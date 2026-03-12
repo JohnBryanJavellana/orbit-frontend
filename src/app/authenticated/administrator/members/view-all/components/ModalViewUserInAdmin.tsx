@@ -5,7 +5,8 @@ import ViewUserContent from "@/app/custom-global-components/CustomUserPill/compo
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
 import { useState } from "react";
-import ViewUserAuraPointsRecordInAdmin from "./ViewUserAuraPointsRecordInAdmin";
+import ViewUserRareBordersInAdmin from "./ViewUserRareBordersInAdmin";
+import ViewUserAuraPointsRecordInAdmin from "./ViewUserAuraPointsRecordInAdmin copy";
 
 interface ModalViewUserInAdminProps {
     data: any | null,
@@ -48,6 +49,11 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                                         icon: "info",
                                         label: "Member Details",
                                         index: 0
+                                    },
+                                    {
+                                        icon: "account_circle",
+                                        label: "Rare Borders Inventory",
+                                        index: 1
                                     }
                                 ];
 
@@ -55,7 +61,7 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                                     menuItems.push({
                                         icon: "insights",
                                         label: "Aura Points Record",
-                                        index: 1
+                                        index: 2
                                     });
                                 }
 
@@ -64,14 +70,18 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                             callbackFunction={(e) => setTabId(e)}
                         />
 
-                        <div className="card rounded-0 custom-bg custom-border-dark">
+                        <div className="card rounded-0 bg-dark elevation-0">
                             <div className="card-body p-0">
                                 <div role="tabpanel" hidden={tabId !== 0} id={`simple-tabpanel-0`} aria-labelledby={`simple-tab-0`}>
                                     {(tabId === 0) && <ViewUserContent user={data} />}
                                 </div>
 
-                                <div role="tabpanel" hidden={tabId !== 1} id={`simple-tabpanel-1`} aria-labelledby={`simple-tab-1`}>
-                                    {(tabId === 1) && <ViewUserAuraPointsRecordInAdmin userId={data?.id} />}
+                                <div role="tabpanel" className="custom-bg custom-border-dark elevation-1" hidden={tabId !== 1} id={`simple-tabpanel-1`} aria-labelledby={`simple-tab-1`}>
+                                    {(tabId === 1) && <ViewUserRareBordersInAdmin userId={data?.id} />}
+                                </div>
+
+                                <div role="tabpanel" className="custom-bg custom-border-dark elevation-1" hidden={tabId !== 2} id={`simple-tabpanel-2`} aria-labelledby={`simple-tab-2`}>
+                                    {(tabId === 2) && <ViewUserAuraPointsRecordInAdmin userId={data?.id} />}
                                 </div>
                             </div>
                         </div>
