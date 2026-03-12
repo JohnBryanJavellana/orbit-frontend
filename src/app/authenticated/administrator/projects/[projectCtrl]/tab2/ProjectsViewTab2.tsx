@@ -152,7 +152,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                     }
                 ];
 
-                if (!['ABANDONED', 'COMPLETED', 'IN PROGRESS'].includes(row?.status) || (row.creator.id === userData.id && userData.role === "SUPERADMIN")) {
+                if (!['ABANDONED', 'COMPLETED', 'IN PROGRESS'].includes(row?.status) && (row.creator.id === userData.id || userData.role === "SUPERADMIN")) {
                     menuItems.push({
                         'icon': 'launch',
                         'url': '#',

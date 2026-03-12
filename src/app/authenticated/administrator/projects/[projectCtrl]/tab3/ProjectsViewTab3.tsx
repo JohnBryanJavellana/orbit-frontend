@@ -122,7 +122,11 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                             setModalOpenData(row.user);
                             setModalOpenIndex(1);
                         }
-                    }, {
+                    }
+                ];
+
+                if (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") {
+                    menuItems.push({
                         'icon': 'launch',
                         'url': '#',
                         'data-toggle': 'modal',
@@ -138,8 +142,8 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                             setModalOpenId(row.id);
                             setModalOpenIndex(2);
                         }
-                    }
-                ];
+                    });
+                }
 
                 return <DropdownMenu id={row.id} menuItems={menuItems} />;
             },
@@ -201,25 +205,29 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                 isFetching
                     ? <div className="p-4">Loading ....</div>
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0">
-                        <div className="card-header custom-bottom-border-dark py-1">
-                            <div className="d-flex align-items-center justify-content-end">
-                                <div>
-                                    <Tooltip title="Add collaborator">
-                                        <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(currentProject?.status) || (currentProject?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
-                                            setModalOpenData({
-                                                ...taskCollaborators,
-                                                projectCtrl: projectCtrl,
-                                                trueData: true
-                                            });
-                                            setModalOpenId(taskCollaborators?.id);
-                                            setModalOpenIndex(0);
-                                        }} data-target={`#add_collaborator_${taskCollaborators?.id}`} data-toggle="modal">
-                                            <AddIcon color='error' />
-                                        </IconButton>
-                                    </Tooltip>
+                        {
+                            (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                            <div className="card-header custom-bottom-border-dark py-1">
+                                <div className="d-flex align-items-center justify-content-end">
+                                    <div>
+                                        <Tooltip title="Add collaborator">
+                                            <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(currentProject?.status) || (currentProject?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                                setModalOpenData({
+                                                    ...taskCollaborators,
+                                                    projectCtrl: projectCtrl,
+                                                    trueData: true
+                                                });
+                                                setModalOpenId(taskCollaborators?.id);
+                                                setModalOpenIndex(0);
+                                            }} data-target={`#add_collaborator_${taskCollaborators?.id}`} data-toggle="modal">
+                                                <AddIcon color='error' />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+
 
                         <div className="card-body">
                             <OrbitDatatable

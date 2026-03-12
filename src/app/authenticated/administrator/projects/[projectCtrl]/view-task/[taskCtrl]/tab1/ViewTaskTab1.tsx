@@ -80,25 +80,30 @@ export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: P
                 isFetching
                     ? <div className="p-4">Loading ....</div>
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0" style={{ userSelect: 'none' }}>
-                        <div className="card-header custom-bottom-border-dark py-1">
-                            <div className="d-flex align-items-center justify-content-end">
-                                <div>
-                                    <Tooltip title="Edit task">
-                                        <IconButton disabled={['COMPLETED', 'IN PROGRESS'].includes(taskOverview?.status) || (taskOverview?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
-                                            setModalOpenData({
-                                                ...taskOverview,
-                                                projectCtrl: projectCtrl,
-                                                trueData: true
-                                            });
-                                            setModalOpenId(taskOverview?.id);
-                                            setModalOpenIndex(0);
-                                        }} data-target={`#task_${taskOverview?.id}`} data-toggle="modal">
-                                            <EditIcon color='error' />
-                                        </IconButton>
-                                    </Tooltip>
+
+                        {
+                            (taskOverview?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                            <div className="card-header custom-bottom-border-dark py-1">
+                                <div className="d-flex align-items-center justify-content-end">
+                                    <div>
+                                        <Tooltip title="Edit task">
+                                            <IconButton disabled={['COMPLETED', 'IN PROGRESS'].includes(taskOverview?.status) || (taskOverview?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                                setModalOpenData({
+                                                    ...taskOverview,
+                                                    projectCtrl: projectCtrl,
+                                                    trueData: true
+                                                });
+                                                setModalOpenId(taskOverview?.id);
+                                                setModalOpenIndex(0);
+                                            }} data-target={`#task_${taskOverview?.id}`} data-toggle="modal">
+                                                <EditIcon color='error' />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+
 
                         <div className="card-body">
                             <div className="p-1 text-white">
