@@ -105,7 +105,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
         }
 
         return () => {
-            if (intervalId) {
+            if (intervalId || !token) {
                 clearInterval(intervalId);
             }
         };
