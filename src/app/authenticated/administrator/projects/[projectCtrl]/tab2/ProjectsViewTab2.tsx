@@ -198,24 +198,28 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
             }
 
             <div className="card rounded-0 custom-bg elevation-0 mb-0">
-                <div className="card-header custom-bottom-border-dark py-1">
-                    <div className="d-flex align-items-center justify-content-end">
-                        <div>
-                            <Tooltip title="Add task">
-                                <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
-                                    setModalOpenData({
-                                        projectCtrl: projectCtrl,
-                                        trueData: false
-                                    });
-                                    setModalOpenId(0);
-                                    setModalOpenIndex(0);
-                                }} data-target={`#task_0`} data-toggle="modal">
-                                    <AddIcon color='error' />
-                                </IconButton>
-                            </Tooltip>
+                {
+                    !['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                    <div className="card-header custom-bottom-border-dark py-1">
+                        <div className="d-flex align-items-center justify-content-end">
+                            <div>
+                                <Tooltip title="Add task">
+                                    <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                        setModalOpenData({
+                                            projectCtrl: projectCtrl,
+                                            trueData: false
+                                        });
+                                        setModalOpenId(0);
+                                        setModalOpenIndex(0);
+                                    }} data-target={`#task_0`} data-toggle="modal">
+                                        <AddIcon color='error' />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+
 
                 <div className="card-body">
                     <OrbitDatatable

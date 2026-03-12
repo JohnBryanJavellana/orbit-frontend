@@ -58,6 +58,16 @@ export default function ModalViewProgress({ data, id, titleHeader, httpMethod, c
                         <Divider sx={{ opacity: '0.3' }} />
 
                         <div className="bg-dark p-4 mt-3" dangerouslySetInnerHTML={{ __html: data?.activity }} />
+
+                        {
+                            data.remarks &&
+                            <>
+                                <div className="d-flex align-items-center">
+                                    <img src="/system-images/15d4793a-150f-47e0-9a61-b8d0557d7ae5_removalai_preview.png" height={'20px'} alt="" />
+                                    <div className="ml-2 pt-4" dangerouslySetInnerHTML={{ __html: data.remarks }} />
+                                </div>
+                            </>
+                        }
                     </>
                 }
                 footer={

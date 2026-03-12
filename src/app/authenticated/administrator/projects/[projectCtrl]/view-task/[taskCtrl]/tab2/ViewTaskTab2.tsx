@@ -207,7 +207,7 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
                     ? <div className="p-4">Loading ....</div>
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0">
                         {
-                            (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                            !['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
                             <div className="card-header custom-bottom-border-dark py-1">
                                 <div className="d-flex align-items-center justify-content-end">
                                     <div>
