@@ -112,7 +112,8 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
                                 {
                                     ['NOT WORKING PROPERLY', 'VERIFYING'].includes(data?.status) && [
                                         <MenuItem disabled={data?.status === 'NOT WORKING PROPERLY'} value="NOT WORKING PROPERLY">NOT WORKING PROPERLY</MenuItem>,
-                                        <MenuItem disabled={data?.status === 'VERIFIED'} value="VERIFIED">SET AS VERIFIED</MenuItem>
+                                        <MenuItem disabled={data?.status === 'VERIFIED'} value="VERIFIED">SET AS VERIFIED</MenuItem>,
+                                        <MenuItem value="DECLINED">DECLINE</MenuItem>
                                     ]
                                 }
                             </Select>
