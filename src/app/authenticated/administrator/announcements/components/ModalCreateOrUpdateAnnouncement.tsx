@@ -78,7 +78,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
         if (data) {
             setStatus(data.status);
             setAnnouncement(data.content);
-            setRemovalDate(dayjs(data.removal_date));
+            setRemovalDate(data.removal_date ? dayjs(data.removal_date) : null);
         }
     }, [data]);
 
