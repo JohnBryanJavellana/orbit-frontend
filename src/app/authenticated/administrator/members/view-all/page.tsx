@@ -61,7 +61,7 @@ export default function Members() {
         {
             name: "Avatar",
             cell: (row: any) => {
-                return <CustomAvatarWithOnlineBadge data={row} src={`${urlWithoutApi}/user-images/${row.profile_picture}`} isOnline={row.is_online} />
+                return <CustomAvatarWithOnlineBadge data={row} src={`${urlWithoutApi}/user-images/${row.profile_picture}`} isOnline={row.is_online} srcShown={row.custom_avatar.shown_avatar} />
             },
             sortable: true,
             width: "130px"
