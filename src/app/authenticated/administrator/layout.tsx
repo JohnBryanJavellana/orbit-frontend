@@ -15,15 +15,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const [currentActiveLink, setCurrentActiveLink] = useState<string>('dashboard');
     const location = usePathname();
     const { userData } = useGetCurrentUser();
+    const [anchorElAssets, setAnchorElAssets] = useState(null);
     const [anchorElMembers, setAnchorElMembers] = useState(null);
 
-    const handleOpenMembersMenu = (event: any) => {
-        setAnchorElMembers(event.currentTarget);
-    };
+    const handleOpenAssetsMenu = (event: any) => setAnchorElAssets(event.currentTarget);
+    const handleCloseAssetsMenu = () => setAnchorElAssets(null);
 
-    const handleCloseMembersMenu = () => {
-        setAnchorElMembers(null);
-    };
+    const handleOpenMembersMenu = (event: any) => setAnchorElMembers(event.currentTarget);
+    const handleCloseMembersMenu = () => setAnchorElMembers(null);
 
     useEffect(() => {
         if (location.includes('/authenticated/administrator/profile')) {
@@ -67,18 +66,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
 
                             <span
-                                onClick={handleOpenMembersMenu}
+                                onClick={handleOpenAssetsMenu}
                                 className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'custom-assets' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
                                 style={{ cursor: 'pointer' }}
                             >
-                                Custom Assets {anchorElMembers ? '▴' : '▾'}
+                                Custom Assets {anchorElAssets ? '▴' : '▾'}
                             </span>
 
                             <Menu
                                 sx={{ mt: '13.4px' }}
-                                anchorEl={anchorElMembers}
-                                open={Boolean(anchorElMembers)}
-                                onClose={handleCloseMembersMenu}
+                                anchorEl={anchorElAssets}
+                                open={Boolean(anchorElAssets)}
+                                onClose={handleCloseAssetsMenu}
                                 disableScrollLock={true}
                                 slotProps={{
                                     paper: {
@@ -86,13 +85,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     }
                                 }}
                             >
-                                <MenuItem className="text-sm" onClick={handleCloseMembersMenu}>
+                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/custom-assets/borders') && 'bg-dark'}`} onClick={handleCloseAssetsMenu}>
                                     <Link href='/authenticated/administrator/custom-assets/borders' style={{ textDecoration: 'none', color: 'inherit' }}>
                                         Borders
                                     </Link>
                                 </MenuItem>
 
-                                <MenuItem className="text-sm" onClick={handleCloseMembersMenu}>
+                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/custom-assets/avatars') && 'bg-dark'}`} onClick={handleCloseAssetsMenu}>
                                     <Link href='/authenticated/administrator/custom-assets/avatars' style={{ textDecoration: 'none', color: 'inherit' }}>
                                         Avatars
                                     </Link>
@@ -119,13 +118,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     }
                                 }}
                             >
-                                <MenuItem className="text-sm" onClick={handleCloseMembersMenu}>
+                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/members/view-all') && 'bg-dark'}`} onClick={handleCloseMembersMenu}>
                                     <Link href='/authenticated/administrator/members/view-all' style={{ textDecoration: 'none', color: 'inherit' }}>
                                         View All Members
                                     </Link>
                                 </MenuItem>
 
-                                <MenuItem className="text-sm" onClick={handleCloseMembersMenu}>
+                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/members/roles') && 'bg-dark'}`} onClick={handleCloseMembersMenu}>
                                     <Link href='/authenticated/administrator/members/roles' style={{ textDecoration: 'none', color: 'inherit' }}>
                                         Member Roles
                                     </Link>
