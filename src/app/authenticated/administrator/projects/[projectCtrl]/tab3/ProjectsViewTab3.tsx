@@ -76,6 +76,7 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                         src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`}
                         isOnline={row.user.is_online}
                         isAdmin={row.user.role === "SUPERADMIN"}
+                        srcShown={row.user.custom_avatar?.shown_avatar}
                     />
                 </div>
             },

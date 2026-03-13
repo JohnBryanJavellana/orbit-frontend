@@ -36,6 +36,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return setCurrentActiveLink('members');
         } else if (location.includes('/authenticated/administrator/announcements')) {
             return setCurrentActiveLink('announcements');
+        } else if (location.includes('/authenticated/administrator/avatars')) {
+            return setCurrentActiveLink('avatars');
         } else if (location.includes('/authenticated/administrator/borders')) {
             return setCurrentActiveLink('borders');
         } else {
@@ -66,6 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <>
                             <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
                             <Link href='/authenticated/administrator/borders' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'borders' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Custom Borders</Link>
+                            <Link href='/authenticated/administrator/avatars' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'avatars' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Custom Avatars</Link>
 
                             <span
                                 onClick={handleOpenMembersMenu}

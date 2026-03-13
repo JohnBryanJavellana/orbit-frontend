@@ -10,31 +10,31 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
-import ModalCreateOrUpdateBorder from "./components/ModalCreateOrUpdateBorder";
+import ModalCreateOrUpdateAvatar from "./components/ModalCreateOrUpdateAvatar";
 
-export default function Borders() {
+export default function Avatars() {
     const { getToken, removeToken } = useWebToken();
     const { urlWithApi, urlWithoutApi } = useSystemURLCon();
     const { userData } = useGetCurrentUser();
-    const [borders, setBorders] = useState<any>([]);
+    const [customAvatars, setCustomAvatars] = useState<any>([]);
     const navigate = useRouter();
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [modalOpenData, setModalOpenData] = useState<any>(null);
     const [modalOpenId, setModalOpenId] = useState<null | number>(null);
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
 
-    const GetBorders = async (isInitialLoad: boolean) => {
+    const GetCustomAvatars = async (isInitialLoad: boolean) => {
         try {
             setIsFetching(isInitialLoad);
 
             const token = getToken('csrf-token');
-            const response = await axios.get(`${urlWithApi}/administrator/border/border/get_custom_borders`, {
+            const response = await axios.get(`${urlWithApi}/administrator/avatar/avatar/get_custom_avatars`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
 
-            setBorders(response.data.borders);
+            setCustomAvatars(response.data.avatars);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 500) {
@@ -54,18 +54,11 @@ export default function Borders() {
             width: '170px'
         },
         {
-            name: "Border",
+            name: "Avatar",
             cell: (row: any) => <>
-                <img src={`${urlWithoutApi}/border-images/${row.filename}`} height={50} />
+                <img src={`${urlWithoutApi}/custom-avatar-images/${row.filename}`} height={50} />
             </>,
             sortable: true,
-        },
-        {
-            name: "Type",
-            selector: (row: any) => row.type,
-            cell: (row: any) => <span className={`text-bold text-${row.type === 'FREE' ? 'success' : 'warning'}`}>{row.type}</span>,
-            sortable: true,
-            width: '170px'
         },
         {
             name: "Actions",
@@ -75,10 +68,10 @@ export default function Borders() {
                         'icon': 'launch',
                         'url': '#',
                         'data-toggle': 'modal',
-                        'data-target': `#create_or_update_border_${row.id}`,
+                        'data-target': `#create_or_update_avatar_${row.id}`,
                         'id': 'f',
                         'textColor': '',
-                        'label': 'Update Border',
+                        'label': 'Update Avatar',
                         'onClick': () => {
                             setModalOpenData(row);
                             setModalOpenId(row.id);
@@ -101,7 +94,7 @@ export default function Borders() {
 
     useEffect(() => {
         if (userData) {
-            GetBorders(true);
+            GetCustomAvatars(true);
             return () => { };
         }
     }, [userData]);
@@ -109,13 +102,13 @@ export default function Borders() {
     return <>
         {
             modalOpenIndex === 0 &&
-            <ModalCreateOrUpdateBorder
+            <ModalCreateOrUpdateAvatar
                 data={modalOpenData}
                 id={modalOpenId}
-                titleHeader={modalOpenData ? 'Update Border' : 'Create Border'}
+                titleHeader={modalOpenData ? 'Update Avatar' : 'Create Avatar'}
                 httpMethod={modalOpenData ? 'UPDATE' : 'POST'}
                 callbackFunction={() => {
-                    GetBorders(false);
+                    GetCustomAvatars(false);
                     setModalOpenData(null);
                     setModalOpenId(null);
                     setModalOpenIndex(null);
@@ -126,14 +119,14 @@ export default function Borders() {
         <div className="card rounded-0 custom-bg custom-border-dark">
             <div className="card-header custom-bottom-border-dark py-1">
                 <div className="d-flex align-items-center justify-content-between">
-                    <div>Custom Borders</div>
+                    <div>Custom Avatars</div>
                     <div>
-                        <Tooltip title="Add border">
+                        <Tooltip title="Add custom avatar">
                             <IconButton onClick={() => {
                                 setModalOpenData(null);
                                 setModalOpenId(0);
                                 setModalOpenIndex(0);
-                            }} data-target={`#create_or_update_border_0`} data-toggle="modal">
+                            }} data-target={`#create_or_update_avatar_0`} data-toggle="modal">
                                 <AddIcon color='error' />
                             </IconButton>
                         </Tooltip>
@@ -146,7 +139,7 @@ export default function Borders() {
                     withExport
                     progressPending={isFetching}
                     columns={tableColumns}
-                    data={borders}
+                    data={customAvatars}
                     selectableRows={false}
                     selectedRows={null}
                 />

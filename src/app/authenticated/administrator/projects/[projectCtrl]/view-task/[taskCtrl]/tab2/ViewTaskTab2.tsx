@@ -75,6 +75,7 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
                         src={`${urlWithoutApi}/user-images/${row.user.profile_picture}`}
                         isOnline={row.user.is_online}
                         isAdmin={row.user.role === "SUPERADMIN"}
+                        srcShown={row.user.custom_avatar?.shown_avatar}
                     />
                 </div>
             },

@@ -37,7 +37,15 @@ export default function ProfileParchment({ user, callbackFunction }: { user: any
                 <div className={`col-xl-12 py-1 custom-bg custom-border-dark`}>
                     <div className="row">
                         <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
-                            <CustomAvatarWithOnlineBadge data={user} height={50} width={50} src={`${urlWithoutApi}/user-images/${user.profile_picture}`} isOnline={user.is_online} isAdmin={user.role === "SUPERADMIN"} />
+                            <CustomAvatarWithOnlineBadge
+                                data={user}
+                                height={50}
+                                width={50}
+                                src={`${urlWithoutApi}/user-images/${user.profile_picture}`}
+                                isOnline={user.is_online}
+                                isAdmin={user.role === "SUPERADMIN"}
+                                srcShown={user.custom_avatar?.shown_avatar}
+                            />
                         </div>
                         <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
                             <div className="w-100 mt-1">

@@ -7,6 +7,7 @@ interface CustomAvatarWithOnlineBadgeProps {
     height?: any;
     width?: any;
     src?: string;
+    srcShown: 'MAIN' | 'CUSTOM';
     data?: any,
     statusColor?: string;
     isOnline?: boolean;
@@ -17,14 +18,18 @@ interface CustomAvatarWithOnlineBadgeProps {
 export default function CustomAvatarWithOnlineBadge({
     height = 30,
     width = 30,
+    srcShown,
     src = "/static/images/avatar/1.jpg",
     data
 }: CustomAvatarWithOnlineBadgeProps) {
     const { urlWithoutApi } = useSystemURLCon();
 
+    const initSource = srcShown === "MAIN" ? data?.custom_avatar.profile_picture : data?.custom_avatar.custom_avatar.filename;
+    const finalUrlSrc = `${urlWithoutApi}/${srcShown === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${initSource}`;
+
     return (
         <Link
-            href={src}
+            href={finalUrlSrc}
             target='_blank'
             className="position-relative d-flex align-items-center justify-content-center"
             style={{
@@ -34,7 +39,7 @@ export default function CustomAvatarWithOnlineBadge({
         >
             <Avatar
                 alt="User Profile"
-                src={src}
+                src={finalUrlSrc}
                 sx={{
                     width: width,
                     height: height,

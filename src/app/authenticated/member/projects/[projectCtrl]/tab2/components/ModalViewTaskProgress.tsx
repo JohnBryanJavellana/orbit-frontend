@@ -192,7 +192,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                                                 <div className="col-xl-12 custom-border-dark">
                                                                     <div className="row p-3">
                                                                         <div className={`col-2 d-flex align-items-center justify-content-center text-center`}>
-                                                                            <CustomAvatarWithOnlineBadge height={50} width={50} data={progress.initiator.user} src={`${urlWithoutApi}/user-images/${progress.initiator.user.profile_picture}`} isOnline={progress.initiator.user.is_online} isAdmin={progress.initiator.user.role === "SUPERADMIN"} />
+                                                                            <CustomAvatarWithOnlineBadge height={50} width={50} data={progress.initiator.user} src={`${urlWithoutApi}/user-images/${progress.initiator.user.profile_picture}`} isOnline={progress.initiator.user.is_online} isAdmin={progress.initiator.user.role === "SUPERADMIN"} srcShown={progress.initiator.user.custom_avatar.shown_avatar} />
                                                                         </div>
 
                                                                         <div className="col-10">

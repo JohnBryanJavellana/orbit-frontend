@@ -15,6 +15,7 @@ import ModalViewUser from '../CustomUserPill/components/ModalViewUser';
 import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members/view-all/components/ModalCreateOrUpdateMember';
 import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
+import ModalChangeAvatar from './ModalChangeAvatar';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -162,6 +163,23 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
+                modalOpenIndex === 3 &&
+                <ModalChangeAvatar
+                    userCustomAvatarId={userData?.user_custom_avatar_id}
+                    id={modalOpenId}
+                    titleHeader={'Change Avatar'}
+                    callbackFunction={(e) => {
+                        refreshUser();
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+
+                        if (e) window.location.reload();
+                    }}
+                />
+            }
+
+            {
                 !userData
                     ? <p className='p-4'>Please wait...</p>
                     : <>
@@ -246,6 +264,15 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 setModalOpenIndex(0);
                                             }} data-toggle="modal" data-target={`#create_or_update_member_${userData?.id}`}>
                                                 <Typography className='text-sm' sx={{ textAlign: 'left' }}>Update Profile</Typography>
+                                            </MenuItem>
+
+                                            <MenuItem className='custom-bottom-border-dark' onClick={() => {
+                                                handleCloseUserMenu();
+                                                setModalOpenData(userData);
+                                                setModalOpenId(userData.id);
+                                                setModalOpenIndex(3);
+                                            }} data-toggle="modal" data-target={`#change_avatar_${userData?.id}`}>
+                                                <Typography className='text-sm' sx={{ textAlign: 'left' }}>Change Avatar</Typography>
                                             </MenuItem>
 
                                             <MenuItem className='custom-bottom-border-dark' onClick={() => {

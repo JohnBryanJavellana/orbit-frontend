@@ -92,16 +92,17 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                         {row.members && row.members.length > 0 ? (
                             row.members.map((member: any, index: number) => {
                                 const name = `${member.user.first_name} ${member.user.last_name}`;
-                                const profilePic = member.user.profile_picture;
+
+                                const initSource = member.user.custom_avatar.shown_avatar === "MAIN" ? member.user.custom_avatar.profile_picture : member.user.custom_avatar.custom_avatar.filename;
+                                const finalUrlSrc = `${urlWithoutApi}/${member.user.custom_avatar.shown_avatar === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${initSource}`;
 
                                 return (
                                     <Tooltip key={index} title={name} arrow>
                                         <Avatar
                                             alt={name}
-                                            src={profilePic ? `${urlWithoutApi}/user-images/${profilePic}` : undefined}
+                                            src={finalUrlSrc ? finalUrlSrc : undefined}
                                         >
-                                            {/* Fallback to Initial if no image */}
-                                            {!profilePic && name.charAt(0)}
+                                            {!finalUrlSrc && name.charAt(0)}
                                         </Avatar>
                                     </Tooltip>
                                 );

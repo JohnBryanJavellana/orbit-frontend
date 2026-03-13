@@ -111,18 +111,25 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
                                         <div className="col-6" key={index} style={{ userSelect: 'none' }}>
                                             <div className="card custom-bg rounded-0 custom-border-dark elevation-1">
                                                 <div className="card-header custom-bottom-border-dark py-0 px-0 text-right">
-                                                    <Checkbox
-                                                        className="m-0"
-                                                        disabled={!border.iCanUse}
-                                                        checked={String(borderId) === String(border.id)}
-                                                        onChange={(_, checked) => {
-                                                            const val = checked ? border.id : 0;
-                                                            setBorderId(val.toString());
-                                                        }}
-                                                        slotProps={{
-                                                            input: { 'aria-label': 'controlled' },
-                                                        }}
-                                                    />
+                                                    {
+                                                        border.iCanUse
+                                                            ? <Checkbox
+                                                                size="small"
+                                                                className="m-0"
+                                                                disabled={!border.iCanUse}
+                                                                checked={String(borderId) === String(border.id)}
+                                                                onChange={(_, checked) => {
+                                                                    const val = checked ? border.id : 0;
+                                                                    setBorderId(val.toString());
+                                                                }}
+                                                                slotProps={{
+                                                                    input: { 'aria-label': 'controlled' },
+                                                                }}
+                                                            /> : <div className="text-muted pr-2 pt-2">
+                                                                <span className="material-icons-outlined">lock</span>
+                                                            </div>
+                                                    }
+
                                                 </div>
 
                                                 <div className="card-body text-center">

@@ -31,6 +31,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                                         src={`${urlWithoutApi}/user-images/${user.profile_picture}`}
                                         isOnline={user.is_online}
                                         isAdmin={user.role === "SUPERADMIN"}
+                                        srcShown={user.custom_avatar.shown_avatar}
                                     />
                                 </div>
                             </Box>
