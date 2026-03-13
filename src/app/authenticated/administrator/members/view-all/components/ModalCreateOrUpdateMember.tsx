@@ -6,16 +6,14 @@ import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
 import { FormControl, Input, MenuItem, Select } from "@mui/material";
 import axios from "axios";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
-import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 
 interface ModalCreateOrUpdateMemberProps {
@@ -36,9 +34,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
     const [role, setRole] = useState<string>('');
     const [gender, setGender] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [profile_picture, setProfilePicture] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const { GenerateBase64 } = usePhotoToBase64();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { getToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
@@ -66,7 +62,6 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
             formData.append('email', email);
             formData.append('password', password);
             formData.append('role', role);
-            formData.append('profilePicture', profile_picture);
             formData.append('httpMethod', httpMethod);
 
             if (data) {
@@ -335,26 +330,6 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                                     className='custom-field-bg'
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    disableUnderline
-                                    autoComplete='off'
-                                />
-                            </FormControl>
-
-                            <label htmlFor="profile_picture" className='custom-label-color'>
-                                Profile Picture {httpMethod === 'POST' && <span className="text-danger">*</span>}
-                            </label>
-
-                            <FormControl fullWidth sx={{ mb: 2 }}>
-                                <Input
-                                    id="profile_picture"
-                                    type="file"
-                                    className='custom-field-bg'
-                                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
-                                        const target = e.target as HTMLInputElement;
-                                        if (target.files && target.files[0]) {
-                                            await GenerateBase64(target.files[0]).then((base64) => setProfilePicture(String(base64)))
-                                        }
-                                    }}
                                     disableUnderline
                                     autoComplete='off'
                                 />

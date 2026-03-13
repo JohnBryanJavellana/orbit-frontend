@@ -225,7 +225,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                     <Box sx={{ flexGrow: 0 }}>
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={'rounded-circle'} src={`${urlWithoutApi}/user-images/${userData.profile_picture}`} />
+                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={'rounded-circle'} src={`${urlWithoutApi}/${userData.custom_avatar.shown_avatar === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${userData.custom_avatar.shown_avatar === "MAIN" ? userData.custom_avatar.profile_picture : userData.custom_avatar.custom_avatar.filename}`} />
                                             </IconButton>
                                         </Tooltip>
 
