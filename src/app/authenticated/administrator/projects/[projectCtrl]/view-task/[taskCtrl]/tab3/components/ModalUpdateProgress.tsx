@@ -78,7 +78,7 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
                         </span>
                     </>
                 }
-                bodyClassName="px-4 pb-0 text-sm"
+                bodyClassName="px-4 text-sm"
                 body={
                     <>
                         <FormControl fullWidth sx={{ mb: 2 }}>
