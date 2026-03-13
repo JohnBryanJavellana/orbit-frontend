@@ -9,7 +9,7 @@ import { useState } from "react";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ModalViewUser from "@/app/custom-global-components/CustomUserPill/components/ModalViewUser";
 
-export default function ProfileParchment({ user, callbackFunction }: { user: any, callbackFunction: (e: boolean) => void }) {
+export default function ProfileParchment({ user, callbackFunction, nextStringAfterAccountStatus = '' }: { user: any, callbackFunction: (e: boolean) => void, nextStringAfterAccountStatus?: string }) {
     const isMobileViewPort = useDetectMobileViewport();
     const { getRankAttribute } = useGetRankAttribute();
     const { urlWithoutApi } = useSystemURLCon();
@@ -52,7 +52,7 @@ export default function ProfileParchment({ user, callbackFunction }: { user: any
                                 <div className="text-bold text-truncate">{`${user.first_name} ${user.middle_name} ${user.last_name} ${user.suffix ?? ''}`}</div>
                                 <div className="text-sm text-muted text-truncate">{user.email}</div>
                                 <div className={`text-sm d-flex align-items-center text-${user.gender === "MALE" ? 'primary' : 'danger'}`}>
-                                    <span className="material-icons-outlined mr-2" style={{ fontSize: '15px' }}>{String(user.gender).toLowerCase()}</span> <span className="text-muted">•</span> <small className={`text-small ml-2 text-${user.is_online ? 'success' : 'muted'}`}>{user.is_online ? 'ONLINE' : 'OFFLINE'}</small>
+                                    <span className="material-icons-outlined mr-2" style={{ fontSize: '15px' }}>{String(user.gender).toLowerCase()}</span> <span className="text-muted">•</span> <small className={`text-small ml-2 text-${user.is_online ? 'success' : 'muted'}`}>{user.is_online ? 'ONLINE' : 'OFFLINE'}</small> <small className="text-muted pl-1 text-small">{nextStringAfterAccountStatus}</small>
                                 </div>
                             </div>
                         </div>

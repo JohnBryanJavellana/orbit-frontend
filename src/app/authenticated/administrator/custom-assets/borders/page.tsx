@@ -4,7 +4,7 @@ import DropdownMenu from "@/app/custom-global-components/DropdownMenu/DropdowMen
 import OrbitDatatable from "@/app/custom-global-components/OrbitDatatable/OrbitDatatable";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
-import { Avatar, AvatarGroup, Chip, IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -126,7 +126,7 @@ export default function Borders() {
         <div className="card rounded-0 custom-bg custom-border-dark">
             <div className="card-header custom-bottom-border-dark py-1">
                 <div className="d-flex align-items-center justify-content-between">
-                    <div>Custom Borders</div>
+                    <div>Borders</div>
                     <div>
                         <Tooltip title="Add border">
                             <IconButton onClick={() => {

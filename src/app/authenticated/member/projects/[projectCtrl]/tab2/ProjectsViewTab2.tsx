@@ -227,7 +227,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                                                 (mode === 'applied' && ["PENDING", "CANCELLED", "TERMINATED"].includes(taskOverview.members[0]?.status)) && <>
                                                     <button onClick={() => CancelApplication(taskOverview.id)} disabled={isSubmitting || ["CANCELLED", "TERMINATED"].includes(taskOverview.members[0]?.status)} className="btn btn-danger custom-bg-maroon elevation-1 btn-sm custom-border-dark rounded-sm text-white">
                                                         {
-                                                            taskOverview.members[0]?.status === "PENDING" ? 'Cancel Application' : 'Closed Application'
+                                                            taskOverview.members[0]?.status === "PENDING" ? 'Cancel Application' : 'Closed Task'
                                                         }
                                                     </button>
                                                 </>

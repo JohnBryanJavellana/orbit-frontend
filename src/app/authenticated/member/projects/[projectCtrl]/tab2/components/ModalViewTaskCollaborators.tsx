@@ -150,7 +150,7 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
                                                 {
                                                     filteredCollaborators.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
                                                         <div key={index} className="my-2">
-                                                            <ProfileParchment user={friend.user} callbackFunction={(e) => GetSpecificTaskCollaborators(e)} />
+                                                            <ProfileParchment user={friend.user} callbackFunction={(e) => GetSpecificTaskCollaborators(e)} nextStringAfterAccountStatus={` • ${friend.status}`} />
                                                         </div>
                                                     ))
                                                 }

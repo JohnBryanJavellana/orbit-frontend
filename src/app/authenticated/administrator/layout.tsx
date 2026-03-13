@@ -36,10 +36,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return setCurrentActiveLink('members');
         } else if (location.includes('/authenticated/administrator/announcements')) {
             return setCurrentActiveLink('announcements');
-        } else if (location.includes('/authenticated/administrator/avatars')) {
-            return setCurrentActiveLink('avatars');
-        } else if (location.includes('/authenticated/administrator/borders')) {
-            return setCurrentActiveLink('borders');
+        } else if (location.includes('/authenticated/administrator/custom-assets')) {
+            return setCurrentActiveLink('custom-assets');
         } else {
             return navigate.push('/access-denied');
         }
@@ -67,8 +65,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         userData?.role === "SUPERADMIN" &&
                         <>
                             <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
-                            <Link href='/authenticated/administrator/borders' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'borders' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Custom Borders</Link>
-                            <Link href='/authenticated/administrator/avatars' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'avatars' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Custom Avatars</Link>
+
+                            <span
+                                onClick={handleOpenMembersMenu}
+                                className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'custom-assets' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                Custom Assets {anchorElMembers ? '▴' : '▾'}
+                            </span>
+
+                            <Menu
+                                sx={{ mt: '13.4px' }}
+                                anchorEl={anchorElMembers}
+                                open={Boolean(anchorElMembers)}
+                                onClose={handleCloseMembersMenu}
+                                disableScrollLock={true}
+                                slotProps={{
+                                    paper: {
+                                        className: 'custom-bg custom-border-dark rounded-0'
+                                    }
+                                }}
+                            >
+                                <MenuItem className="text-sm" onClick={handleCloseMembersMenu}>
+                                    <Link href='/authenticated/administrator/custom-assets/borders' style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        Borders
+                                    </Link>
+                                </MenuItem>
+
+                                <MenuItem className="text-sm" onClick={handleCloseMembersMenu}>
+                                    <Link href='/authenticated/administrator/custom-assets/avatars' style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        Avatars
+                                    </Link>
+                                </MenuItem>
+                            </Menu>
 
                             <span
                                 onClick={handleOpenMembersMenu}
