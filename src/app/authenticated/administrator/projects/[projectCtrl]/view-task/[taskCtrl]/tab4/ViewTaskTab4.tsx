@@ -136,23 +136,26 @@ export default function ViewTaskTab4({ projectCtrl, taskCtrl }: { projectCtrl: P
                 isFetching
                     ? <div className="p-4">Loading ....</div>
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0">
-                        <div className="card-header custom-bottom-border-dark py-1">
-                            <div className="d-flex align-items-center justify-content-end">
-                                <div>
-                                    <Tooltip title="Add today's photo documentation">
-                                        <IconButton disabled={['COMPLETED'].includes(currentTask?.status) || (currentTask?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
-                                            setModalOpenData({
-                                                taskCtrl: taskCtrl
-                                            });
-                                            setModalOpenId(0);
-                                            setModalOpenIndex(0);
-                                        }} data-target={`#submit_today_documentation_0`} data-toggle="modal">
-                                            <AddIcon color='error' />
-                                        </IconButton>
-                                    </Tooltip>
+                        {
+                            !['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                            <div className="card-header custom-bottom-border-dark py-1">
+                                <div className="d-flex align-items-center justify-content-end">
+                                    <div>
+                                        <Tooltip title="Add today's photo documentation">
+                                            <IconButton disabled={['COMPLETED'].includes(currentTask?.status) || (currentTask?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                                setModalOpenData({
+                                                    taskCtrl: taskCtrl
+                                                });
+                                                setModalOpenId(0);
+                                                setModalOpenIndex(0);
+                                            }} data-target={`#submit_today_documentation_0`} data-toggle="modal">
+                                                <AddIcon color='error' />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
 
                         <div className="card-body">
                             <OrbitDatatable

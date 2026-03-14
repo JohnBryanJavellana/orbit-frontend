@@ -9,6 +9,7 @@ import useWebToken from "@/app/hooks/useWebToken";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
 
 interface ModalPlayRouletteProps {
     data: any | null,
@@ -52,7 +53,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     const { getToken } = useWebToken();
     const { urlWithApi, urlWithoutApi } = useSystemURLCon();
     const navigate = useRouter();
-
+    const { userData } = useGetCurrentUser();
     const [returnResponse, setReturnResponse] = useState<any | null>(null);
 
     const handleSpinClick = () => {
@@ -79,6 +80,8 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     };
 
     const SubmitResultIfNotBokya = async (score: string) => {
+        if (!userData || userData?.role === "SUPERADMIN") return;
+
         try {
             setIsSubmitting(true);
 

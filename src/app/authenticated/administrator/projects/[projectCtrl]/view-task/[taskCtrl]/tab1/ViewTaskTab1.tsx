@@ -82,12 +82,12 @@ export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: P
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0" style={{ userSelect: 'none' }}>
 
                         {
-                            !['COMPLETED', 'IN PROGRESS'].includes(taskOverview?.status) && (taskOverview?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                            !['COMPLETED'].includes(taskOverview?.status) && (taskOverview?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
                             <div className="card-header custom-bottom-border-dark py-1">
                                 <div className="d-flex align-items-center justify-content-end">
                                     <div>
                                         <Tooltip title="Edit task">
-                                            <IconButton disabled={['COMPLETED', 'IN PROGRESS'].includes(taskOverview?.status) || (taskOverview?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                            <IconButton disabled={['COMPLETED'].includes(taskOverview?.status) || (taskOverview?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
                                                 setModalOpenData({
                                                     ...taskOverview,
                                                     projectCtrl: projectCtrl,
