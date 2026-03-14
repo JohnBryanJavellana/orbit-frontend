@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CustomTab from "../CustomTab/CustomTab";
 import Checkbox from '@mui/material/Checkbox';
+import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 
 interface ModalChangeAvatarBorderProps {
     userBorderId: string,
@@ -27,6 +28,7 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
     const [borderId, setBorderId] = useState<string>('');
     const [tabId, setTabId] = useState<number>(0);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const { userData } = useGetCurrentUser();
 
     const GetAvailableBorders = async (isInitialLoad: boolean) => {
         try {
@@ -84,9 +86,11 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
     }
 
     useEffect(() => {
-        GetAvailableBorders(true);
-        return () => { };
-    }, [type]);
+        if (userData) {
+            GetAvailableBorders(true);
+            return () => { };
+        }
+    }, [type, userData]);
 
     useEffect(() => {
         setBorderId(userBorderId);
@@ -164,49 +168,58 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
                 bodyClassName="py-0"
                 body={
                     <>
-                        <CustomTab
-                            tabId={tabId}
-                            disabled={isFetching}
-                            tabs={[
-                                {
-                                    icon: "lock_open",
-                                    label: "Free",
-                                    index: 0
-                                },
-                                {
-                                    icon: "diamond",
-                                    label: "Rare",
-                                    index: 1
-                                }
-                            ]}
-                            callbackFunction={(e) => {
-                                setTabId(e);
-                                setType(tabId === 0 ? 'RARE' : 'FREE');
-                            }}
-                        />
+                        {
+                            !userData
+                                ? <p>Please wait...</p>
+                                : <>
+                                    <CustomTab
+                                        tabId={tabId}
+                                        disabled={isFetching}
+                                        tabs={[
+                                            {
+                                                icon: "lock_open",
+                                                label: "Free",
+                                                index: 0
+                                            },
+                                            {
+                                                icon: "diamond",
+                                                label: "Rare",
+                                                index: 1
+                                            }
+                                        ]}
+                                        callbackFunction={(e) => {
+                                            setTabId(e);
+                                            setType(tabId === 0 ? 'RARE' : 'FREE');
+                                        }}
+                                    />
 
-                        <div className="card bg-transparent elevation-0 custom-top-border-dark rounded-0 border-muted mb-0">
-                            <div className="card-body pt-2 pb-0 px-0">
-                                <div role="tabpanel" hidden={tabId !== 0} id={`simple-tabpanel-0`} aria-labelledby={`simple-tab-0`}>
-                                    {(tabId === 0) && bodyContent(borders)}
-                                </div>
+                                    <div className="card bg-transparent elevation-0 custom-top-border-dark rounded-0 border-muted mb-0">
+                                        <div className="card-body pt-2 pb-0 px-0">
+                                            <div role="tabpanel" hidden={tabId !== 0} id={`simple-tabpanel-0`} aria-labelledby={`simple-tab-0`}>
+                                                {(tabId === 0) && bodyContent(borders)}
+                                            </div>
 
-                                <div role="tabpanel" hidden={tabId !== 1} id={`simple-tabpanel-1`} aria-labelledby={`simple-tab-1`}>
-                                    {(tabId === 1) && <>
-                                        <div className="w-100 custom-bg mb-2 px-3 py-2 elevation-1">
-                                            <div className="row">
-                                                <div className="col-1 text-warning" style={{ fontSize: '30px' }}><span className="material-icons-outlined">flag</span></div>
-                                                <div className="col-11 text-sm pl-3">
-                                                    Ascend thy presence. Complete thy tasks or plead thy case to the Supreme to claim and use these rare artifacts.
-                                                </div>
+                                            <div role="tabpanel" hidden={tabId !== 1} id={`simple-tabpanel-1`} aria-labelledby={`simple-tab-1`}>
+                                                {(tabId === 1) && <>
+                                                    {
+                                                        userData?.role !== "SUPERADMIN" &&
+                                                        <div className="w-100 custom-bg mb-2 px-3 py-2 elevation-1">
+                                                            <div className="row">
+                                                                <div className="col-1 text-warning" style={{ fontSize: '30px' }}><span className="material-icons-outlined">flag</span></div>
+                                                                <div className="col-11 text-sm pl-3">
+                                                                    Ascend thy presence. Complete thy tasks or plead thy case to the Supreme to claim and use these rare artifacts.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    {bodyContent(borders)}
+                                                </>}
                                             </div>
                                         </div>
-
-                                        {bodyContent(borders)}
-                                    </>}
-                                </div>
-                            </div>
-                        </div>
+                                    </div>
+                                </>
+                        }
                     </>
                 }
                 footerClassName="border-0 pb-0"
