@@ -20,6 +20,7 @@ export default function ModalViewLeaderboardGuide({ id, titleHeader, callbackFun
                 id={`view_leaderboard_guide_${id}`}
                 size={"xl"}
                 isModalScrollable={false}
+                isModalCentered
                 modalContentClassName="text-white"
                 bodyClassName="p-0"
                 body={
