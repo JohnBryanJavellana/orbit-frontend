@@ -58,19 +58,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
 
     const handleSpinClick = () => {
         if (!mustSpin) {
-            let newPrizeNumber;
-            const roll = Math.floor(Math.random() * 100) + 1;
-
-            if (roll <= 5) {
-                newPrizeNumber = 13;
-            } else if (roll > 5 && roll <= 15) {
-                newPrizeNumber = 12;
-            } else if (roll > 15 && roll <= 25) {
-                newPrizeNumber = 11;
-            } else {
-                const commonIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
-                newPrizeNumber = commonIndices[Math.floor(Math.random() * commonIndices.length)];
-            }
+            const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
 
             setPrizeNumber(newPrizeNumber);
             setShowConfetti(false);
