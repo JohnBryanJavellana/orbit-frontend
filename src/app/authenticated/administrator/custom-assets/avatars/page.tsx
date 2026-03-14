@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import ModalCreateOrUpdateAvatar from "./components/ModalCreateOrUpdateAvatar";
+import ModalRemoveDocument from "@/app/custom-global-components/ModalRemoveDocument/ModalRemoveDocument";
 
 export default function Avatars() {
     const { getToken, removeToken } = useWebToken();
@@ -80,6 +81,23 @@ export default function Avatars() {
                     }
                 ];
 
+                if (row.total_active_users <= 0) {
+                    menuItems.push({
+                        'icon': 'delete',
+                        'url': '#',
+                        'data-toggle': 'modal',
+                        'data-target': `#remove_document_${row.id}`,
+                        'id': 'f',
+                        'textColor': 'danger',
+                        'label': 'Remove Border',
+                        'onClick': () => {
+                            setModalOpenData(row);
+                            setModalOpenId(row.id);
+                            setModalOpenIndex(1);
+                        }
+                    });
+                }
+
                 return <DropdownMenu id={row.id} menuItems={menuItems} />;
             },
             ignoreRowClick: true,
@@ -107,6 +125,22 @@ export default function Avatars() {
                 id={modalOpenId}
                 titleHeader={modalOpenData ? 'Update Avatar' : 'Create Avatar'}
                 httpMethod={modalOpenData ? 'UPDATE' : 'POST'}
+                callbackFunction={() => {
+                    GetCustomAvatars(false);
+                    setModalOpenData(null);
+                    setModalOpenId(null);
+                    setModalOpenIndex(null);
+                }}
+            />
+        }
+
+        {
+            modalOpenIndex === 1 &&
+            <ModalRemoveDocument
+                apiSrc={`administrator/avatar/avatar/remove_custom_avatar`}
+                id={modalOpenId}
+                titleHeader={'Remove Permission'}
+                message={`Are you sure you want to remove this custom avatar? This cannot be undone.`}
                 callbackFunction={() => {
                     GetCustomAvatars(false);
                     setModalOpenData(null);

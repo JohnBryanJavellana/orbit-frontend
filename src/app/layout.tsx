@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <link rel="stylesheet" href="/admin-lte/plugins/aos/aos.css" />
                 <link rel="stylesheet" href="/admin-lte/css/adminlte.min.css" />
                 <link rel="stylesheet" href="/admin-lte/css/custom.css" />
-                <link rel="icon" href="/system-images/f2eb6a1d-e5d2-45b5-8c5c-3458f944e97c.png" sizes="any" />
+                <link rel="icon" href="/system-images/orbit-logo.png" sizes="any" />
                 <link rel="stylesheet" href="/fontawesome-free/css/all.min.css"></link>
                 <link rel="stylesheet" href="/admin-lte/css/cropper.min.css" />
                 <Script src="/admin-lte/plugins/jquery/jquery.min.js"></Script>

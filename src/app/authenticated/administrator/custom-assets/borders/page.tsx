@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import ModalCreateOrUpdateBorder from "./components/ModalCreateOrUpdateBorder";
+import ModalRemoveDocument from "@/app/custom-global-components/ModalRemoveDocument/ModalRemoveDocument";
 
 export default function Borders() {
     const { getToken, removeToken } = useWebToken();
@@ -48,12 +49,6 @@ export default function Borders() {
 
     const tableColumns = [
         {
-            name: "ID#",
-            selector: (row: any) => row.id,
-            sortable: true,
-            width: '170px'
-        },
-        {
             name: "Border",
             cell: (row: any) => <>
                 <img src={`${urlWithoutApi}/border-images/${row.filename}`} height={50} />
@@ -64,8 +59,7 @@ export default function Borders() {
             name: "Type",
             selector: (row: any) => row.type,
             cell: (row: any) => <span className={`text-bold text-${row.type === 'FREE' ? 'success' : 'warning'}`}>{row.type}</span>,
-            sortable: true,
-            width: '170px'
+            sortable: true
         },
         {
             name: "Actions",
@@ -86,6 +80,23 @@ export default function Borders() {
                         }
                     }
                 ];
+
+                if (row.total_active_users <= 0) {
+                    menuItems.push({
+                        'icon': 'delete',
+                        'url': '#',
+                        'data-toggle': 'modal',
+                        'data-target': `#remove_document_${row.id}`,
+                        'id': 'f',
+                        'textColor': 'danger',
+                        'label': 'Remove Border',
+                        'onClick': () => {
+                            setModalOpenData(row);
+                            setModalOpenId(row.id);
+                            setModalOpenIndex(1);
+                        }
+                    });
+                }
 
                 return <DropdownMenu id={row.id} menuItems={menuItems} />;
             },
@@ -114,6 +125,22 @@ export default function Borders() {
                 id={modalOpenId}
                 titleHeader={modalOpenData ? 'Update Border' : 'Create Border'}
                 httpMethod={modalOpenData ? 'UPDATE' : 'POST'}
+                callbackFunction={() => {
+                    GetBorders(false);
+                    setModalOpenData(null);
+                    setModalOpenId(null);
+                    setModalOpenIndex(null);
+                }}
+            />
+        }
+
+        {
+            modalOpenIndex === 1 &&
+            <ModalRemoveDocument
+                apiSrc={`administrator/border/border/remove_custom_border`}
+                id={modalOpenId}
+                titleHeader={'Remove Permission'}
+                message={`Are you sure you want to remove this border? This cannot be undone.`}
                 callbackFunction={() => {
                     GetBorders(false);
                     setModalOpenData(null);
