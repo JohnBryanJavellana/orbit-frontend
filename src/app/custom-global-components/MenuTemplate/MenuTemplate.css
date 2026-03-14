@@ -14,3 +14,36 @@
 .nav-link-orbit.active {
     background-color: maroon !important;
 }
+
+.play_daily_games {
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.play_daily_games img {
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.6));
+    animation: auraPulse 3s infinite ease-in-out;
+}
+
+.play_daily_games:hover {
+    transform: scale(1.1);
+}
+
+.play_daily_games:hover img {
+    filter: drop-shadow(0 0 12px rgba(212, 175, 55, 1)) drop-shadow(0 0 20px rgba(255, 68, 0, 0.4));
+    animation-play-state: paused;
+}
+
+@keyframes auraPulse {
+    0% {
+        filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.4));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    }
+
+    100% {
+        filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.4));
+    }
+}

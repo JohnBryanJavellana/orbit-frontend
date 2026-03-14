@@ -16,6 +16,7 @@ import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members
 import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
 import ModalChangeAvatar from './ModalChangeAvatar';
+import ModalGetDailyActivities from './ModalGetDailyActivities';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -180,6 +181,23 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
+                modalOpenIndex === 4 &&
+                <ModalGetDailyActivities
+                    data={userData?.user_custom_avatar_id}
+                    id={modalOpenId}
+                    titleHeader={'Get Daily Games'}
+                    callbackFunction={(e) => {
+                        refreshUser();
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+
+                        if (e) window.location.reload();
+                    }}
+                />
+            }
+
+            {
                 !userData
                     ? <p className='p-4'>Please wait...</p>
                     : <>
@@ -223,6 +241,20 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                     </Box>
 
                                     <Box sx={{ flexGrow: 0 }}>
+                                        {
+                                            userData?.role === "MEMBER" &&
+                                            <Tooltip title="Play Daily Games">
+                                                <Link href={'#'} className='mr-3 play_daily_games' onClick={() => {
+                                                    handleCloseUserMenu();
+                                                    setModalOpenData(null);
+                                                    setModalOpenId(userData.id);
+                                                    setModalOpenIndex(4);
+                                                }} data-toggle="modal" data-target={`#get_daily_activities_${userData?.id}`}>
+                                                    <img src={`/system-images/play_now.gif`} height={50} />
+                                                </Link>
+                                            </Tooltip>
+                                        }
+
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                                 <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={'rounded-circle'} src={`${urlWithoutApi}/${userData.custom_avatar.shown_avatar === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${userData.custom_avatar.shown_avatar === "MAIN" ? userData.custom_avatar.profile_picture : userData.custom_avatar.custom_avatar.filename}`} />

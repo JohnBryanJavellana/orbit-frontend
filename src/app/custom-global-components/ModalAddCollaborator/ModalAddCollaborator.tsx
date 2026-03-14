@@ -150,7 +150,7 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                                                         sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
                                                         {...optionProps}
                                                     >
-                                                        <CustomAvatarWithOnlineBadge height={30} width={30} src={`${urlWithoutApi}/user-images/${option.profile_picture}`} />
+                                                        <CustomAvatarWithOnlineBadge height={30} width={30} src={`${urlWithoutApi}/user-images/${option.profile_picture}`} srcShown={option} />
                                                         <div className="ml-3">{`${option.first_name} ${option.middle_name} ${option.last_name} ${option.suffix ?? ''}`}</div>
                                                     </Box>
                                                 );
