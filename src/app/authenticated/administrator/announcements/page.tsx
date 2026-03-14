@@ -150,7 +150,7 @@ export default function Announcements() {
         }
 
         <div className="card rounded-0 custom-bg custom-border-dark">
-            <div className="card-header custom-bottom-border-dark py-1">
+            <div className="card-header border-0 pt-1 pb-0">
                 <div className="d-flex align-items-center justify-content-between">
                     <div>Announcements</div>
                     <div>
@@ -165,9 +165,10 @@ export default function Announcements() {
                         </Tooltip>
                     </div>
                 </div>
+                <hr className="style-two" />
             </div>
 
-            <div className="card-body text-sm">
+            <div className="card-body pt-0 text-sm">
                 <OrbitDatatable
                     withExport
                     progressPending={isFetching}

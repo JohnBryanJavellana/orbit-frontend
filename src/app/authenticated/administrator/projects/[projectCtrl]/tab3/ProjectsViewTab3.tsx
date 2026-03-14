@@ -208,7 +208,7 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0">
                         {
                             !['ABANDONED', 'COMPLETED'].includes(currentProject?.status) && (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
-                            <div className="card-header custom-bottom-border-dark py-1">
+                            <div className="card-header pt-1 pb-0 border-0">
                                 <div className="d-flex align-items-center justify-content-end">
                                     <div>
                                         <Tooltip title="Add collaborator">
@@ -226,11 +226,12 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                                         </Tooltip>
                                     </div>
                                 </div>
+                                <hr className="style-two" />
                             </div>
                         }
 
 
-                        <div className="card-body">
+                        <div className={`card-body ${!['ABANDONED', 'COMPLETED'].includes(currentProject?.status) && (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") && 'pt-0'}`}>
                             <OrbitDatatable
                                 withExport
                                 progressPending={isFetching}
