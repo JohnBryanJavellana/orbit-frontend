@@ -17,16 +17,18 @@ import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
 import ModalChangeAvatar from './ModalChangeAvatar';
 import ModalGetDailyActivities from './ModalGetDailyActivities';
+import ModalUserLogout from './ModalUserLogout';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const { userData, refreshUser } = useGetCurrentUser();
-    const { urlWithoutApi } = useSystemURLCon();
+    const { urlWithApi, urlWithoutApi } = useSystemURLCon();
     const isMobileViewPort = useDetectMobileViewport();
     const [modalOpenData, setModalOpenData] = useState<any>(null);
     const [modalOpenId, setModalOpenId] = useState<null | number>(null);
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
+    const { getToken, removeToken } = useWebToken();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         if (anchorElNav) {
@@ -47,34 +49,6 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    const { urlWithApi } = useSystemURLCon();
-    const { getToken, removeToken } = useWebToken();
-    const navigate = useRouter();
-
-    const LogoutUser = async () => {
-        const confirmed = window.confirm("Are you sure you want to logout?");
-        if (!confirmed) return;
-
-        try {
-            const token = getToken('csrf-token');
-            await axios.get(`${urlWithApi}/logout-user`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 500) {
-                    navigate.push('/access-denied');
-                }
-            }
-        } finally {
-            removeToken('csrf-token');
-            removeToken('role-access');
-            navigate.push('/');
-        }
-    }
 
     useEffect(() => {
         let intervalId: any;
@@ -193,6 +167,20 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                         setModalOpenIndex(null);
 
                         if (e) window.location.reload();
+                    }}
+                />
+            }
+
+            {
+                modalOpenIndex === 5 &&
+                <ModalUserLogout
+                    id={modalOpenId}
+                    titleHeader={'Logout Confirmation'}
+                    callbackFunction={(e) => {
+                        refreshUser();
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
                     }}
                 />
             }
@@ -328,7 +316,11 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 </MenuItem>
                                             }
 
-                                            <MenuItem onClick={() => LogoutUser()}>
+                                            <MenuItem onClick={() => {
+                                                handleCloseUserMenu();
+                                                setModalOpenId(userData.id);
+                                                setModalOpenIndex(5);
+                                            }} data-toggle="modal" data-target={`#logout_user_${userData?.id}`}>
                                                 <Typography className='text-sm' sx={{ textAlign: 'left' }}>
                                                     <i className="fas fa-sign-out-alt text-danger mr-1"></i> Logout
                                                 </Typography>
