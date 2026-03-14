@@ -16,6 +16,7 @@ import CustomUserPill from "@/app/custom-global-components/CustomUserPill/Custom
 import useDateFormat from "@/app/hooks/useDateFormat";
 import ModalViewTaskCollaborators from "./components/ModalViewTaskCollaborators";
 import ModalViewTaskProgress from "./components/ModalViewTaskProgress";
+import ModalViewTaskPhotoDocumentation from "./components/ModalViewTaskPhotoDocumentation";
 
 export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamValue }) {
     const { getToken } = useWebToken();
@@ -182,13 +183,28 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                             />
                         }
 
-
                         {
                             modalOpenIndex === 1 &&
                             <ModalViewTaskProgress
                                 data={modalOpenData}
                                 id={modalOpenId}
                                 titleHeader={'View Task Progress'}
+                                httpMethod={'POST'}
+                                callbackFunction={() => {
+                                    GetProjectTasks(false, mode);
+                                    setModalOpenData(null);
+                                    setModalOpenId(null);
+                                    setModalOpenIndex(null);
+                                }}
+                            />
+                        }
+
+                        {
+                            modalOpenIndex === 2 &&
+                            <ModalViewTaskPhotoDocumentation
+                                data={modalOpenData}
+                                id={modalOpenId}
+                                titleHeader={'Task Photo Documentations'}
                                 httpMethod={'POST'}
                                 callbackFunction={() => {
                                     GetProjectTasks(false, mode);
@@ -241,6 +257,18 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
 
                                             {
                                                 ["ACTIVE"].includes(taskOverview.members[0]?.status) && <>
+                                                    <Tooltip title="View Photo Documentations">
+                                                        <IconButton className="ml-2" onClick={() => {
+                                                            setModalOpenData({
+                                                                taskCtrl: taskOverview?.ctrl
+                                                            });
+                                                            setModalOpenId(taskOverview?.id);
+                                                            setModalOpenIndex(2);
+                                                        }} data-target={`#view_photo_documentation_${taskOverview?.id}`} data-toggle="modal">
+                                                            <span className="material-icons-outlined">photo</span>
+                                                        </IconButton>
+                                                    </Tooltip>
+
                                                     <Tooltip title="View Task Progress">
                                                         <IconButton className="ml-2" onClick={() => {
                                                             setModalOpenData({

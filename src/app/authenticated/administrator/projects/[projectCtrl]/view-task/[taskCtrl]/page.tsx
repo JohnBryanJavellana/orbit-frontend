@@ -7,6 +7,7 @@ import { useState } from "react";
 import ViewTaskTab1 from "./tab1/ViewTaskTab1";
 import ViewTaskTab2 from "./tab2/ViewTaskTab2";
 import ViewTaskTab3 from "./tab3/ViewTaskTab3";
+import ViewTaskTab4 from "./tab4/ViewTaskTab4";
 
 export default function ViewTask() {
     const router = useParams();
@@ -40,7 +41,7 @@ export default function ViewTask() {
                         'name': taskCtrl,
                         'last': true,
                         'address': `/authenticated/administrator/projects/${projectCtrl}/view-task/${taskCtrl}`
-                    }
+                    },
                 ]}
             />
 
@@ -61,6 +62,11 @@ export default function ViewTask() {
                         icon: "task",
                         label: "Progress",
                         index: 2
+                    },
+                    {
+                        icon: "photo",
+                        label: "Photo Documentations",
+                        index: 3
                     }
                 ]}
                 callbackFunction={(e) => setTabId(e)}
@@ -78,6 +84,10 @@ export default function ViewTask() {
 
                     <div role="tabpanel" hidden={tabId !== 2} id={`simple-tabpanel-2`} aria-labelledby={`simple-tab-2`}>
                         {(tabId === 2) && <ViewTaskTab3 projectCtrl={projectCtrl} taskCtrl={taskCtrl} />}
+                    </div>
+
+                    <div role="tabpanel" hidden={tabId !== 3} id={`simple-tabpanel-3`} aria-labelledby={`simple-tab-3`}>
+                        {(tabId === 3) && <ViewTaskTab4 projectCtrl={projectCtrl} taskCtrl={taskCtrl} />}
                     </div>
                 </div>
             </div>
