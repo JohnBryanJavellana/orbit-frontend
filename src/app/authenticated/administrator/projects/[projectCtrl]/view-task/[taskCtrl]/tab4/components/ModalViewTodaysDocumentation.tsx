@@ -2,6 +2,7 @@
 /* global $ */
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
+import useDateFormat from "@/app/hooks/useDateFormat";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 
 interface ModalViewTodaysDocumentationProps {
@@ -13,6 +14,7 @@ interface ModalViewTodaysDocumentationProps {
 
 export default function ModalViewTodaysDocumentation({ data, id, titleHeader, callbackFunction }: ModalViewTodaysDocumentationProps) {
     const { urlWithoutApi } = useSystemURLCon();
+    const { FormatDatetimeToHumanReadable } = useDateFormat();
 
     const handleClose = () => {
         $(`#view_today_documentation_${id}`).modal('hide');
@@ -36,11 +38,14 @@ export default function ModalViewTodaysDocumentation({ data, id, titleHeader, ca
                 body={
                     <>
                         {
-                            data.length > 0
-                                ? data.map((documentation: any, index: number) => (
+                            data.uploaded_files.length > 0
+                                ? data.uploaded_files.map((documentation: any, index: number) => (
                                     <div className="card custom-bg rounded-0 custom-border-dark elevation-1" key={index}>
                                         <div className="card-body text-center">
                                             <img src={`${urlWithoutApi}/documentation-files/${documentation.filename}`} className="img-fluid" />
+                                        </div>
+                                        <div className="card-footer py-1 custom-top-border-dark text-left text-sm text-muted">
+                                            Uploader: {`${documentation.uploader.first_name} ${documentation.uploader.middle_name} ${documentation.uploader.last_name} ${documentation.uploader.suffix ?? ''}`} • {FormatDatetimeToHumanReadable(documentation.created_at, true)}
                                         </div>
                                     </div>
                                 ))

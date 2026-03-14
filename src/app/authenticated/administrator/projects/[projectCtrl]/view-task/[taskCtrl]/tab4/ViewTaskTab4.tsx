@@ -86,7 +86,7 @@ export default function ViewTaskTab4({ projectCtrl, taskCtrl }: { projectCtrl: P
                         'textColor': '',
                         'label': 'View Uploads',
                         'onClick': () => {
-                            setModalOpenData(row.uploaded_files);
+                            setModalOpenData(row);
                             setModalOpenId(row.id);
                             setModalOpenIndex(1);
                         }
@@ -122,7 +122,7 @@ export default function ViewTaskTab4({ projectCtrl, taskCtrl }: { projectCtrl: P
                 <ModalViewTodaysDocumentation
                     data={modalOpenData}
                     id={modalOpenId}
-                    titleHeader={"View today's photo documentation"}
+                    titleHeader={"View photo documentation"}
                     callbackFunction={() => {
                         GetPhotoDocumentations(false);
                         setModalOpenData(null);

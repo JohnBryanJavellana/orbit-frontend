@@ -66,6 +66,8 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
             <ModalTemplate
                 id={`submit_today_documentation_${id}`}
                 size={"md"}
+                modalParentStyle={data?.useBgStack && 'bg-stack'}
+                isModalCentered={data?.useBgStack}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
                 header={
