@@ -32,6 +32,7 @@ const wheelData = [
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: '150 Aura Points', style: { backgroundColor: '#d4af37', textColor: '#000000' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
+    { option: 'SPIN AGAIN', style: { backgroundColor: '#006400', textColor: '#ffffff' } },
     {
         option: 'RARE BORDER', style: {
             backgroundColor: '#800000',
@@ -62,6 +63,8 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             if (roll <= 5) {
                 newPrizeNumber = 13;
             } else if (roll > 5 && roll <= 15) {
+                newPrizeNumber = 12;
+            } else if (roll > 15 && roll <= 25) {
                 newPrizeNumber = 11;
             } else {
                 const commonIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
@@ -133,6 +136,12 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                                     onStopSpinning={async () => {
                                         const prize = wheelData[prizeNumber];
                                         const isWin = prize?.option !== "0 Aura Point";
+
+                                        if (prize.option === "SPIN AGAIN") {
+                                            setMustSpin(false);
+                                            setIsPlaying(false);
+                                            return;
+                                        }
 
                                         setMustSpin(false);
                                         setIsPlaying(false);
