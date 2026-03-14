@@ -126,7 +126,7 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
                     }
                 ];
 
-                if (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") {
+                if ((currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") && row.user.role !== "SUPERADMIN") {
                     menuItems.push({
                         'icon': 'launch',
                         'url': '#',

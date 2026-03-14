@@ -27,14 +27,16 @@ export default function ModalViewTodaysDocumentation({ data, id, titleHeader, ca
                 id={`view_today_documentation_${id}`}
                 size={"lg"}
                 isModalScrollable={true}
+                isModalCentered
                 modalContentClassName="text-white bg-dark"
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         {
@@ -53,12 +55,14 @@ export default function ModalViewTodaysDocumentation({ data, id, titleHeader, ca
                         }
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

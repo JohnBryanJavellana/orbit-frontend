@@ -86,13 +86,15 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
                 size={"md"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         <label htmlFor="password" className='custom-label-color'>
@@ -115,11 +117,11 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
                             />
                         </FormControl>
 
-                        <label htmlFor="role" className='custom-label-color mt-3'>
+                        <label htmlFor="role" className='custom-label-color'>
                             Type <span className="text-danger">*</span>
                         </label>
 
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth>
                             <Select
                                 id="gender"
                                 value={type}
@@ -143,8 +145,10 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
                         </FormControl>
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -152,7 +156,7 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
                         <button type="button" onClick={() => SubmitCustomBorder()} disabled={(httpMethod === "POST" && !customBorder) || !type || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

@@ -89,13 +89,15 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                 size={"md"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         <label htmlFor="password" className='custom-label-color'>
@@ -148,7 +150,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                                 <label htmlFor="remove_date" className='custom-label-color mb-0 mt-3'>
                                     Status
                                 </label>
-                                <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
+                                <FormControl fullWidth margin="dense">
                                     <Select
                                         id="status"
                                         value={status}
@@ -174,8 +176,10 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                         }
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -183,7 +187,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                         <button type="button" onClick={() => SubmitAnnnouncement()} disabled={!announcement || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

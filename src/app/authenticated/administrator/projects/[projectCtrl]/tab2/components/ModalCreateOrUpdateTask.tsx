@@ -90,13 +90,15 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
                 size={"md"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
+                headerClassName="border-0 pb-0"
+                isModalCentered
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         <label htmlFor="email" className='custom-label-color'>
@@ -159,7 +161,7 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
 
                         {
                             httpMethod === "UPDATE" &&
-                            <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
+                            <FormControl fullWidth margin="dense">
                                 <Select
                                     id="status"
                                     value={status}
@@ -186,8 +188,11 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
                         }
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
+
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -195,7 +200,7 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
                         <button type="button" onClick={() => SubmitTask()} disabled={!name || !taskProgressPoints || !taskCompletionPoints || !description || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

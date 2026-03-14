@@ -138,7 +138,7 @@ export default function ViewTaskTab4({ projectCtrl, taskCtrl }: { projectCtrl: P
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0">
                         {
                             !['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
-                            <div className="card-header custom-bottom-border-dark py-1">
+                            <div className="card-header pt-1 pb-0 border-0">
                                 <div className="d-flex align-items-center justify-content-end">
                                     <div>
                                         <Tooltip title="Add today's photo documentation">
@@ -154,10 +154,11 @@ export default function ViewTaskTab4({ projectCtrl, taskCtrl }: { projectCtrl: P
                                         </Tooltip>
                                     </div>
                                 </div>
+                                <hr className="style-two" />
                             </div>
                         }
 
-                        <div className="card-body">
+                        <div className={`card-body ${!['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") && 'pt-0'}`}>
                             <OrbitDatatable
                                 withExport
                                 progressPending={isFetching}

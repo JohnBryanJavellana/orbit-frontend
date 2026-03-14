@@ -84,17 +84,18 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
                 size="md"
                 isModalScrollable={false}
                 modalContentClassName="text-white"
-                bodyClassName="pb-2"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth>
                             <Select
                                 id="status"
                                 value={status}
@@ -130,8 +131,10 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
                         </FormControl>
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -139,7 +142,7 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
                         <button type="button" onClick={() => UpdateCollaboratorStatus()} disabled={!status} className={`btn btn-danger btn-sm elevation-1`}>
                             Update
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

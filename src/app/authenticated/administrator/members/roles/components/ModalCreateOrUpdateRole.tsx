@@ -75,20 +75,22 @@ export default function ModalCreateOrUpdateRole({ data, id, titleHeader, httpMet
                 id={`create_or_update_role_${id}`}
                 size={"md"}
                 modalContentClassName="text-white"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         <label htmlFor="email" className='custom-label-color'>
                             Role <span className="text-danger">*</span>
                         </label>
 
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth>
                             <Input
                                 id="role"
                                 type="text"
@@ -101,8 +103,10 @@ export default function ModalCreateOrUpdateRole({ data, id, titleHeader, httpMet
                         </FormControl>
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -110,7 +114,7 @@ export default function ModalCreateOrUpdateRole({ data, id, titleHeader, httpMet
                         <button type="button" onClick={() => SubmitTask()} disabled={!role || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

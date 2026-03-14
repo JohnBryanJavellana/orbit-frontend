@@ -115,21 +115,22 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                 size={collaborator ? "xl" : 'md'}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
-                bodyClassName="pb-2"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         {
                             isFetching
                                 ? <p>Please wait...</p>
                                 : <>
-                                    <div className="mb-2">
+                                    <div>
                                         <Autocomplete
                                             disablePortal
                                             options={collaborators}
@@ -150,7 +151,13 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                                                         sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
                                                         {...optionProps}
                                                     >
-                                                        <CustomAvatarWithOnlineBadge height={30} width={30} src={`${urlWithoutApi}/user-images/${option.profile_picture}`} srcShown={option} />
+                                                        <CustomAvatarWithOnlineBadge
+                                                            data={option}
+                                                            src={`${urlWithoutApi}/user-images/${option.profile_picture}`}
+                                                            isOnline={option.is_online}
+                                                            isAdmin={option.role === "SUPERADMIN"}
+                                                            srcShown={option.custom_avatar?.shown_avatar}
+                                                        />
                                                         <div className="ml-3">{`${option.first_name} ${option.middle_name} ${option.last_name} ${option.suffix ?? ''}`}</div>
                                                     </Box>
                                                 );
@@ -159,14 +166,18 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                                     </div>
 
                                     {
-                                        collaboratorData && <ViewUserContent user={collaboratorData} />
+                                        collaboratorData && <div className="mt-3">
+                                            <ViewUserContent user={collaboratorData} />
+                                        </div>
                                     }
                                 </>
                         }
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -174,7 +185,7 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                         <button type="button" onClick={() => AddFutureCollaborator()} disabled={!collaborator || isFetching} className={`btn btn-danger btn-sm elevation-1`}>
                             Add
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

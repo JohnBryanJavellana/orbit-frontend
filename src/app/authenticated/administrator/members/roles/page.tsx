@@ -11,6 +11,7 @@ import DropdownMenu from "@/app/custom-global-components/DropdownMenu/DropdowMen
 import axios from "axios";
 import CustomBreadcrumb from "@/app/custom-global-components/CustomBreadcrumb/CustomBreadcrumb";
 import ModalCreateOrUpdateRole from "./components/ModalCreateOrUpdateRole";
+import ModalRemoveDocument from "@/app/custom-global-components/ModalRemoveDocument/ModalRemoveDocument";
 
 export default function Roles() {
     const { getToken, removeToken } = useWebToken();
@@ -87,12 +88,16 @@ export default function Roles() {
                     menuItems.push({
                         'icon': 'delete',
                         'url': '#',
-                        'data-toggle': '',
-                        'data-target': ``,
+                        'data-toggle': 'modal',
+                        'data-target': `#remove_document_${row.id}`,
                         'id': 'f',
                         'textColor': 'danger',
                         'label': 'Remove Role',
-                        'onClick': () => { }
+                        'onClick': () => {
+                            setModalOpenData(row);
+                            setModalOpenId(row.id);
+                            setModalOpenIndex(1);
+                        }
                     });
                 }
 
@@ -124,6 +129,22 @@ export default function Roles() {
                 id={modalOpenId}
                 titleHeader={modalOpenData ? 'Update Member Role' : 'Create Member Role'}
                 httpMethod={modalOpenData ? 'UPDATE' : 'POST'}
+                callbackFunction={() => {
+                    GetMemberRoles(false);
+                    setModalOpenData(null);
+                    setModalOpenId(null);
+                    setModalOpenIndex(null);
+                }}
+            />
+        }
+
+        {
+            modalOpenIndex === 1 &&
+            <ModalRemoveDocument
+                apiSrc={`administrator/members/members/remove_role`}
+                id={modalOpenId}
+                titleHeader={'Remove Permission'}
+                message={`Are you sure you want to remove this role? This cannot be undone.`}
                 callbackFunction={() => {
                     GetMemberRoles(false);
                     setModalOpenData(null);

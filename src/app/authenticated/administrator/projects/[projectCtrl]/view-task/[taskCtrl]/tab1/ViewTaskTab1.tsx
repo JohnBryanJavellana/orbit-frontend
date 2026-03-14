@@ -83,7 +83,7 @@ export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: P
 
                         {
                             !['COMPLETED'].includes(taskOverview?.status) && (taskOverview?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
-                            <div className="card-header custom-bottom-border-dark py-1">
+                            <div className="card-header border-0 py-1 pb-0">
                                 <div className="d-flex align-items-center justify-content-end">
                                     <div>
                                         <Tooltip title="Edit task">
@@ -101,6 +101,7 @@ export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: P
                                         </Tooltip>
                                     </div>
                                 </div>
+                                <hr className="style-two" />
                             </div>
                         }
 

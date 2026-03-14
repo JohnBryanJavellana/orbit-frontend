@@ -67,23 +67,24 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
                 id={`submit_today_documentation_${id}`}
                 size={"md"}
                 modalParentStyle={data?.useBgStack && 'bg-stack'}
-                isModalCentered={data?.useBgStack}
+                isModalCentered
                 isModalScrollable={false}
                 modalContentClassName="text-white"
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
+                bodyClassName="py-0"
                 body={
                     <>
                         <label htmlFor="password" className='custom-label-color'>
                             Attach Today's Photo Documentation <span className="text-danger">*</span>
                         </label>
 
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth>
                             <Input
                                 id="profile_picture"
                                 type="file"
@@ -100,8 +101,10 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
                         </FormControl>
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -109,7 +112,7 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
                         <button type="button" onClick={() => SubmitDocumentation()} disabled={!photoDocumentation || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

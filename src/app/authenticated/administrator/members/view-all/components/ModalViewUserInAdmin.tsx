@@ -31,14 +31,15 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                 size={"xl"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
-                bodyClassName="px-4 pt-4 bg-dark"
+                bodyClassName="py-0"
                 body={
                     <>
                         <CustomTab
@@ -70,7 +71,7 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                             callbackFunction={(e) => setTabId(e)}
                         />
 
-                        <div className="card rounded-0 bg-dark elevation-0">
+                        <div className="card rounded-0 bg-transparent elevation-0">
                             <div className="card-body p-0">
                                 <div role="tabpanel" hidden={tabId !== 0} id={`simple-tabpanel-0`} aria-labelledby={`simple-tab-0`}>
                                     {(tabId === 0) && <ViewUserContent user={data} />}
@@ -87,12 +88,14 @@ export default function ModalViewUserInAdmin({ data, id, titleHeader, httpMethod
                         </div>
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>
