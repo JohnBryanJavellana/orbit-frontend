@@ -98,6 +98,7 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
                 size={"md"}
                 modalParentStyle="bg-stack"
                 isModalScrollable={false}
+                isModalCentered
                 modalContentClassName="text-white"
                 header={
                     <>

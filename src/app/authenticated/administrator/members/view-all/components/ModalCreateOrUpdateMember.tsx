@@ -114,14 +114,14 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                 size={"md"}
                 isModalScrollable={false}
                 modalContentClassName="text-white"
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm">
-                            <strong>{titleHeader}</strong>
-                        </span>
-                    </>
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
                 }
-                bodyClassName="px-4"
+                bodyClassName="px-4 py-0"
                 body={
                     !userData
                         ? <p>Please wait...</p>
@@ -347,8 +347,10 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                             />
                         </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
@@ -367,7 +369,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                         } className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>

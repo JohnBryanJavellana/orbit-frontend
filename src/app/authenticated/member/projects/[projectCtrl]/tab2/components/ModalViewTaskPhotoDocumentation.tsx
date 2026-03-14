@@ -85,31 +85,32 @@ export default function ModalViewTaskPhotoDocumentation({ data, id, titleHeader,
                 size={"lg"}
                 isModalScrollable={true}
                 modalContentClassName="text-white"
+                isModalCentered
+                headerClassName="border-0 pb-0"
                 header={
-                    <>
-                        <span className="modal-title text-sm w-100 py-0">
-                            <div className="d-flex align-items-center justify-content-between">
-                                <div className="text-bold">{titleHeader}</div>
+                    <div className="w-100">
+                        <div className="d-flex align-items-center justify-content-between">
+                            <div className="text-bold">{titleHeader}</div>
 
-                                {
-                                    !['COMPLETED'].includes(currentTask?.status) &&
-                                    <Tooltip title="Add today's photo documentation">
-                                        <IconButton disabled={['COMPLETED'].includes(currentTask?.status)} onClick={() => {
-                                            setModalOpenData({
-                                                taskCtrl: data?.taskCtrl
-                                            });
-                                            setModalOpenId(0);
-                                            setModalOpenIndex(0);
-                                        }} data-target={`#submit_today_documentation_0`} data-toggle="modal">
-                                            <AddIcon color='error' />
-                                        </IconButton>
-                                    </Tooltip>
-                                }
-                            </div>
-                        </span>
-                    </>
+                            {
+                                !['COMPLETED'].includes(currentTask?.status) &&
+                                <Tooltip title="Add today's photo documentation">
+                                    <IconButton disabled={['COMPLETED'].includes(currentTask?.status)} onClick={() => {
+                                        setModalOpenData({
+                                            taskCtrl: data?.taskCtrl
+                                        });
+                                        setModalOpenId(0);
+                                        setModalOpenIndex(0);
+                                    }} data-target={`#submit_today_documentation_0`} data-toggle="modal">
+                                        <AddIcon color='error' />
+                                    </IconButton>
+                                </Tooltip>
+                            }
+                        </div>
+                        <hr className="style-two" />
+                    </div>
                 }
-                bodyClassName="px-4 text-sm bg-dark"
+                bodyClassName="py-0"
                 body={
                     <>
                         {
@@ -169,12 +170,14 @@ export default function ModalViewTaskPhotoDocumentation({ data, id, titleHeader,
                         }
                     </>
                 }
+                footerClassName="border-0 pb-0"
                 footer={
-                    <>
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
                         <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
                             Close
                         </button>
-                    </>
+                    </div>
                 }
             />
         </>
