@@ -22,17 +22,23 @@ const wheelData = [
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: '10 Aura Points', style: { backgroundColor: '#2a2a2a', textColor: '#ffffff' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
-    { option: '20 Aura Points', style: { backgroundColor: '#1a1a1a', textColor: '#ffffff' } },
+    { option: '20 Aura Points', style: { backgroundColor: '#2a2a2a', textColor: '#ffffff' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: '30 Aura Points', style: { backgroundColor: '#2a2a2a', textColor: '#ffffff' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
-    { option: '40 Aura Points', style: { backgroundColor: '#1a1a1a', textColor: '#ffffff' } },
+    { option: '40 Aura Points', style: { backgroundColor: '#2a2a2a', textColor: '#ffffff' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: '50 Aura Points', style: { backgroundColor: '#2a2a2a', textColor: '#ffffff' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: '150 Aura Points', style: { backgroundColor: '#d4af37', textColor: '#000000' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
-    { option: 'RARE BORDER', style: { backgroundColor: '#8a2be2', textColor: '#ffffff' } },
+    {
+        option: 'RARE BORDER', style: {
+            backgroundColor: '#800000',
+            textColor: '#ffd700',
+            fontWeight: 'bold'
+        }
+    },
 ];
 
 
@@ -50,7 +56,18 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
 
     const handleSpinClick = () => {
         if (!mustSpin) {
-            const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
+            let newPrizeNumber;
+            const roll = Math.floor(Math.random() * 100) + 1;
+
+            if (roll <= 5) {
+                newPrizeNumber = 13;
+            } else if (roll > 5 && roll <= 15) {
+                newPrizeNumber = 11;
+            } else {
+                const commonIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
+                newPrizeNumber = commonIndices[Math.floor(Math.random() * commonIndices.length)];
+            }
+
             setPrizeNumber(newPrizeNumber);
             setShowConfetti(false);
             setIsPlaying(true);
