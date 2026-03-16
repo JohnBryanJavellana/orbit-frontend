@@ -1,0 +1,137 @@
+.message-display {
+    min-height: 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.game-area {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.cups-container {
+    position: relative;
+    width: 350px;
+    height: 120px;
+}
+
+.cup-slot {
+    position: absolute;
+    width: 100px;
+    cursor: pointer;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.position-0 {
+    left: 0%;
+}
+
+.position-1 {
+    left: 38%;
+}
+
+.position-2 {
+    left: 75%;
+}
+
+/* Cup Sprites */
+.cup-sprite {
+    width: 100%;
+    z-index: 5;
+    transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.7));
+}
+
+.ball-sprite {
+    position: absolute;
+    bottom: 5px;
+    /* Center the ball horizontally */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    z-index: 1;
+    /* Update animation to include the centering transform */
+    animation: ball-pop 0.3s ease-out forwards;
+}
+
+/* Update the keyframe to preserve the centering transform */
+@keyframes ball-pop {
+    0% {
+        transform: translateX(-50%) scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animations */
+.lifting-all .cup-sprite {
+    transform: translateY(-80px) rotate(-12deg);
+}
+
+.correct-glow .cup-sprite {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+}
+
+
+.btn-play-fantasy {
+    display: inline-block;
+    cursor: pointer;
+    background: url('/system-images/your-button-asset.png');
+    background-color: #5d432c;
+    border: 2px solid #d4af37;
+    padding: 12px 35px;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+}
+
+.btn-play-fantasy:hover:not(.disabled) {
+    background-color: #7d5a3b;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-play-fantasy.disabled {
+    filter: grayscale(1);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Secondary Button */
+.btn-fantasy-secondary {
+    background: transparent;
+    border: 1px solid #4a3728;
+    color: #8a735b;
+    padding: 5px 20px;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+.btn-fantasy-secondary:hover:not(:disabled) {
+    color: #d4af37;
+    border-color: #d4af37;
+}
+
+.no-pointer {
+    pointer-events: none;
+}
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+}

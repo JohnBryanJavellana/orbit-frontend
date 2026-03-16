@@ -2,13 +2,14 @@
 
 import dynamic from 'next/dynamic';
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './ModalPlayRoulette.css';
 import Confetti from 'react-confetti-boom';
 import useWebToken from "@/app/hooks/useWebToken";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
 
 interface ModalPlayRouletteProps {
     data: any | null,
@@ -47,17 +48,51 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     const [showConfetti, setShowConfetti] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [mustSpin, setMustSpin] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
     const [prizeNumber, setPrizeNumber] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { getToken } = useWebToken();
     const { urlWithApi, urlWithoutApi } = useSystemURLCon();
     const navigate = useRouter();
     const [returnResponse, setReturnResponse] = useState<any | null>(null);
+    const { userData, refreshUser } = useGetCurrentUser();
+    const [dailyFreeSpin, setDailyFreeSpin] = useState<string | 'PENDING' | 'TAKEN'>('');
+
+    const CheckForFreeDailySpin = async (isInitialLoad: boolean) => {
+        try {
+            setIsFetching(isInitialLoad);
+
+            const token = getToken('csrf-token');
+            const response = await axios.get(`${urlWithApi}/member/daily-activities/daily-activities/get_daily_activities`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            setDailyFreeSpin(response.data.activities.roulette);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 500) {
+                    navigate.push('/access-denied');
+                }
+            }
+        } finally {
+            setIsFetching(false);
+        }
+    }
+
+    useEffect(() => {
+        if (userData) {
+            CheckForFreeDailySpin(true);
+            return () => { };
+        }
+    }, [userData]);
 
     const handleSpinClick = () => {
         if (!mustSpin) {
             const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
 
+            setReturnResponse(null);
             setPrizeNumber(newPrizeNumber);
             setShowConfetti(false);
             setIsPlaying(true);
@@ -65,13 +100,14 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
         }
     };
 
-    const SubmitResultIfNotBokya = async (score: string) => {
+    const SubmitResult = async (score: string) => {
         try {
             setIsSubmitting(true);
 
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_roulette_score`, {
-                score: score
+                score: score,
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -88,6 +124,8 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                 }
             }
         } finally {
+            await refreshUser();
+            setDailyFreeSpin('TAKEN');
             setIsSubmitting(false);
         }
     }
@@ -112,84 +150,86 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                 </div>
             }
             body={
-                <div style={{ userSelect: 'none' }}>
-                    {
-                        !returnResponse
-                            ? <div className="roulette-container">
-                                <Wheel
-                                    mustStartSpinning={mustSpin}
-                                    prizeNumber={prizeNumber}
-                                    data={wheelData}
-                                    onStopSpinning={async () => {
-                                        const prize = wheelData[prizeNumber];
-                                        const isWin = prize?.option !== "0 Aura Point";
+                <>
+                    <div className="roulette-container">
+                        <Wheel
+                            mustStartSpinning={mustSpin && !isFetching}
+                            prizeNumber={prizeNumber}
+                            data={wheelData}
+                            onStopSpinning={async () => {
+                                const prize = wheelData[prizeNumber];
+                                const isWin = prize?.option !== "0 Aura Point";
 
-                                        if (prize.option === "SPIN AGAIN") {
-                                            setMustSpin(false);
-                                            setIsPlaying(false);
-                                            return;
-                                        }
+                                if (prize.option === "SPIN AGAIN") {
+                                    setMustSpin(false);
+                                    setIsPlaying(false);
+                                    return;
+                                }
 
-                                        setMustSpin(false);
-                                        setIsPlaying(false);
-                                        await SubmitResultIfNotBokya(isWin ? prize.option.replace(' Aura Points', '') : '0');
-                                    }}
-                                    outerBorderColor="#d4af37"
-                                    outerBorderWidth={8}
-                                    innerRadius={10}
-                                    innerBorderColor="#d4af37"
-                                    innerBorderWidth={3}
-                                    radiusLineColor="rgba(212, 175, 55, 0.2)"
-                                    radiusLineWidth={1}
-                                    fontSize={14}
-                                    textDistance={65}
-                                    perpendicularText={false}
-                                    pointerProps={{
-                                        style: {
-                                            filter: 'drop-shadow(0 0 10px #d4af37)',
-                                            marginTop: '10px'
-                                        }
-                                    }}
-                                />
+                                setMustSpin(false);
+                                setIsPlaying(false);
+                                await SubmitResult(isWin ? prize.option.replace(' Aura Points', '') : '0');
+                            }}
+                            outerBorderColor="#d4af37"
+                            outerBorderWidth={8}
+                            innerRadius={10}
+                            innerBorderColor="#d4af37"
+                            innerBorderWidth={3}
+                            radiusLineColor="rgba(212, 175, 55, 0.2)"
+                            radiusLineWidth={1}
+                            fontSize={14}
+                            textDistance={65}
+                            perpendicularText={false}
+                            pointerProps={{
+                                style: {
+                                    filter: 'drop-shadow(0 0 10px #d4af37)',
+                                    marginTop: '10px'
+                                }
+                            }}
+                        />
 
-                                <div className={`spin-button-outer ${mustSpin ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
-                                    <div className="spin-button-center" onClick={handleSpinClick}>
-                                        <span className="spin-text">{mustSpin ? '...' : 'SPIN'}</span>
-                                    </div>
-                                </div>
+                        <div className={`spin-button-outer ${mustSpin || isFetching ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
+                            <div className="spin-button-center text-center" onClick={handleSpinClick}>
+                                <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : userData?.total_points >= 5 ? 'SPIN AGAIN FOR 5 APs' : 'No APs found'}</span>
                             </div>
-                            : <div className="text-center">
-                                <h5>{returnResponse?.message}</h5>
-
-                                {returnResponse?.rare_border_img && <img src={`${urlWithoutApi}/${returnResponse?.rare_border_img}`} className="mt-2" height={150} />}
-                            </div>
-                    }
-
+                        </div>
+                    </div>
 
                     {(returnResponse && (returnResponse?.points_added !== 0 || returnResponse?.rare_border_img)) && (
-                        <div style={{
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            zIndex: 9999,
-                            pointerEvents: 'none'
-                        }}>
-                            <Confetti
-                                mode="boom"
-                                particleCount={100}
-                                shapeSize={15}
-                                colors={['#fff457', '#f30909']}
-                            />
-                        </div>
+                        <>
+                            <div className="text-center mt-4">
+                                <h5>{returnResponse?.message}</h5>
+                                {returnResponse?.rare_border_img && <img src={`${urlWithoutApi}/${returnResponse?.rare_border_img}`} className="mt-2" height={150} />}
+                            </div>
+
+                            <div style={{
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                zIndex: 9999,
+                                pointerEvents: 'none'
+                            }}>
+                                <Confetti
+                                    mode="boom"
+                                    particleCount={100}
+                                    shapeSize={15}
+                                    colors={['#fff457', '#f30909']}
+                                />
+                            </div>
+                        </>
                     )}
-                </div>
+                </>
             }
+            footerClassName="border-0 pb-0"
             footer={
-                <button type='button' disabled={isPlaying || isSubmitting} className='btn btn-dark btn-sm' onClick={handleClose}>
-                    Close
-                </button>
+                <div className="w-100 text-center">
+                    <hr className="style-two" />
+                    <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm' onClick={handleClose} >
+                        Close
+                    </button >
+                </div>
             }
         />
     );
