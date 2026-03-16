@@ -92,25 +92,29 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
 
         const newBallLoc = Math.floor(Math.random() * 3);
         setBallLocation(newBallLoc);
+
         setIsPreRevealing(true);
 
         setTimeout(() => {
             setIsPreRevealing(false);
-
             setTimeout(() => {
                 let shuffles = 0;
-                const maxShuffles = 10;
+                const maxShuffles = 15;
+                const shuffleSpeed = 150;
+
                 const interval = setInterval(() => {
                     setCupPositions(prev => [...prev].sort(() => Math.random() - 0.5));
+
                     shuffles++;
+
                     if (shuffles >= maxShuffles) {
                         clearInterval(interval);
                         setIsPlaying(false);
                         setHasShuffled(true);
                     }
-                }, 400);
-            }, 500);
-        }, 1500);
+                }, shuffleSpeed);
+            }, 300);
+        }, 1000);
     };
 
     const handleCupClick = (cupId: number) => {
