@@ -6,6 +6,12 @@
     overflow: hidden;
 }
 
+/* In your CSS file */
+.wheel-active-glow {
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+    transition: filter 0.3s ease;
+}
+
 /* Container for the button to add an extra layer of aura */
 .spin-button-outer {
     position: absolute;

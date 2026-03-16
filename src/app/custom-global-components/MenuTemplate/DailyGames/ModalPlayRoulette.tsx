@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import './ModalPlayRoulette.css';
 import Confetti from 'react-confetti-boom';
 import useWebToken from "@/app/hooks/useWebToken";
@@ -74,6 +74,12 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     const [returnResponse, setReturnResponse] = useState<any | null>(null);
     const { userData, refreshUser } = useGetCurrentUser();
     const [dailyFreeSpin, setDailyFreeSpin] = useState<string | 'PENDING' | 'TAKEN'>('');
+    const spinAudio = useRef<HTMLAudioElement | null>(null);
+
+    useEffect(() => {
+        spinAudio.current = new Audio('/spinning-wheel-sound-effect.mp3');
+        spinAudio.current.loop = true;
+    }, []);
 
     const CheckForFreeDailySpin = async (isInitialLoad: boolean) => {
         try {
@@ -117,6 +123,11 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                     break;
                 }
                 random -= weights[i];
+            }
+
+            if (spinAudio.current) {
+                spinAudio.current.currentTime = 0;
+                spinAudio.current.play().catch(e => console.log("Audio play blocked"));
             }
 
             setReturnResponse(null);
@@ -178,7 +189,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             }
             body={
                 <>
-                    <div className="roulette-container">
+                    <div className={`roulette-container ${mustSpin ? "wheel-active-glow" : ""}`}>
                         <Wheel
                             mustStartSpinning={mustSpin && !isFetching}
                             prizeNumber={prizeNumber}
@@ -186,6 +197,11 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                             onStopSpinning={async () => {
                                 const prize = wheelData[prizeNumber];
                                 const isWin = prize?.option !== "0 Aura Point";
+
+                                if (spinAudio.current) {
+                                    spinAudio.current.pause();
+                                    spinAudio.current.currentTime = 0;
+                                }
 
                                 if (prize.option === "SPIN AGAIN") {
                                     setMustSpin(false);
