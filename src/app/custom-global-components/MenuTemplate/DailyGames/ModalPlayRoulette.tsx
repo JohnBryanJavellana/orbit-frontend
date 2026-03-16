@@ -43,6 +43,23 @@ const wheelData = [
     },
 ];
 
+const weights = [
+    12, // Index 0: 0 AP (12%)
+    5,  // Index 1: 10 AP (5%)
+    12, // Index 2: 0 AP (12%)
+    5,  // Index 3: 20 AP (5%)
+    12, // Index 4: 0 AP (12%)
+    5,  // Index 5: 30 AP (5%)
+    12, // Index 6: 0 AP (12%)
+    5,  // Index 7: 40 AP (5%)
+    12, // Index 8: 0 AP (12%)
+    5,  // Index 9: 50 AP (5%)
+    5,  // Index 10: 0 AP (5%)
+    3,  // Index 11: 150 AP (3%)
+    5,  // Index 12: 0 AP (5%)
+    3,  // Index 13: SPIN AGAIN (3%)
+    2   // Index 14: RARE BORDER (2%)
+];
 
 export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunction }: ModalPlayRouletteProps) {
     const [showConfetti, setShowConfetti] = useState(false);
@@ -90,10 +107,20 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
 
     const handleSpinClick = () => {
         if (!mustSpin) {
-            const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
+            const totalWeight = weights.reduce((acc, w) => acc + w, 0);
+            let random = Math.floor(Math.random() * totalWeight);
+            let selectedIndex = 0;
+
+            for (let i = 0; i < weights.length; i++) {
+                if (random < weights[i]) {
+                    selectedIndex = i;
+                    break;
+                }
+                random -= weights[i];
+            }
 
             setReturnResponse(null);
-            setPrizeNumber(newPrizeNumber);
+            setPrizeNumber(selectedIndex);
             setShowConfetti(false);
             setIsPlaying(true);
             setMustSpin(true);
