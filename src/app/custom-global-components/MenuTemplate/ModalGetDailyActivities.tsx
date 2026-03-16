@@ -93,6 +93,16 @@ export default function ModalGetDailyActivities({ data, id, titleHeader, callbac
                             data-toggle="modal"
                             data-target={`#play_cup_shuffle_1`}
                         />
+
+                        <img
+                            src={'/system-images/color-game-btn.png'}
+                            className="img-fluid furtune_wheel_btn mt-1"
+                            onClick={() => {
+                                alert('Oops! Umaasaaaaaa. 1XBET yarn?');
+                            }}
+                            data-toggle="modal"
+                            data-target={`#play_color_game_2`}
+                        />
                     </>
                 }
                 footerClassName="border-0 pb-0"

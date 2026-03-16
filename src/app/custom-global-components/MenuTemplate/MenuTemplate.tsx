@@ -159,7 +159,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                 <ModalGetDailyActivities
                     data={userData?.user_custom_avatar_id}
                     id={modalOpenId}
-                    titleHeader={'Get Daily Games'}
+                    titleHeader={'Play Games'}
                     callbackFunction={(e) => {
                         refreshUser();
                         setModalOpenData(null);
@@ -229,7 +229,7 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                     </Box>
 
                                     <Box sx={{ flexGrow: 0 }}>
-                                        <Tooltip title="Play Daily Games">
+                                        <Tooltip title="Play Games">
                                             <Link href={'#'} className='mr-3 play_daily_games' onClick={() => {
                                                 handleCloseUserMenu();
                                                 setModalOpenData(null);
