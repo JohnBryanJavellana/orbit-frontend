@@ -45,19 +45,19 @@ const wheelData = [
 
 const weights = [
     12, // Index 0: 0 AP (12%)
-    5,  // Index 1: 10 AP (5%)
+    3,  // Index 1: 10 AP (3%)
     12, // Index 2: 0 AP (12%)
-    5,  // Index 3: 20 AP (5%)
+    3,  // Index 3: 20 AP (3%)
     12, // Index 4: 0 AP (12%)
-    5,  // Index 5: 30 AP (5%)
+    3,  // Index 5: 30 AP (3%)
     12, // Index 6: 0 AP (12%)
-    5,  // Index 7: 40 AP (5%)
+    3,  // Index 7: 40 AP (3%)
     12, // Index 8: 0 AP (12%)
-    5,  // Index 9: 50 AP (5%)
-    5,  // Index 10: 0 AP (5%)
-    3,  // Index 11: 150 AP (3%)
+    3,  // Index 9: 50 AP (3%)
+    10, // Index 10: 0 AP (10%)
+    2,  // Index 11: 150 AP (2%)
     5,  // Index 12: 0 AP (5%)
-    3,  // Index 13: SPIN AGAIN (3%)
+    8,  // Index 13: SPIN AGAIN (8%) - Increased for engagement
     2   // Index 14: RARE BORDER (2%)
 ];
 
