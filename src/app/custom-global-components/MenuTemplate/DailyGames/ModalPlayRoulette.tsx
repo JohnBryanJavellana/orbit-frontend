@@ -229,22 +229,26 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                                 {returnResponse?.rare_border_img && <img src={`${urlWithoutApi}/${returnResponse?.rare_border_img}`} className="mt-2" height={150} />}
                             </div>
 
-                            <div style={{
-                                position: 'fixed',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                zIndex: 9999,
-                                pointerEvents: 'none'
-                            }}>
-                                <Confetti
-                                    mode="boom"
-                                    particleCount={100}
-                                    shapeSize={15}
-                                    colors={['#fff457', '#f30909']}
-                                />
-                            </div>
+                            {
+                                (returnResponse.points_added > 0 || returnResponse?.rare_border_img) &&
+                                <div style={{
+                                    position: 'fixed',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    zIndex: 9999,
+                                    pointerEvents: 'none'
+                                }}>
+                                    <Confetti
+                                        mode="boom"
+                                        particleCount={100}
+                                        shapeSize={15}
+                                        colors={['#fff457', '#f30909']}
+                                    />
+                                </div>
+                            }
+
                         </>
                     )}
                 </>
