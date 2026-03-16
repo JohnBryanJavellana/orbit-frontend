@@ -195,7 +195,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                         </div>
                     </div>
 
-                    {(returnResponse && (returnResponse?.points_added !== 0 || returnResponse?.rare_border_img)) && (
+                    {returnResponse && (
                         <>
                             <div className="text-center mt-4">
                                 <h5>{returnResponse?.message}</h5>
