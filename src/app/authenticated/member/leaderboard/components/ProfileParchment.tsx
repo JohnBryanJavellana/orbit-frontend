@@ -56,6 +56,7 @@ export default function ProfileParchment({ user, callbackFunction, nextStringAft
                                 </div>
                             </div>
                         </div>
+
                         <div className={`col-2 d-flex align-items-center justify-content-center`}>
                             <div className="w-100">
                                 {getRankAttribute(["ADMINISTRATOR"].includes(user.role) ? '∞' : ["SUPERADMIN"].includes(user.role) ? 'Ω' : user.total_points || 0, !isMobileViewPort)}
