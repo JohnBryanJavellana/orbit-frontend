@@ -134,7 +134,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_roulette_score`, {
                 score: score,
-                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 25 : null
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -217,7 +217,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
 
                         <div className={`spin-button-outer ${mustSpin || isFetching ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
                             <div className="spin-button-center text-center" onClick={handleSpinClick}>
-                                <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : userData?.total_points >= 5 ? 'SPIN AGAIN FOR 5 APs' : 'No APs found'}</span>
+                                <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'No APs found'}</span>
                             </div>
                         </div>
                     </div>
