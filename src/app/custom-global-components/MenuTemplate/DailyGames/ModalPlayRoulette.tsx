@@ -68,6 +68,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     const [isFetching, setIsFetching] = useState(true);
     const [prizeNumber, setPrizeNumber] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [spinAgain, setSpinAgain] = useState<boolean>(false);
     const { getToken } = useWebToken();
     const { urlWithApi, urlWithoutApi } = useSystemURLCon();
     const navigate = useRouter();
@@ -130,6 +131,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                 spinAudio.current.play().catch(e => console.log("Audio play blocked"));
             }
 
+            setSpinAgain(false);
             setReturnResponse(null);
             setPrizeNumber(selectedIndex);
             setShowConfetti(false);
@@ -206,6 +208,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                                 if (prize.option === "SPIN AGAIN") {
                                     setMustSpin(false);
                                     setIsPlaying(false);
+                                    setSpinAgain(true);
                                     return;
                                 }
 
@@ -233,7 +236,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
 
                         <div className={`spin-button-outer ${mustSpin || isFetching ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
                             <div className="spin-button-center text-center" onClick={handleSpinClick}>
-                                <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'No APs found'}</span>
+                                <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : spinAgain ? 'SPIN AGAIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'No APs found'}</span>
                             </div>
                         </div>
                     </div>
