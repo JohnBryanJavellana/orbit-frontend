@@ -1,7 +1,7 @@
 'use client';
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Confetti from 'react-confetti-boom';
 import useWebToken from "@/app/hooks/useWebToken";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
@@ -35,6 +35,19 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
     const [revealed, setRevealed] = useState(false);
     const [isPreRevealing, setIsPreRevealing] = useState(false);
     const [hasShuffled, setHasShuffled] = useState(false);
+    const spinAudio = useRef<HTMLAudioElement | null>(null);
+
+    useEffect(() => {
+        spinAudio.current = new Audio('/cup-shuffle-sound-effect.mp3');
+        spinAudio.current.loop = true;
+
+        return () => {
+            if (spinAudio.current) {
+                spinAudio.current.pause();
+                spinAudio.current = null;
+            }
+        };
+    }, []);
 
     const CheckForFreeDailySpin = async (isInitialLoad: boolean) => {
         try {
@@ -95,22 +108,31 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
 
         setIsPreRevealing(true);
 
+        if (spinAudio.current) {
+            spinAudio.current.currentTime = 0;
+            spinAudio.current.play().catch(e => console.log("Audio play blocked", e));
+        }
+
         setTimeout(() => {
             setIsPreRevealing(false);
             setTimeout(() => {
                 let shuffles = 0;
-                const maxShuffles = 15;
                 const shuffleSpeed = 150;
+                const maxShuffles = 67;
 
                 const interval = setInterval(() => {
                     setCupPositions(prev => [...prev].sort(() => Math.random() - 0.5));
-
                     shuffles++;
 
                     if (shuffles >= maxShuffles) {
                         clearInterval(interval);
                         setIsPlaying(false);
                         setHasShuffled(true);
+
+                        if (spinAudio.current) {
+                            spinAudio.current.pause();
+                            spinAudio.current.currentTime = 0;
+                        }
                     }
                 }, shuffleSpeed);
             }, 300);
@@ -122,7 +144,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
 
         setRevealed(true);
         setHasShuffled(false);
-        SubmitResult(String(cupId === ballLocation ? 10 : 0));
+        SubmitResult(String(cupId === ballLocation ? 40 : 0));
     };
 
     const handleClose = () => {
@@ -147,7 +169,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             body={
                 <div className="game-wrapper">
                     <div className="text-center mb-4">
-                        <h5>Find the ball to win <span className="gold-text">10 APs</span></h5>
+                        <h5>Find the ball to win <span className="gold-text">40 APs</span></h5>
                     </div>
 
                     <div className="game-area">
