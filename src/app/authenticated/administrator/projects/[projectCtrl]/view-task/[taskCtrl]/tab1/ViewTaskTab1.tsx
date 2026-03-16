@@ -79,7 +79,7 @@ export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: P
             {
                 isFetching
                     ? <div className="p-4">Loading ....</div>
-                    : <div className="card rounded-0 custom-bg elevation-0 mb-0" style={{ userSelect: 'none' }}>
+                    : <div className="card rounded-0 custom-bg elevation-0 mb-0">
 
                         {
                             !['COMPLETED'].includes(taskOverview?.status) && (taskOverview?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&

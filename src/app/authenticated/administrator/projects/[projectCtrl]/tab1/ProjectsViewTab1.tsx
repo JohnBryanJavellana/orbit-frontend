@@ -80,7 +80,7 @@ export default function ProjectsViewTab1({ projectCtrl, isFromNonAdmin = false }
                             />
                         }
 
-                        <div className="card rounded-0 custom-bg elevation-0 mb-0" style={{ userSelect: 'none' }}>
+                        <div className="card rounded-0 custom-bg elevation-0 mb-0">
                             {
                                 !['ABANDONED', 'COMPLETED'].includes(projectDetails?.status) && (projectDetails?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
                                 <div className="card-header border-0 py-1 pb-0">
