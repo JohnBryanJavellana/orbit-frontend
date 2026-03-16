@@ -78,7 +78,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_cup_shuffle_score`, {
                 score: score,
-                usingActualAPs: dailyFreeSpin === "TAKEN" ? 25 : null
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 15 : null
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -197,7 +197,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                                 {isPlaying || isPreRevealing || isFetching ? 'SHUFFLING...' :
                                     hasShuffled ? 'CHOOSE A CUP' :
                                         dailyFreeSpin === 'PENDING' ? 'FREE DAILY SHUFFLE' :
-                                            userData?.total_points >= 25 ? 'REPLAY FOR 25 APs' : 'INSUFFICIENT APs'}
+                                            userData?.total_points >= 15 ? 'REPLAY FOR 15 APs' : 'INSUFFICIENT APs'}
                             </div>
                         </div>
 
