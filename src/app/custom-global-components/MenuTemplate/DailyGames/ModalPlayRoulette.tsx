@@ -100,7 +100,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
         }
     };
 
-    const SubmitResultIfNotBokya = async (score: string) => {
+    const SubmitResult = async (score: string) => {
         try {
             setIsSubmitting(true);
 
@@ -125,7 +125,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             }
         } finally {
             await refreshUser();
-            await CheckForFreeDailySpin(true);
+            setDailyFreeSpin('TAKEN');
             setIsSubmitting(false);
         }
     }
@@ -168,7 +168,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
 
                                 setMustSpin(false);
                                 setIsPlaying(false);
-                                await SubmitResultIfNotBokya(isWin ? prize.option.replace(' Aura Points', '') : '0');
+                                await SubmitResult(isWin ? prize.option.replace(' Aura Points', '') : '0');
                             }}
                             outerBorderColor="#d4af37"
                             outerBorderWidth={8}
