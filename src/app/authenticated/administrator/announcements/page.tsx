@@ -12,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import ModalCreateOrUpdateAnnouncement from "./components/ModalCreateOrUpdateAnnouncement";
 import useDateFormat from "@/app/hooks/useDateFormat";
+import ModalRemoveDocument from "@/app/custom-global-components/ModalRemoveDocument/ModalRemoveDocument";
 
 export default function Announcements() {
     const { getToken, removeToken } = useWebToken();
@@ -110,6 +111,19 @@ export default function Announcements() {
                             setModalOpenId(row.id);
                             setModalOpenIndex(0);
                         }
+                    }, {
+                        'icon': 'delete',
+                        'url': '#',
+                        'data-toggle': 'modal',
+                        'data-target': `#remove_document_${row.id}`,
+                        'id': 'f',
+                        'textColor': 'danger',
+                        'label': 'Remove Announcement',
+                        'onClick': () => {
+                            setModalOpenData(row);
+                            setModalOpenId(row.id);
+                            setModalOpenIndex(1);
+                        }
                     }
                 ];
 
@@ -140,6 +154,22 @@ export default function Announcements() {
                 id={modalOpenId}
                 titleHeader={modalOpenData ? 'Update Announcement' : 'Create Announcement'}
                 httpMethod={modalOpenData ? 'UPDATE' : 'POST'}
+                callbackFunction={() => {
+                    GetAnnouncements(false);
+                    setModalOpenData(null);
+                    setModalOpenId(null);
+                    setModalOpenIndex(null);
+                }}
+            />
+        }
+
+        {
+            modalOpenIndex === 1 &&
+            <ModalRemoveDocument
+                apiSrc={`administrator/announcement/get_announcements/remove_announcement`}
+                id={modalOpenId}
+                titleHeader={'Remove Permission'}
+                message={`Are you sure you want to remove this announcement? This cannot be undone.`}
                 callbackFunction={() => {
                     GetAnnouncements(false);
                     setModalOpenData(null);
