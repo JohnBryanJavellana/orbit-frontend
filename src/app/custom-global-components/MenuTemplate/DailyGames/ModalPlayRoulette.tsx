@@ -31,7 +31,7 @@ const wheelData = [
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: '50 Aura Points', style: { backgroundColor: '#2a2a2a', textColor: '#ffffff' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
-    { option: '150 Aura Points', style: { backgroundColor: '#d4af37', textColor: '#000000' } },
+    { option: '75 Aura Points', style: { backgroundColor: '#d4af37', textColor: '#000000' } },
     { option: '0 Aura Point', style: { backgroundColor: '#1a1a1a', textColor: '#d4af37' } },
     { option: 'SPIN AGAIN', style: { backgroundColor: '#006400', textColor: '#ffffff' } },
     {
@@ -55,7 +55,7 @@ const weights = [
     12, // Index 8: 0 AP (12%)
     3,  // Index 9: 50 AP (3%)
     10, // Index 10: 0 AP (10%)
-    2,  // Index 11: 150 AP (2%)
+    2,  // Index 11: 75 AP (2%)
     5,  // Index 12: 0 AP (5%)
     8,  // Index 13: SPIN AGAIN (8%) - Increased for engagement
     2   // Index 14: RARE BORDER (2%)
