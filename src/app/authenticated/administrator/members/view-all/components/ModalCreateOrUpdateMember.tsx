@@ -322,21 +322,25 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                                 />
                             </FormControl>
 
-                            <label htmlFor="password" className='custom-label-color'>
-                                Password {httpMethod === 'POST' && <span className="text-danger">*</span>}
-                            </label>
+                            {
+                                httpMethod === "POST" && <>
+                                    <label htmlFor="password" className='custom-label-color'>
+                                        Password {httpMethod === 'POST' && <span className="text-danger">*</span>}
+                                    </label>
 
-                            <FormControl fullWidth sx={{ mb: 2 }}>
-                                <Input
-                                    id="password"
-                                    type="text"
-                                    className='custom-field-bg'
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    disableUnderline
-                                    autoComplete='off'
-                                />
-                            </FormControl>
+                                    <FormControl fullWidth sx={{ mb: 2 }}>
+                                        <Input
+                                            id="password"
+                                            type="text"
+                                            className='custom-field-bg'
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            disableUnderline
+                                            autoComplete='off'
+                                        />
+                                    </FormControl>
+                                </>
+                            }
 
                             <label htmlFor="bio" className='custom-label-color'>
                                 Bio <span className="text-danger">*</span>
