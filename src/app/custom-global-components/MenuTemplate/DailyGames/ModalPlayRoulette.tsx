@@ -191,7 +191,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             }
             body={
                 <>
-                    <div className={`roulette-container ${mustSpin ? "wheel-active-glow" : ""}`}>
+                    <div className={`roulette-container ${mustSpin ? "wheel-active-glow" : ""}`} style={{ userSelect: 'none' }}>
                         <Wheel
                             mustStartSpinning={mustSpin && !isFetching}
                             prizeNumber={prizeNumber}

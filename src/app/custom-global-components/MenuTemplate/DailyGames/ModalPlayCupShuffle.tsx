@@ -167,7 +167,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                 </div>
             }
             body={
-                <div className="game-wrapper">
+                <div className="game-wrapper" style={{ userSelect: 'none' }}>
                     <div className="text-center mb-4">
                         <h5>Find the ball to win <span className="gold-text">40 APs</span></h5>
                     </div>
