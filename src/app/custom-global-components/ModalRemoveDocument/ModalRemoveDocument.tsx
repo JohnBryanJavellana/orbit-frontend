@@ -6,6 +6,7 @@ import useWebToken from "@/app/hooks/useWebToken";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import LoadingPopup from "../LoadingPopup/LoadingPopup";
 
 interface ModalRemoveDocumentProps {
     apiSrc: string,
@@ -54,6 +55,8 @@ export default function ModalRemoveDocument({ apiSrc, id, message, titleHeader, 
 
     return (
         <>
+            {isProcessing && <LoadingPopup />}
+
             <ModalTemplate
                 id={`remove_document_${id}`}
                 size="md"
