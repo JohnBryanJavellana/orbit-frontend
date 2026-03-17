@@ -5,6 +5,7 @@ import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import { useEffect, useState } from "react";
 import ModalViewAnnouncement from "./components/ModalViewAnnouncement";
 import useGetNewAnnouncement from "@/app/hooks/useGetNewAnnouncement";
+import ViewUserContentSkeleton from "@/app/custom-global-components/CustomUserPill/components/ViewUserContentSkeleton";
 
 interface Props { }
 
@@ -35,7 +36,7 @@ export default function AdminDashboard({ }: Props) {
 
         {
             !userData
-                ? <p>Please wait...</p>
+                ? <ViewUserContentSkeleton />
                 : <div className="pt-3">
                     <ViewUserContent user={userData} />
                 </div>

@@ -215,22 +215,18 @@ export default function ViewTaskTab3({ projectCtrl, taskCtrl }: { projectCtrl: P
                 />
             }
 
-            {
-                isFetching
-                    ? <div className="p-4">Loading ....</div>
-                    : <div className="card rounded-0 custom-bg elevation-0 mb-0">
-                        <div className="card-body">
-                            <OrbitDatatable
-                                withExport
-                                progressPending={isFetching}
-                                columns={tableColumns}
-                                data={taskProgress}
-                                selectableRows={false}
-                                selectedRows={null}
-                            />
-                        </div>
-                    </div>
-            }
+            <div className="card rounded-0 custom-bg elevation-0 mb-0">
+                <div className="card-body">
+                    <OrbitDatatable
+                        withExport
+                        progressPending={isFetching}
+                        columns={tableColumns}
+                        data={taskProgress}
+                        selectableRows={false}
+                        selectedRows={null}
+                    />
+                </div>
+            </div>
         </>
     );
 }

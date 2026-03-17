@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ModalCreateOrUpdateTask from "../../../tab2/components/ModalCreateOrUpdateTask";
 import CustomUserPill from "@/app/custom-global-components/CustomUserPill/CustomUserPill";
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
+import ProjectContentSkeleton from "../../../tab1/ProjectContentSkeleton";
 
 export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: ParamValue, taskCtrl: ParamValue }) {
     const { getToken } = useWebToken();
@@ -78,7 +79,7 @@ export default function ViewTaskTab1({ projectCtrl, taskCtrl }: { projectCtrl: P
 
             {
                 isFetching
-                    ? <div className="p-4">Loading ....</div>
+                    ? <ProjectContentSkeleton />
                     : <div className="card rounded-0 custom-bg elevation-0 mb-0">
 
                         {

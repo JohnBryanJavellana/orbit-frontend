@@ -200,7 +200,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
 
             <div className="card rounded-0 custom-bg elevation-0 mb-0">
                 {
-                    !['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                    !isFetching && !['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
                     <div className="card-header pt-1 pb-0 border-0">
                         <div className="d-flex align-items-center justify-content-end">
                             <div>
@@ -222,7 +222,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                     </div>
                 }
 
-                <div className={`card-body ${!['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") && 'pt-0'}`}>
+                <div className={`card-body ${isFetching || ['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") ? 'pt-4' : 'pt-0'}`}>
                     <OrbitDatatable
                         withExport
                         progressPending={isFetching}

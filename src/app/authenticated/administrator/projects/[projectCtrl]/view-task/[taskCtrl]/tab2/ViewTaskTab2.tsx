@@ -204,44 +204,42 @@ export default function ViewTaskTab2({ projectCtrl, taskCtrl }: { projectCtrl: P
             }
 
             {
-                isFetching
-                    ? <div className="p-4">Loading ....</div>
-                    : <div className="card rounded-0 custom-bg elevation-0 mb-0">
-                        {
-                            !['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
-                            <div className="card-header pt-1 pb-0 border-0">
-                                <div className="d-flex align-items-center justify-content-end">
-                                    <div>
-                                        <Tooltip title="Add collaborator">
-                                            <IconButton disabled={['COMPLETED'].includes(currentTask?.status) || (currentTask?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
-                                                setModalOpenData({
-                                                    taskCtrl: taskCtrl,
-                                                    projectCtrl: projectCtrl
-                                                });
-                                                setModalOpenId(taskCollaborators?.id);
-                                                setModalOpenIndex(0);
-                                            }} data-target={`#add_collaborator_${taskCollaborators?.id}`} data-toggle="modal">
-                                                <AddIcon color='error' />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </div>
+                !isFetching && <div className="card rounded-0 custom-bg elevation-0 mb-0">
+                    {
+                        !['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                        <div className="card-header pt-1 pb-0 border-0">
+                            <div className="d-flex align-items-center justify-content-end">
+                                <div>
+                                    <Tooltip title="Add collaborator">
+                                        <IconButton disabled={['COMPLETED'].includes(currentTask?.status) || (currentTask?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                            setModalOpenData({
+                                                taskCtrl: taskCtrl,
+                                                projectCtrl: projectCtrl
+                                            });
+                                            setModalOpenId(taskCollaborators?.id);
+                                            setModalOpenIndex(0);
+                                        }} data-target={`#add_collaborator_${taskCollaborators?.id}`} data-toggle="modal">
+                                            <AddIcon color='error' />
+                                        </IconButton>
+                                    </Tooltip>
                                 </div>
-                                <hr className="style-two" />
                             </div>
-                        }
-
-                        <div className={`card-body ${!['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") && 'pt-0'}`}>
-                            <OrbitDatatable
-                                withExport
-                                progressPending={isFetching}
-                                columns={tableColumns}
-                                data={taskCollaborators}
-                                selectableRows={false}
-                                selectedRows={null}
-                            />
+                            <hr className="style-two" />
                         </div>
-                    </div>
+                    }
+                </div>
             }
+
+            <div className={`px-4 pb-4 ${isFetching || ['COMPLETED'].includes(currentTask?.status) && (currentTask?.creator_id === userData?.id || userData?.role === "SUPERADMIN") ? 'pt-4' : 'pt-0'}`}>
+                <OrbitDatatable
+                    withExport
+                    progressPending={isFetching}
+                    columns={tableColumns}
+                    data={taskCollaborators}
+                    selectableRows={false}
+                    selectedRows={null}
+                />
+            </div>
         </>
     );
 }
