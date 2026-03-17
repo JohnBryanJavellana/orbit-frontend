@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import ModalSubmitTodaysDocumentation from "@/app/authenticated/administrator/projects/[projectCtrl]/view-task/[taskCtrl]/tab4/components/ModalSubmitTodaysDocumentation";
+import Link from "next/link";
 
 interface ModalViewTaskPhotoDocumentationProps {
     data: any | null,
@@ -154,7 +155,9 @@ export default function ModalViewTaskPhotoDocumentation({ data, id, titleHeader,
                                                         ? documentation.uploaded_files.map((documentation: any, index: number) => (
                                                             <div className="card custom-bg rounded-0 custom-border-dark elevation-1" key={index}>
                                                                 <div className="card-body text-center">
-                                                                    <img src={`${urlWithoutApi}/documentation-files/${documentation.filename}`} className="img-fluid" />
+                                                                    <Link href={`${urlWithoutApi}/documentation-files/${documentation.filename}`} target="_blank">
+                                                                        <img src={`${urlWithoutApi}/documentation-files/${documentation.filename}`} className="img-fluid" />
+                                                                    </Link>
                                                                 </div>
                                                                 <div className="card-footer py-1 custom-top-border-dark text-left text-sm text-muted">
                                                                     Uploader: {`${documentation.uploader.first_name} ${documentation.uploader.middle_name} ${documentation.uploader.last_name} ${documentation.uploader.suffix ?? ''}`} • {FormatDatetimeToHumanReadable(documentation.created_at, true)}
