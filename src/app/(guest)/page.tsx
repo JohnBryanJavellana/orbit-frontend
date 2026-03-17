@@ -8,6 +8,7 @@ import axios from 'axios';
 import useWebToken from '../hooks/useWebToken';
 import useSystemURLCon from '../hooks/useSystemURLCon';
 import Custombtn from '../custom-global-components/Custombtn';
+import LoadingPopup from '../custom-global-components/LoadingPopup/LoadingPopup';
 
 interface Props { }
 
@@ -46,6 +47,8 @@ export default function Login({ }: Props) {
     }
 
     return <>
+        {isSubmitting && <LoadingPopup />}
+
         <div className="row d-flex align-items-center justify-content-center">
             <div className="col-xl-5">
                 <div className="card text-dark rounded-0 shadow custom-bg custom-border-dark">
