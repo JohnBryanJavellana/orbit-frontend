@@ -25,7 +25,8 @@
     "react-confetti-boom": "^2.0.1",
     "react-custom-roulette": "^1.4.1",
     "react-data-table-component": "^7.7.0",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-password-checklist": "^1.8.1"
   },
   "devDependencies": {
     "@types/jquery": "^4.0.0",
