@@ -13,9 +13,10 @@ import { Divider, FormControl, IconButton, Input, Tooltip } from "@mui/material"
 import axios from "axios";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 
 interface ModalViewTaskProgressProps {
     data: any | null,
@@ -33,16 +34,13 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [taskProgress, setProjectTaskProgress] = useState<any | null>([]);
-    const [modalOpenData, setModalOpenData] = useState<any>(null);
-    const [modalOpenId, setModalOpenId] = useState<null | number>(null);
-    const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
     const [searchText, setSearchText] = useState<string>('');
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(12);
-    const isMobileViewPort = useDetectMobileViewport();
-    const { getRankAttribute } = useGetRankAttribute();
-
     const [progress, setProgress] = useState<string>('');
+    const { GenerateBase64 } = usePhotoToBase64();
+    const [progressAttachments, setProgressAttachments] = useState<string[] | null>([]);
+    const fileRef = useRef<any>(null);
 
     const GetSpecificTaskProgress = async (isInitialLoad: boolean) => {
         try {
@@ -78,11 +76,14 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
         try {
             setIsSubmitting(true);
             const token = getToken('csrf-token');
+            const formData = new FormData();
 
-            const response = await axios.post(`${urlWithApi}/member/projects/get_assigned_projects/submit_progress`, {
-                taskCtrl: data?.taskCtrl,
-                activity: progress
-            }, {
+            formData.append('taskCtrl', data?.taskCtrl);
+            formData.append('activity', progress);
+
+            progressAttachments?.forEach(r => formData.append('attachments[]', r));
+
+            const response = await axios.post(`${urlWithApi}/member/projects/get_assigned_projects/submit_progress`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -99,6 +100,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
             }
         } finally {
             setProgress('');
+            setProgressAttachments([]);
             setIsSubmitting(false);
             GetSpecificTaskProgress(false);
         }
@@ -157,8 +159,9 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                 ? <p>Please wait...</p>
                                 : <>
                                     <div className="bg-dark p-3 mb-2 elevation-1">
-                                        <label htmlFor="bio" className='custom-label-color'>
-                                            Progress <span className="text-danger">*</span>
+                                        <label htmlFor="bio" className='custom-label-color d-flex justify-content-between'>
+                                            <span>Progress <span className="text-danger">*</span></span>
+                                            <small className="text-muted">{progressAttachments?.length || 0} / 5 Attachments</small>
                                         </label>
 
                                         <CustomWYSIWYG
@@ -167,7 +170,76 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                             placeholder="Enter your task progress"
                                         />
 
-                                        <button className="btn btn-danger custom-bg-maroon elevation-1 text-white custom-border-dark mt-2 btn-block" onClick={() => SubmitTaskProgress()} disabled={!progress || isSubmitting}>Submit</button>
+                                        <div className="text-sm mt-3 mb-2">Attachment <span className="text-muted">(optional)</span></div>
+                                        <div className="d-flex flex-wrap gap-2">
+                                            {progressAttachments?.map((src, index) => {
+                                                const isImage = src.startsWith('data:image/');
+
+                                                return (
+                                                    <div key={index} className="position-relative mr-1 mb-1 elevation-2 custom-border-dark rounded overflow-hidden" style={{ width: '80px', height: '80px', background: '#2a2a2a' }}>
+                                                        {isImage ? (
+                                                            <img src={src} alt="attachment" className="w-100 h-100 object-fit-cover" />
+                                                        ) : (
+                                                            <div className="w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                                                <i className="fas fa-file-alt text-info mb-1"></i>
+                                                                <small style={{ fontSize: '8px' }} className="text-white">DOCUMENT</small>
+                                                            </div>
+                                                        )}
+                                                        <button
+                                                            className="btn btn-sm btn-danger position-absolute p-0 d-flex align-items-center justify-content-center"
+                                                            style={{ top: '2px', right: '2px', width: '18px', height: '18px', fontSize: '10px', borderRadius: '50%' }}
+                                                            onClick={() => setProgressAttachments(prev => prev?.filter((_, i) => i !== index) || [])}
+                                                        >
+                                                            <i className="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
+
+                                            {(progressAttachments?.length || 0) < 5 && (
+                                                <div
+                                                    className={`d-flex align-items-center justify-content-center custom-border-dark rounded cursor-pointer hover-opacity-75`}
+                                                    style={{ width: '80px', height: '80px', background: '#1a1a1a', borderStyle: 'dashed', cursor: 'pointer' }}
+                                                    onClick={() => fileRef.current?.click()}
+                                                >
+                                                    <i className="fas fa-plus text-muted"></i>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <input
+                                            type="file"
+                                            className="sr-only"
+                                            accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                                            ref={fileRef}
+                                            onChange={async (e) => {
+                                                const target = e.target as HTMLInputElement;
+                                                if (target.files && target.files[0]) {
+                                                    if ((progressAttachments?.length || 0) >= 5) return;
+
+                                                    if (target.files[0].size > 10 * 1024 * 1024) {
+                                                        alert("File is too large. Max limit is 10MB.");
+                                                        return;
+                                                    }
+
+                                                    await GenerateBase64(target.files[0]).then((base64: any) => {
+                                                        setProgressAttachments((prev: string[] | null) => {
+                                                            const currentImages = prev || [];
+                                                            return [...currentImages, base64];
+                                                        });
+                                                    });
+                                                    target.value = '';
+                                                }
+                                            }}
+                                        />
+
+                                        <button
+                                            className="btn btn-danger custom-bg-maroon elevation-1 text-white custom-border-dark mt-3 btn-block"
+                                            onClick={() => SubmitTaskProgress()}
+                                            disabled={!progress || isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Processing...' : 'Submit Progress'}
+                                        </button>
                                     </div>
 
                                     <div className="bg-dark p-3 elevation-1">
@@ -201,8 +273,44 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
 
                                                                         <div className="col-10">
                                                                             <div className="text-bold">{`${progress.initiator.user.first_name} ${progress.initiator.user.middle_name} ${progress.initiator.user.last_name} ${progress.initiator.user.suffix ?? ''}`}</div>
-                                                                            <div dangerouslySetInnerHTML={{ __html: progress.activity }} />
-                                                                            <div className="mt-1 text-muted">{FormatDatetimeToHumanReadable(progress.created_at, true)} • {progress.status}</div>
+                                                                            <div className="text-sm" dangerouslySetInnerHTML={{ __html: progress.activity }} />
+
+                                                                            {progress.progress_attachments.length > 0 && (
+                                                                                <div className="d-flex flex-wrap gap-2 mb-2">
+                                                                                    {progress.progress_attachments?.map((attachment: any, index: number) => {
+                                                                                        const isImage = /\.(jpg|jpeg|png|webp|avif|gif)$/i.test(attachment.filename);
+                                                                                        const fileUrl = `${urlWithoutApi}/progress-attachments/${attachment.filename}`;
+
+                                                                                        return (
+                                                                                            <a
+                                                                                                href={fileUrl}
+                                                                                                target="_blank"
+                                                                                                rel="noreferrer"
+                                                                                                key={index}
+                                                                                                className="position-relative mr-1 mb-1 elevation-2 custom-border-dark rounded overflow-hidden d-flex align-items-center justify-content-center"
+                                                                                                style={{ width: '80px', height: '80px', background: '#2a2a2a' }}
+                                                                                            >
+                                                                                                {isImage ? (
+                                                                                                    <img
+                                                                                                        src={fileUrl}
+                                                                                                        alt="attachment"
+                                                                                                        className="w-100 h-100 object-fit-cover"
+                                                                                                    />
+                                                                                                ) : (
+                                                                                                    <div className="text-center">
+                                                                                                        <i className="fas fa-file-alt text-info fa-2x"></i>
+                                                                                                        <div style={{ fontSize: '9px', marginTop: '2px' }} className="text-white">
+                                                                                                            {attachment.filename.split('.').pop()?.toUpperCase()}
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </a>
+                                                                                        );
+                                                                                    })}
+                                                                                </div>
+                                                                            )}
+
+                                                                            <div className="mt-1 text-muted text-sm">{FormatDatetimeToHumanReadable(progress.created_at, true)} • {progress.status}</div>
 
                                                                             {
                                                                                 progress.remarks &&
@@ -232,7 +340,9 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                                         }}
 
                                                     />
-                                                </div> : <p>Task do not have progress yet.</p>
+                                                </div> : <div className="d-flex align-items-center text-sm justify-content-center px-4 pt-4 pb-3 text-muted">
+                                                    Task do not have progress yet. Submit now!
+                                                </div>
                                         }
                                     </div>
                                 </>
