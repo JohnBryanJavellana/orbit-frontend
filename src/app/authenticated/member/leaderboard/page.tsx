@@ -16,6 +16,7 @@ import './leaderboard.css';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import ModalViewLeaderboardGuide from "./components/ModalViewLeaderboardGuide";
 import ProfileParchment from "./components/ProfileParchment";
+import LeaderboardSkeleton from "./LeaderboardSkeleton";
 
 interface LeaderboardProp { }
 
@@ -83,7 +84,7 @@ export default function Leaderboard({ }: LeaderboardProp) {
         <>
             {
                 isFetching
-                    ? <p>Please wait...</p>
+                    ? <LeaderboardSkeleton />
                     : <>
                         {
                             modalOpenIndex === 2 &&
