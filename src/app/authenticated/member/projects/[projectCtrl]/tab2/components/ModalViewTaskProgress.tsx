@@ -79,7 +79,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
             const formData = new FormData();
 
             formData.append('taskCtrl', data?.taskCtrl);
-            formData.append('activity', data?.progress);
+            formData.append('activity', progress);
 
             progressAttachments?.forEach(r => formData.append('attachments[]', r));
 
@@ -309,7 +309,6 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                                                                     })}
                                                                                 </div>
                                                                             )}
-
 
                                                                             <div className="mt-1 text-muted text-sm">{FormatDatetimeToHumanReadable(progress.created_at, true)} • {progress.status}</div>
 
