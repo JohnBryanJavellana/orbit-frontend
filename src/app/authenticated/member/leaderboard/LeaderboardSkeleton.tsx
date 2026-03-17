@@ -20,7 +20,7 @@ export default function LeaderboardSkeleton() {
 
             {
                 Array.from(new Array(6)).map((_, index) => {
-                    return <div className="row px-2 mb-2">
+                    return <div className="row px-2 mb-2" key={index}>
                         <div className="col-xl-12">
                             <div className='row py-1 custom-bg custom-border-dark' key={index}>
                                 <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
