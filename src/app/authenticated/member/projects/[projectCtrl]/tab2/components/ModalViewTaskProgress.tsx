@@ -15,6 +15,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 
 interface ModalViewTaskProgressProps {
     data: any | null,
@@ -133,6 +134,8 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`view_task_progress_${id}`}
                 size={"lg"}
@@ -240,7 +243,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
                     </div>

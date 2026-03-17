@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 
 interface ModalModifyPointsProps {
     data: any | null,
@@ -66,6 +67,8 @@ export default function ModalModifyPoints({ data, id, titleHeader, callbackFunct
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`modal_modify_points_${id}`}
                 size={"md"}
@@ -138,7 +141,7 @@ export default function ModalModifyPoints({ data, id, titleHeader, callbackFunct
                 }
                 footer={
                     <>
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 

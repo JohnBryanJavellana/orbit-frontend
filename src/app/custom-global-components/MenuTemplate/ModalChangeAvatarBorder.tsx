@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import CustomTab from "../CustomTab/CustomTab";
 import Checkbox from '@mui/material/Checkbox';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
+import LoadingPopup from "../LoadingPopup/LoadingPopup";
 
 interface ModalChangeAvatarBorderProps {
     userBorderId: string,
@@ -152,6 +153,8 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`change_avatar_border_${id}`}
                 size={"md"}
@@ -226,11 +229,11 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type='button' className='btn btn-danger btn-sm elevation-1' disabled={isSubmitting} onClick={() => SetAsCurrentBorder()}>
+                        <button type='button' className='btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white' disabled={isSubmitting} onClick={() => SetAsCurrentBorder()}>
                             Save Changes
                         </button>
                     </div>

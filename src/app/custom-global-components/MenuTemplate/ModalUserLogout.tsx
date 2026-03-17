@@ -6,6 +6,7 @@ import useWebToken from "@/app/hooks/useWebToken";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import LoadingPopup from "../LoadingPopup/LoadingPopup";
 
 interface ModalUserLogoutProps {
     id: number | null,
@@ -52,6 +53,8 @@ export default function ModalUserLogout({ id, titleHeader, callbackFunction }: M
 
     return (
         <>
+            {isProcessing && <LoadingPopup />}
+
             <ModalTemplate
                 id={`logout_user_${id}`}
                 size="md"
@@ -77,11 +80,11 @@ export default function ModalUserLogout({ id, titleHeader, callbackFunction }: M
                     <div className="w-100 text-center">
                         <hr className="style-two" />
 
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => LogoutUser()} disabled={isProcessing} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => LogoutUser()} disabled={isProcessing} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             Proceed
                         </button>
                     </div>

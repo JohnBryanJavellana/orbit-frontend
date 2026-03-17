@@ -203,46 +203,43 @@ export default function ProjectsViewTab3({ projectCtrl }: { projectCtrl: ParamVa
             }
 
             {
-                isFetching
-                    ? <div className="p-4">Loading ....</div>
-                    : <div className="card rounded-0 custom-bg elevation-0 mb-0">
-                        {
-                            !['ABANDONED', 'COMPLETED'].includes(currentProject?.status) && (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
-                            <div className="card-header pt-1 pb-0 border-0">
-                                <div className="d-flex align-items-center justify-content-end">
-                                    <div>
-                                        <Tooltip title="Add collaborator">
-                                            <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(currentProject?.status) || (currentProject?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
-                                                setModalOpenData({
-                                                    ...taskCollaborators,
-                                                    projectCtrl: projectCtrl,
-                                                    trueData: true
-                                                });
-                                                setModalOpenId(taskCollaborators?.id);
-                                                setModalOpenIndex(0);
-                                            }} data-target={`#add_collaborator_${taskCollaborators?.id}`} data-toggle="modal">
-                                                <AddIcon color='error' />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </div>
+                !isFetching && <div className="card rounded-0 custom-bg elevation-0 mb-0">
+                    {
+                        !['ABANDONED', 'COMPLETED'].includes(currentProject?.status) && (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                        <div className="card-header pt-1 pb-0 border-0">
+                            <div className="d-flex align-items-center justify-content-end">
+                                <div>
+                                    <Tooltip title="Add collaborator">
+                                        <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(currentProject?.status) || (currentProject?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                            setModalOpenData({
+                                                ...taskCollaborators,
+                                                projectCtrl: projectCtrl,
+                                                trueData: true
+                                            });
+                                            setModalOpenId(taskCollaborators?.id);
+                                            setModalOpenIndex(0);
+                                        }} data-target={`#add_collaborator_${taskCollaborators?.id}`} data-toggle="modal">
+                                            <AddIcon color='error' />
+                                        </IconButton>
+                                    </Tooltip>
                                 </div>
-                                <hr className="style-two" />
                             </div>
-                        }
-
-
-                        <div className={`card-body ${!['ABANDONED', 'COMPLETED'].includes(currentProject?.status) && (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") && 'pt-0'}`}>
-                            <OrbitDatatable
-                                withExport
-                                progressPending={isFetching}
-                                columns={tableColumns}
-                                data={taskCollaborators}
-                                selectableRows={false}
-                                selectedRows={null}
-                            />
+                            <hr className="style-two" />
                         </div>
-                    </div>
+                    }
+                </div>
             }
+
+            <div className={`px-4 pb-4 ${isFetching || ['ABANDONED', 'COMPLETED'].includes(currentProject?.status) && (currentProject?.creator_id === userData?.id || userData?.role === "SUPERADMIN") ? 'pt-4' : 'pt-0'}`}>
+                <OrbitDatatable
+                    withExport
+                    progressPending={isFetching}
+                    columns={tableColumns}
+                    data={taskCollaborators}
+                    selectableRows={false}
+                    selectedRows={null}
+                />
+            </div>
         </>
     );
 }

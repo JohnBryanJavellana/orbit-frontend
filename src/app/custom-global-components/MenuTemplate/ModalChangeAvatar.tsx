@@ -11,6 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
+import LoadingPopup from "../LoadingPopup/LoadingPopup";
 
 interface ModalChangeAvatarProps {
     userCustomAvatarId?: number | null,
@@ -111,6 +112,8 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`change_avatar_${id}`}
                 size={"md"}
@@ -240,11 +243,11 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type='button' className='btn btn-danger btn-sm elevation-1' disabled={isFetching || isSubmitting || !avatarId} onClick={() => SetAsCurrentAvatar(avatarId === "MAIN", "")}>
+                        <button type='button' className='btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white' disabled={isFetching || isSubmitting || !avatarId} onClick={() => SetAsCurrentAvatar(avatarId === "MAIN", "")}>
                             Save Changes
                         </button>
                     </div>

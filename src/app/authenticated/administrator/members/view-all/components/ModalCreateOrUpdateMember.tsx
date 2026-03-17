@@ -15,6 +15,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 
 interface ModalCreateOrUpdateMemberProps {
     data: any | null,
@@ -109,6 +110,8 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`create_or_update_member_${id}`}
                 size={"md"}
@@ -351,7 +354,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 

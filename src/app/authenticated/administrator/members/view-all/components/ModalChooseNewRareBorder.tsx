@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 
 interface ModalChooseNewRareBorderProps {
     data: any,
@@ -110,6 +111,8 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
                 bodyClassName="bg-dark"
                 body={
                     <>
+                        {isSubmitting && <LoadingPopup />}
+
                         {
                             isFetching
                                 ? <div>Please wait...</div>
@@ -149,11 +152,11 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
                 }
                 footer={
                     <>
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type='button' className='btn btn-danger btn-sm elevation-1' disabled={isSubmitting || borderId.length <= 0} onClick={() => AddToBorderInv()}>
+                        <button type='button' className='btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white' disabled={isSubmitting || borderId.length <= 0} onClick={() => AddToBorderInv()}>
                             Save Changes
                         </button>
                     </>

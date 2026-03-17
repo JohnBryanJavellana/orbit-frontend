@@ -14,6 +14,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 
 interface ModalCreateOrUpdateAnnouncementProps {
     data: any | null,
@@ -84,6 +85,8 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`create_or_update_announcement_${id}`}
                 size={"md"}
@@ -180,11 +183,11 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => SubmitAnnnouncement()} disabled={!announcement || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => SubmitAnnnouncement()} disabled={!announcement || isSubmitting} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
                     </div>

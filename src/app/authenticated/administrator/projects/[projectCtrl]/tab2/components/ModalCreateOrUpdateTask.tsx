@@ -1,5 +1,6 @@
 'use client';
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 /* global $ */
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
@@ -85,6 +86,8 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`task_${id}`}
                 size={"md"}
@@ -193,11 +196,11 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
                     <div className="w-100 text-center">
                         <hr className="style-two" />
 
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => SubmitTask()} disabled={!name || !taskProgressPoints || !taskCompletionPoints || !description || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => SubmitTask()} disabled={!name || !taskProgressPoints || !taskCompletionPoints || !description || isSubmitting} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
                     </div>

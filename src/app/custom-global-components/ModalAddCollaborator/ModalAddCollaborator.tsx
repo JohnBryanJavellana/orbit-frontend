@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Autocomplete, Box, TextField } from "@mui/material";
 import CustomAvatarWithOnlineBadge from "../CustomAvatarWithOnlineBadge/CustomAvatarWithOnlineBadge";
+import LoadingPopup from "../LoadingPopup/LoadingPopup";
 
 interface ModalAddCollaboratorProps {
     data: any | null,
@@ -110,6 +111,8 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`add_collaborator_${id}`}
                 size={collaborator ? "xl" : 'md'}
@@ -178,11 +181,11 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => AddFutureCollaborator()} disabled={!collaborator || isFetching} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => AddFutureCollaborator()} disabled={!collaborator || isFetching} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             Add
                         </button>
                     </div>

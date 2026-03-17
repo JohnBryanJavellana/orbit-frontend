@@ -1,5 +1,6 @@
 'use client';
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
@@ -66,6 +67,8 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`update_progress_status_${id}`}
                 size={"md"}
@@ -137,11 +140,11 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
                 }
                 footer={
                     <>
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => UpdateProgressStatus()} disabled={!status || (status === 'DECLINED' && !remarks)} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => UpdateProgressStatus()} disabled={!status || (status === 'DECLINED' && !remarks)} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             Update
                         </button>
                     </>

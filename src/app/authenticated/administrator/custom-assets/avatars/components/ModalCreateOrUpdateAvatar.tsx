@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
+import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 
 interface ModalCreateOrUpdateAvatarProps {
     data: any | null,
@@ -67,6 +68,8 @@ export default function ModalCreateOrUpdateAvatar({ data, id, titleHeader, httpM
 
     return (
         <>
+            {isSubmitting && <LoadingPopup />}
+
             <ModalTemplate
                 id={`create_or_update_avatar_${id}`}
                 size={"md"}
@@ -108,11 +111,11 @@ export default function ModalCreateOrUpdateAvatar({ data, id, titleHeader, httpM
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => SubmitCustomAvatar()} disabled={!customAvatar || isSubmitting} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => SubmitCustomAvatar()} disabled={!customAvatar || isSubmitting} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             {httpMethod === 'POST' ? 'Submit' : 'Save Changes'}
                         </button>
                     </div>

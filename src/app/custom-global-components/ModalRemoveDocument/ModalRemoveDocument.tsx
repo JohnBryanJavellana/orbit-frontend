@@ -79,11 +79,11 @@ export default function ModalRemoveDocument({ apiSrc, id, message, titleHeader, 
                     <div className="w-100 text-center">
                         <hr className="style-two" />
 
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 
-                        <button type="button" onClick={() => RemoveDocument()} disabled={isProcessing} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => RemoveDocument()} disabled={isProcessing} className={`btn btn-danger btn-sm elevation-1 btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             Proceed
                         </button>
                     </div>
