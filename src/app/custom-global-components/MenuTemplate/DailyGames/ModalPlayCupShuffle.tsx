@@ -78,7 +78,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_cup_shuffle_score`, {
                 score: score,
-                usingActualAPs: dailyFreeSpin === "TAKEN" ? 25 : null
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -144,7 +144,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
 
         setRevealed(true);
         setHasShuffled(false);
-        SubmitResult(String(cupId === ballLocation ? 40 : 0));
+        SubmitResult(String(cupId === ballLocation ? 10 : 0));
     };
 
     const handleClose = () => {
@@ -169,7 +169,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             body={
                 <div className="game-wrapper" style={{ userSelect: 'none' }}>
                     <div className="text-center mb-4">
-                        <h5>Find the ball to win <span className="gold-text">40 APs</span></h5>
+                        <h5>Find the ball to win <span className="gold-text">10 APs</span></h5>
                     </div>
 
                     <div className="game-area">
@@ -197,7 +197,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                                 {isPlaying || isPreRevealing || isFetching ? 'SHUFFLING...' :
                                     hasShuffled ? 'CHOOSE A CUP' :
                                         dailyFreeSpin === 'PENDING' ? 'FREE DAILY SHUFFLE' :
-                                            userData?.total_points >= 25 ? 'REPLAY FOR 25 APs' : 'INSUFFICIENT APs'}
+                                            userData?.total_points >= 5 ? 'REPLAY FOR 5 APs' : 'INSUFFICIENT APs'}
                             </div>
                         </div>
 
