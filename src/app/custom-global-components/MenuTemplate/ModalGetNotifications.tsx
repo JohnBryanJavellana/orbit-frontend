@@ -10,6 +10,7 @@ import axios from "axios";
 import useWebToken from "@/app/hooks/useWebToken";
 import { useRouter } from "next/navigation";
 import TablePaginationTemplate from "../CustomTablePaginationTemplate/CustomTablePaginationTemplate";
+import { Skeleton } from "@mui/material";
 
 interface ModalGetNotificationsProps {
     data: any | null,
@@ -82,7 +83,28 @@ export default function ModalGetNotifications({ data, id, titleHeader, callbackF
                     <>
                         {
                             isFetching
-                                ? <p>Please wait..</p>
+                                ? Array.from(new Array(3)).map((_, index) => {
+                                    return <div key={index}>
+                                        <div className="row px-2 mb-2">
+                                            <div className="col-xl-12">
+                                                <div className="row my-2">
+                                                    <div className="col-3 d-flex align-items-center justify-content-center">
+                                                        <Skeleton variant='circular' animation="wave" height={50} width={50} />
+                                                    </div>
+                                                    <div className="col-9 text-sm pt-2">
+                                                        <div className="text-muted">
+                                                            <Skeleton variant='rounded' animation="wave" height={20} width={'100%'} />
+                                                            <Skeleton variant='rounded' className="mt-2" animation="wave" height={20} width={'20%'} />
+                                                        </div>
+                                                        <div className="mt-2 text-muted"><Skeleton variant='rounded' animation="wave" height={20} width={'100%'} /></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {index < 2 && <hr className="style-two mt-4" />}
+                                    </div>
+                                })
                                 : notifications.length > 0
                                     ? <>
                                         {
@@ -125,7 +147,9 @@ export default function ModalGetNotifications({ data, id, titleHeader, callbackF
                                             />
                                         </div>
                                     </>
-                                    : <p>No notifications found.</p>
+                                    : <div className="d-flex align-items-center justify-content-center px-4 pt-4 pb-3 text-muted">
+                                        No notifications found.
+                                    </div>
                         }
                     </>
                 }
