@@ -1,6 +1,6 @@
 'use client';
 
-import { AppBar, Box, Toolbar, IconButton, Container, Tooltip, Avatar, Menu, MenuItem, Typography } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Container, Tooltip, Avatar, Menu, MenuItem, Typography, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -18,6 +18,8 @@ import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
 import ModalChangeAvatar from './ModalChangeAvatar';
 import ModalGetDailyActivities from './ModalGetDailyActivities';
 import ModalUserLogout from './ModalUserLogout';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import ModalGetNotifications from './ModalGetNotifications';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -29,6 +31,8 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
     const [modalOpenId, setModalOpenId] = useState<null | number>(null);
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
     const { getToken, removeToken } = useWebToken();
+    const [hasUnreadNotifications, setHasUnreadNotifications] = useState<boolean>(false);
+    const navigate = useRouter();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         if (anchorElNav) {
@@ -49,6 +53,38 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const GetNotifications = async () => {
+        try {
+            const token = getToken('csrf-token');
+            const response = await axios.get(`${urlWithApi}/administrator/notification/notification/check_ishas_unread_notifications`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            setHasUnreadNotifications(response.data.notifications);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 500) {
+                    navigate.push('/access-denied');
+                }
+            }
+        } finally { }
+    }
+
+    useEffect(() => {
+        if (userData) {
+            let intervalId: any;
+            intervalId = setInterval(() => { GetNotifications(); }, 5000);
+
+            return () => {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
+            };
+        }
+    }, [userData]);
 
     useEffect(() => {
         let intervalId: any;
@@ -186,6 +222,21 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
+                modalOpenIndex === 6 &&
+                <ModalGetNotifications
+                    data={modalOpenData}
+                    id={modalOpenId}
+                    titleHeader={'Notifications'}
+                    callbackFunction={(e) => {
+                        refreshUser();
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+                    }}
+                />
+            }
+
+            {
                 !userData
                     ? <p className='p-4'>Please wait...</p>
                     : <>
@@ -229,8 +280,21 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                     </Box>
 
                                     <Box sx={{ flexGrow: 0 }}>
+                                        <Tooltip title="Open notifications">
+                                            <IconButton onClick={() => {
+                                                handleCloseUserMenu();
+                                                setModalOpenData(null);
+                                                setModalOpenId(userData.id);
+                                                setModalOpenIndex(6);
+                                            }} data-toggle="modal" data-target={`#get_notifications_${userData?.id}`}>
+                                                <Badge color="error" variant="dot" invisible={hasUnreadNotifications === false}>
+                                                    <NotificationsNoneIcon color='inherit' />
+                                                </Badge>
+                                            </IconButton>
+                                        </Tooltip>
+
                                         <Tooltip title="Play Games">
-                                            <Link href={'#'} className='mr-3 play_daily_games' onClick={() => {
+                                            <Link href={'#'} className='mr-4 ml-3 play_daily_games' onClick={() => {
                                                 handleCloseUserMenu();
                                                 setModalOpenData(null);
                                                 setModalOpenId(userData.id);
