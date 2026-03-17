@@ -354,7 +354,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 

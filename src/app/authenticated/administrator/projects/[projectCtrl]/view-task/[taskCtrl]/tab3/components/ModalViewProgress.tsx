@@ -72,7 +72,7 @@ export default function ModalViewProgress({ data, id, titleHeader, httpMethod, c
                 }
                 footer={
                     <>
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
                     </>

@@ -134,7 +134,7 @@ export default function ModalGetNotifications({ data, id, titleHeader, callbackF
                     <div className="w-100 text-center">
                         <hr className="style-two" />
 
-                        <button type='button' disabled={isFetching} className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' disabled={isFetching} className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
                     </div>

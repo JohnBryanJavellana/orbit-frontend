@@ -141,7 +141,7 @@ export default function ModalModifyPoints({ data, id, titleHeader, callbackFunct
                 }
                 footer={
                     <>
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 

@@ -152,7 +152,7 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
                 }
                 footer={
                     <>
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 

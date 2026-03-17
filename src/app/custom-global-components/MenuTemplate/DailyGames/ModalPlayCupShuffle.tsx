@@ -221,7 +221,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             footer={
                 <div className="w-100 text-center">
                     <hr className="style-two" />
-                    <button type='button' disabled={isPlaying || isSubmitting || isFetching || isPreRevealing} className='btn btn-dark btn-sm mr-1' onClick={handleClose}>
+                    <button type='button' disabled={isPlaying || isSubmitting || isFetching || isPreRevealing} className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={handleClose}>
                         CLOSE
                     </button>
                 </div>

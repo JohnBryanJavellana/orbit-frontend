@@ -196,7 +196,7 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
                     <div className="w-100 text-center">
                         <hr className="style-two" />
 
-                        <button type='button' className='btn btn-dark btn-sm mr-1' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
 

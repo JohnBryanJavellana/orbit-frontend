@@ -243,7 +243,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                 footer={
                     <div className="w-100 text-center">
                         <hr className="style-two" />
-                        <button type='button' className='btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white' onClick={() => handleClose()}>
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
                             Close
                         </button>
                     </div>

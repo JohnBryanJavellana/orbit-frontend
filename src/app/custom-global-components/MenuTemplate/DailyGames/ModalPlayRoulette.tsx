@@ -276,7 +276,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             footer={
                 <div className="w-100 text-center">
                     <hr className="style-two" />
-                    <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm' onClick={handleClose} >
+                    <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm custom-border-dark' onClick={handleClose} >
                         Close
                     </button >
                 </div>
