@@ -122,7 +122,7 @@ export default function ResetPassword({ }: PageProps) {
                                     </FormControl>
 
                                     <label htmlFor="confirm-password" className='custom-label-color'>
-                                        confirm Password <span className="text-danger">*</span>
+                                        Confirm Password <span className="text-danger">*</span>
                                     </label>
 
                                     <FormControl fullWidth sx={{ mb: 1 }}>

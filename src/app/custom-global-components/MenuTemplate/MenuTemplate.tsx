@@ -20,6 +20,7 @@ import ModalGetDailyActivities from './ModalGetDailyActivities';
 import ModalUserLogout from './ModalUserLogout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ModalGetNotifications from './ModalGetNotifications';
+import ModalChangePassword from './ModalChangePassword';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -237,6 +238,25 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
+                modalOpenIndex === 7 &&
+                <ModalChangePassword
+                    id={modalOpenId}
+                    titleHeader={'Change Password'}
+                    callbackFunction={(e) => {
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+
+                        if (e) {
+                            removeToken('csrf-token');
+                            removeToken('role-access');
+                            navigate.push('/');
+                        } else refreshUser();
+                    }}
+                />
+            }
+
+            {
                 !userData
                     ? <p className='p-4'>Please wait...</p>
                     : <>
@@ -363,6 +383,15 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 setModalOpenIndex(2);
                                             }} data-toggle="modal" data-target={`#change_avatar_border_${userData?.id}`}>
                                                 <Typography className='text-sm' sx={{ textAlign: 'left' }}>Change Avatar Border</Typography>
+                                            </MenuItem>
+
+                                            <MenuItem className='custom-bottom-border-dark' onClick={() => {
+                                                handleCloseUserMenu();
+                                                setModalOpenData(userData);
+                                                setModalOpenId(userData.id);
+                                                setModalOpenIndex(7);
+                                            }} data-toggle="modal" data-target={`#change_password_${userData?.id}`}>
+                                                <Typography className='text-sm' sx={{ textAlign: 'left' }}>Change Password</Typography>
                                             </MenuItem>
 
                                             {
