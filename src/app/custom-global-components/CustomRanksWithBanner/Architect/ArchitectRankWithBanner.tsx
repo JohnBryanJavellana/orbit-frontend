@@ -1,3 +1,4 @@
+import PreloadImage from '../../PreloadImage/PreloadImage';
 import './ArchitectRankWithBanner.css';
 
 interface ArchitectRankWithBannerProps {
@@ -9,7 +10,14 @@ export default function ArchitectRankWithBanner({ height = 50, width = 50 }: Arc
     return (
         <>
             <div className="d-flex" id="architect-container">
-                <img src="/system-images/ranks/5._ARCHITECT_v1.png" id="architect-rank" className="img-fluid" alt="" />
+                <PreloadImage
+                    id="architect-rank"
+                    src={`/system-images/ranks/5._ARCHITECT_v1.png`}
+                    height={'100%'}
+                    width={'100%'}
+                    isRounded={false}
+                    className="img-fluid"
+                />
             </div>
         </>
     );

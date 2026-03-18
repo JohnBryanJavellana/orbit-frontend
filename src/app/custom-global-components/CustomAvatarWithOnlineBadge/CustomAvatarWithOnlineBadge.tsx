@@ -2,6 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import './CustomAvatarWithOnlineBadge.css';
 import useSystemURLCon from '@/app/hooks/useSystemURLCon';
+import PreloadImage from '../PreloadImage/PreloadImage';
 
 interface CustomAvatarWithOnlineBadgeProps {
     height?: any;
@@ -37,12 +38,12 @@ export default function CustomAvatarWithOnlineBadge({
                 height: height * 1.1,
             }}
         >
-            <Avatar
-                alt="User Profile"
+            <PreloadImage
                 src={finalUrlSrc}
-                sx={{
-                    width: width,
-                    height: height,
+                height={height}
+                width={width}
+                isRounded
+                preStyles={{
                     zIndex: 1,
                     backgroundColor: '#1a1a1a',
                     border: '2px solid transparent'

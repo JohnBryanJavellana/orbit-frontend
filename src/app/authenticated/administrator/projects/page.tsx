@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import ModalCreateOrUpdateProject from "./components/ModalCreateOrUpdateProject";
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 
 export default function Projects() {
     const { getToken, removeToken } = useWebToken();
@@ -85,12 +86,14 @@ export default function Projects() {
 
                                 return (
                                     <Tooltip key={index} title={name} arrow>
-                                        <Avatar
-                                            alt={name}
-                                            src={finalUrlSrc ? finalUrlSrc : undefined}
-                                        >
-                                            {!finalUrlSrc && name.charAt(0)}
-                                        </Avatar>
+                                        <PreloadImage
+                                            noWrapper={true}
+                                            src={finalUrlSrc ? finalUrlSrc : ''}
+                                            height={'25'}
+                                            width={'25'}
+                                            isRounded
+                                            avatarAltInside={!finalUrlSrc ? member.user.first_name.charAt(0) : undefined}
+                                        />
                                     </Tooltip>
                                 );
                             })

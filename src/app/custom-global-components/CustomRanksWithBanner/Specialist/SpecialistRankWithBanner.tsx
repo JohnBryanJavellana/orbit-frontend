@@ -1,3 +1,4 @@
+import PreloadImage from '../../PreloadImage/PreloadImage';
 import './SpecialistRankWithBanner.css';
 
 interface SpecialistRankWithBannerProps {
@@ -9,7 +10,14 @@ export default function SpecialistRankWithBanner({ height = 50, width = 50 }: Sp
     return (
         <>
             <div className="d-flex" id="specialist-container">
-                <img loading='eager' src="/system-images/ranks/3._SPECIALIST_v1.png" id="specialist-rank" className="img-fluid" alt="" />
+                <PreloadImage
+                    id="specialist-rank"
+                    src={`/system-images/ranks/3._SPECIALIST_v1.png`}
+                    height={'100%'}
+                    width={'100%'}
+                    isRounded={false}
+                    className="img-fluid"
+                />
             </div>
         </>
     );
