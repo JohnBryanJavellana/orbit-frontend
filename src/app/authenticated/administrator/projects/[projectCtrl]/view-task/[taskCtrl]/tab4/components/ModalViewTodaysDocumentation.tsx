@@ -2,6 +2,7 @@
 /* global $ */
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 import useDateFormat from "@/app/hooks/useDateFormat";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import Link from "next/link";
@@ -46,7 +47,13 @@ export default function ModalViewTodaysDocumentation({ data, id, titleHeader, ca
                                     <div className="card custom-bg rounded-0 custom-border-dark elevation-1" key={index}>
                                         <div className="card-body text-center">
                                             <Link href={`${urlWithoutApi}/documentation-files/${documentation.filename}`} target="_blank">
-                                                <img src={`${urlWithoutApi}/documentation-files/${documentation.filename}`} className="img-fluid" />
+                                                <PreloadImage
+                                                    src={`${urlWithoutApi}/documentation-files/${documentation.filename}`}
+                                                    isRounded={false}
+                                                    height={'100%'}
+                                                    width={'100%'}
+                                                    className="img-fluid"
+                                                />
                                             </Link>
                                         </div>
                                         <div className="card-footer py-1 custom-top-border-dark text-left text-sm text-muted">

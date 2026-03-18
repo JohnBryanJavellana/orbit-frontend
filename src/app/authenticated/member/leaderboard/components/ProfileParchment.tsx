@@ -47,6 +47,7 @@ export default function ProfileParchment({ user, callbackFunction, nextStringAft
                                 srcShown={user.custom_avatar?.shown_avatar}
                             />
                         </div>
+
                         <div className={`col-${isMobileViewPort ? 6 : 8} d-flex align-items-center justify-content-center`}>
                             <div className="w-100 mt-1">
                                 <div className="text-bold text-truncate">{`${user.first_name} ${user.middle_name} ${user.last_name} ${user.suffix ?? ''}`}</div>

@@ -12,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import ModalCreateOrUpdateBorder from "./components/ModalCreateOrUpdateBorder";
 import ModalRemoveDocument from "@/app/custom-global-components/ModalRemoveDocument/ModalRemoveDocument";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 
 export default function Borders() {
     const { getToken, removeToken } = useWebToken();
@@ -51,7 +52,12 @@ export default function Borders() {
         {
             name: "Border",
             cell: (row: any) => <>
-                <img src={`${urlWithoutApi}/border-images/${row.filename}`} height={50} />
+                <PreloadImage
+                    src={`${urlWithoutApi}/border-images/${row.filename}`}
+                    height={'50px'}
+                    width={'50px'}
+                    isRounded={false}
+                />
             </>,
             sortable: true,
         },

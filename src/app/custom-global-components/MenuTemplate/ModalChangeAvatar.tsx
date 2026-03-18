@@ -13,6 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import LoadingPopup from "../LoadingPopup/LoadingPopup";
 import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
+import PreloadImage from "../PreloadImage/PreloadImage";
 
 interface ModalChangeAvatarProps {
     userCustomAvatarId?: number | null,
@@ -191,23 +192,22 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
                                                 <div style={{
                                                     width: '103px',
                                                     height: '103px',
-                                                    // --- ADD THESE TWO LINES ---
                                                     flexShrink: 0,
                                                     aspectRatio: '1 / 1',
-                                                    // ---------------------------
                                                     position: 'relative',
                                                     margin: '0 auto',
-                                                    overflow: 'hidden' // Keeps the circle clean
+                                                    overflow: 'hidden'
                                                 }} className="rounded-circle">
-                                                    <img
+                                                    <PreloadImage
                                                         src={`${urlWithoutApi}/user-images/${mainProfile.profile_picture}`}
-                                                        style={{
+                                                        height={'100%'}
+                                                        width={'100%'}
+                                                        preStyles={{
                                                             width: '100%',
                                                             height: '100%',
                                                             objectFit: 'cover',
                                                             display: 'block'
                                                         }}
-                                                        alt="Profile"
                                                     />
                                                 </div>
                                             </div>
@@ -241,13 +241,18 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
                                                             position: 'relative',
                                                             margin: '0 auto'
                                                         }}>
-                                                            <img src={`${urlWithoutApi}/custom-avatar-images/${a.filename}`} className="rounded-circle" style={{
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                position: 'relative',
-                                                                objectFit: 'cover',
-                                                                display: 'block'
-                                                            }} />
+                                                            <PreloadImage
+                                                                src={`${urlWithoutApi}/custom-avatar-images/${a.filename}`}
+                                                                height={'100%'}
+                                                                width={'100%'}
+                                                                preStyles={{
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    position: 'relative',
+                                                                    objectFit: 'cover',
+                                                                    display: 'block'
+                                                                }}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>

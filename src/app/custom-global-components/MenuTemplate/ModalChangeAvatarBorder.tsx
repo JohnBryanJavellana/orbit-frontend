@@ -12,6 +12,7 @@ import Checkbox from '@mui/material/Checkbox';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import LoadingPopup from "../LoadingPopup/LoadingPopup";
 import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
+import PreloadImage from "../PreloadImage/PreloadImage";
 
 interface ModalChangeAvatarBorderProps {
     userBorderId: string,
@@ -155,8 +156,13 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
 
                                                 </div>
 
-                                                <div className="card-body text-center">
-                                                    <img src={`${urlWithoutApi}/border-images/${border.border}`} height={150} />
+                                                <div className="card-body d-flex align-items-center justify-content-center">
+                                                    <PreloadImage
+                                                        src={`${urlWithoutApi}/border-images/${border.border}`}
+                                                        height={'150'}
+                                                        width={'150'}
+                                                        isRounded={false}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

@@ -1,5 +1,6 @@
 'use client';
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 import useDateFormat from "@/app/hooks/useDateFormat";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import { Divider } from "@mui/material";
@@ -78,10 +79,12 @@ export default function ModalViewProgress({ data, id, titleHeader, httpMethod, c
                                                 style={{ width: '80px', height: '80px', background: '#2a2a2a' }}
                                             >
                                                 {isImage ? (
-                                                    <img
+                                                    <PreloadImage
                                                         src={fileUrl}
-                                                        alt="attachment"
-                                                        className="w-100 h-100 object-fit-cover"
+                                                        height={'100%'}
+                                                        width={'100%'}
+                                                        isRounded={false}
+                                                        classNames="w-100 h-100 object-fit-cover"
                                                     />
                                                 ) : (
                                                     <div className="text-center">

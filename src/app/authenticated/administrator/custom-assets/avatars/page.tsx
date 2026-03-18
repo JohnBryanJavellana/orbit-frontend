@@ -12,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import ModalCreateOrUpdateAvatar from "./components/ModalCreateOrUpdateAvatar";
 import ModalRemoveDocument from "@/app/custom-global-components/ModalRemoveDocument/ModalRemoveDocument";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 
 export default function Avatars() {
     const { getToken, removeToken } = useWebToken();
@@ -51,7 +52,12 @@ export default function Avatars() {
         {
             name: "Avatar",
             cell: (row: any) => <>
-                <img src={`${urlWithoutApi}/custom-avatar-images/${row.filename}`} className="rounded-circle" height={50} />
+                <PreloadImage
+                    src={`${urlWithoutApi}/custom-avatar-images/${row.filename}`}
+                    height={'50px'}
+                    width={'50px'}
+                    isRounded
+                />
             </>,
             sortable: true,
         },

@@ -21,6 +21,7 @@ import ModalUserLogout from './ModalUserLogout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ModalGetNotifications from './ModalGetNotifications';
 import ModalChangePassword from './ModalChangePassword';
+import PreloadImage from '../PreloadImage/PreloadImage';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -264,7 +265,12 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                             <Container maxWidth="xl">
                                 <Toolbar disableGutters>
                                     <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 4 }}>
-                                        <img src="/system-images/f2eb6a1d-e5d2-45b5-8c5c-3458f944e97c.png" height={40} />
+                                        <PreloadImage
+                                            src={"/system-images/f2eb6a1d-e5d2-45b5-8c5c-3458f944e97c.png"}
+                                            height={'40'}
+                                            width={'40'}
+                                            isRounded={false}
+                                        />
                                     </Box>
 
                                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -314,19 +320,24 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                         </Tooltip>
 
                                         <Tooltip title="Play Games">
-                                            <Link href={'#'} className='mr-4 ml-3 play_daily_games' onClick={() => {
+                                            <IconButton className='mx-3' sx={{ p: 0 }} onClick={() => {
                                                 handleCloseUserMenu();
                                                 setModalOpenData(null);
                                                 setModalOpenId(userData.id);
                                                 setModalOpenIndex(4);
                                             }} data-toggle="modal" data-target={`#get_daily_activities_${userData?.id}`}>
-                                                <img src={`/system-images/play_now.gif`} height={50} />
-                                            </Link>
+                                                <PreloadImage isRounded={false} src={`/system-images/play_now.gif`} height={'50'} width={'50'} />
+                                            </IconButton>
                                         </Tooltip>
 
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <Avatar alt={`${userData?.first_name} ${userData?.last_name}`} className={'rounded-circle'} src={`${urlWithoutApi}/${userData.custom_avatar.shown_avatar === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${userData.custom_avatar.shown_avatar === "MAIN" ? userData.custom_avatar.profile_picture : userData.custom_avatar.custom_avatar.filename}`} />
+                                                <PreloadImage
+                                                    src={`${urlWithoutApi}/${userData.custom_avatar.shown_avatar === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${userData.custom_avatar.shown_avatar === "MAIN" ? userData.custom_avatar.profile_picture : userData.custom_avatar.custom_avatar.filename}`}
+                                                    height={'40'}
+                                                    width={'40'}
+                                                    isRounded
+                                                />
                                             </IconButton>
                                         </Tooltip>
 
