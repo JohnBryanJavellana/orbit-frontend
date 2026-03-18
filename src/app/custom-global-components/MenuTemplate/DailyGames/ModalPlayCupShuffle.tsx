@@ -122,17 +122,12 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
 
         setIsPreRevealing(true);
 
-        if (spinAudio.current) {
-            spinAudio.current.currentTime = 0;
-            spinAudio.current.play().catch(e => console.log("Audio play blocked", e));
-        }
-
         setTimeout(() => {
             setIsPreRevealing(false);
             setTimeout(() => {
                 let shuffles = 0;
-                const shuffleSpeed = 150;
-                const maxShuffles = 67;
+                const shuffleSpeed = 300;
+                const maxShuffles = 30;
 
                 const interval = setInterval(() => {
                     setCupPositions(prev => [...prev].sort(() => Math.random() - 0.5));
@@ -142,15 +137,10 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                         clearInterval(interval);
                         setIsPlaying(false);
                         setHasShuffled(true);
-
-                        if (spinAudio.current) {
-                            spinAudio.current.pause();
-                            spinAudio.current.currentTime = 0;
-                        }
                     }
                 }, shuffleSpeed);
             }, 300);
-        }, 1000);
+        }, 500);
     };
 
     const handleCupClick = (cupId: number) => {
