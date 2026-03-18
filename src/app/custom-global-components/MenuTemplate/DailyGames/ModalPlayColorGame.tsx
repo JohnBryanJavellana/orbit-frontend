@@ -29,6 +29,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [timeLeft, setTimeLeft] = useState(60);
     const [isGameOver, setIsGameOver] = useState(false);
+    const [isGameWon, setIsGameWon] = useState(false); // Added to track win state for overlay
     const [dailyFreeSpin, setDailyFreeSpin] = useState<string | 'PENDING' | 'TAKEN' | ''>('PENDING');
     const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
     const { getToken } = useWebToken();
@@ -40,12 +41,6 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
     const SubmitResult = async (score: string) => {
         try {
             setIsSubmitting(true);
-            setCallbackFunction({ callbackFunction: () => { } });
-            setMessageAlert({
-                message: null,
-                status: null
-            });
-
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_color_game_score`, {
                 score: score,
@@ -63,8 +58,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#play_cup_shuffle_${id}`).modal('hide');
-                    navigate.push('/access-denied')
+                    navigate.push('/access-denied');
                 };
             }
         } finally {
@@ -81,13 +75,9 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
             const response = await axios.get(`${urlWithApi}/member/daily-activities/daily-activities/get_daily_activities`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
             setDailyFreeSpin(response.data.activities.colorGame);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status !== 500) alert(error.response?.data?.message);
-                else navigate.push('/access-denied');
-            }
+            console.error(error);
         } finally {
             setIsFetching(false);
         }
@@ -97,10 +87,10 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         if (userData) CheckForFreeDailySpin(true);
     }, [userData]);
 
+    // Timer logic
     useEffect(() => {
         let timer: NodeJS.Timeout;
-
-        if (timeLeft > 0 && isPlaying && !isGameOver) {
+        if (timeLeft > 0 && isPlaying && !isGameOver && !isGameWon) {
             timer = setTimeout(() => setTimeLeft(prev => prev - 1), 1000);
         } else if (timeLeft === 0 && isPlaying) {
             setIsGameOver(true);
@@ -108,18 +98,16 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
             SubmitResult('0');
         }
         return () => clearTimeout(timer);
-    }, [timeLeft, isPlaying, isGameOver]);
+    }, [timeLeft, isPlaying, isGameOver, isGameWon]);
 
+    // Win condition check
     useEffect(() => {
         if (cards.length > 0 && cards.every(card => card.isMatched)) {
             setIsPlaying(false);
-            handleWin();
+            setIsGameWon(true);
+            SubmitResult('10');
         }
     }, [cards]);
-
-    const handleWin = () => {
-        SubmitResult('10');
-    };
 
     const initializeGame = useCallback(() => {
         const deck = [...COLORS, ...COLORS]
@@ -136,9 +124,11 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         setFlippedCards([]);
         setTimeLeft(60);
         setIsGameOver(false);
+        setIsGameWon(false);
         setIsPlaying(false);
         setIsProcessing(true);
 
+        // Preview Phase
         setTimeout(() => {
             setCards(currentCards =>
                 currentCards.map(card => ({ ...card, isFlipped: false }))
@@ -181,7 +171,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                 setCards(newCards);
                 setFlippedCards([]);
                 setIsProcessing(false);
-            }, 800); // Slightly faster flip back for better UX
+            }, 800);
         }
     };
 
@@ -192,6 +182,9 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
 
     const percentageRemaining = (timeLeft / 60) * 100;
     const isCritical = timeLeft <= 5;
+
+    // Logic for showing the overlay
+    const showOverlay = !isPlaying && !isProcessing && (cards.length === 0 || isGameOver || isGameWon || (!isGameOver && !isGameWon && !cards.some(c => c.isFlipped)));
 
     return (
         <ModalTemplate
@@ -231,7 +224,11 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                     <div className="game-grid-wrapper" style={{ position: 'relative' }}>
                         <div className="game-grid">
                             {cards.map((card) => (
-                                <div key={card.id} className={`color-card ${card.isFlipped ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`} onClick={() => handleFlip(card.id)}>
+                                <div
+                                    key={card.id}
+                                    className={`color-card ${card.isFlipped || card.isMatched ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`}
+                                    onClick={() => handleFlip(card.id)}
+                                >
                                     <div className="card-inner">
                                         <div className="card-front">
                                             <span style={{ opacity: 0.2 }}>?</span>
@@ -242,25 +239,25 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                             ))}
                         </div>
 
-                        {(isGameOver || cards.length === 0 || (!isPlaying && !isGameOver && !cards.some(c => c.isFlipped))) && (
+                        {showOverlay && (
                             <div className="game-overlay d-flex flex-column align-items-center justify-content-center">
-                                <h4 className={isGameOver ? "text-danger" : "text-gold"}>
-                                    {isGameOver ? "TIME'S UP!" : "READY?"}
+                                <h4 className={isGameOver ? "text-danger" : isGameWon ? "text-success-gold" : "text-gold"}>
+                                    {isGameOver ? "TIME'S UP!" : isGameWon ? "VICTORY!" : "READY?"}
                                 </h4>
-                                <p className="text-xs text-muted mb-2 text-center">
-                                    {isGameOver ? "Better luck next time!" : "Match all pairs before time runs out."}
+                                <p className="text-xs text-muted mb-3 text-center px-4">
+                                    {isGameOver ? "So close! Try again to claim those points." :
+                                        isGameWon ? "Great job! You've matched them all." :
+                                            "Match all pairs before the timer hits zero."}
                                 </p>
 
                                 <button
                                     className={`btn ${isGameOver ? 'btn-danger' : 'btn-warning'} btn-sm px-4`}
                                     onClick={initializeGame}
-                                    disabled={isFetching || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
+                                    disabled={isFetching || isSubmitting || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
                                 >
-                                    {isGameOver || dailyFreeSpin === 'TAKEN'
-                                        ? 'RETRY FOR 5 APs'
-                                        : dailyFreeSpin === 'PENDING'
-                                            ? 'START FREE TRIAL'
-                                            : "START GAME"
+                                    {isGameOver || isGameWon || dailyFreeSpin === 'TAKEN'
+                                        ? `RETRY (5 APs)`
+                                        : 'START FREE GAME'
                                     }
                                 </button>
                             </div>
@@ -269,15 +266,15 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
 
                     {returnResponse && (
                         <div className="response-message mt-4 text-center">
-                            <h4 className={returnResponse.points_added > 0 ? 'text-success-gold' : 'text-danger-fade'}>
+                            <h5 className="text-gold-glow animate-pulse">
                                 {returnResponse.message}
-                            </h4>
+                            </h5>
                         </div>
                     )}
 
                     {(returnResponse && returnResponse?.points_added !== 0) && (
                         <div className="confetti-container">
-                            <Confetti mode="boom" particleCount={100} shapeSize={15} colors={['#fff457', '#f30909']} />
+                            <Confetti mode="boom" particleCount={150} shapeSize={12} colors={['#ffd700', '#ffffff', '#ffae00']} />
                         </div>
                     )}
                 </div>

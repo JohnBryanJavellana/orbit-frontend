@@ -41,26 +41,27 @@
     aspect-ratio: 1/1;
     cursor: pointer;
     position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.color-card.flipped,
-.color-card.matched {
-    transform: rotateY(180deg);
-}
-
-.color-card.matched {
-    opacity: 0.7;
-    scale: 0.95;
-    cursor: default;
+    perspective: 1000px;
 }
 
 .card-inner {
     position: relative;
     width: 100%;
     height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
+}
+
+/* Force rotation of the inner container when flipped or matched */
+.color-card.flipped .card-inner,
+.color-card.matched .card-inner {
+    transform: rotateY(180deg);
+}
+
+.color-card.matched {
+    opacity: 0.8;
+    scale: 0.95;
+    cursor: default;
 }
 
 .card-front,
@@ -69,6 +70,7 @@
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    /* Important: hides the other side */
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -84,6 +86,7 @@
 
 .card-back {
     transform: rotateY(180deg);
+    /* Start the color face rotated */
     z-index: 1;
 }
 
@@ -103,6 +106,20 @@
 .text-gold {
     color: #ffd700;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.gold-text {
+    color: #ffd700;
+}
+
+.text-success-gold {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.text-danger-fade {
+    color: #ff4d4d;
+    opacity: 0.8;
 }
 
 @keyframes critical-shake {
