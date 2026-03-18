@@ -113,13 +113,14 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#view_task_progress_${id}`).modal('hide');
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#view_task_progress_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }
