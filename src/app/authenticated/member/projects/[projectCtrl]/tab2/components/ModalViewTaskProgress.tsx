@@ -123,7 +123,9 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                     navigate.push('/access-denied');
                 }
             }
-        } finally { }
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     useEffect(() => {
