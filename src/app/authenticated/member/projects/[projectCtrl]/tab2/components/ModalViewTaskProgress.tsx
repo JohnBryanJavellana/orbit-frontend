@@ -18,6 +18,7 @@ import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWY
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 
 interface ModalViewTaskProgressProps {
     data: any | null,
@@ -311,10 +312,12 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                                                                                                 style={{ width: '80px', height: '80px', background: '#2a2a2a' }}
                                                                                             >
                                                                                                 {isImage ? (
-                                                                                                    <img
+                                                                                                    <PreloadImage
                                                                                                         src={fileUrl}
-                                                                                                        alt="attachment"
-                                                                                                        className="w-100 h-100 object-fit-cover"
+                                                                                                        height={'100%'}
+                                                                                                        width={'100%'}
+                                                                                                        isRounded={false}
+                                                                                                        classNames="w-100 h-100 object-fit-cover"
                                                                                                     />
                                                                                                 ) : (
                                                                                                     <div className="text-center">
