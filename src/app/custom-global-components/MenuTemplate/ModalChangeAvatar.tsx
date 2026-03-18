@@ -245,7 +245,7 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
                                                                 src={`${urlWithoutApi}/custom-avatar-images/${a.filename}`}
                                                                 height={'100%'}
                                                                 width={'100%'}
-                                                                preStyle={{
+                                                                preStyles={{
                                                                     width: '100%',
                                                                     height: '100%',
                                                                     position: 'relative',
