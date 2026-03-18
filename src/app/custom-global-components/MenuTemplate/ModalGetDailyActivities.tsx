@@ -6,6 +6,7 @@ import { useState } from "react";
 import './ModalGetDailyActivities.css';
 import ModalPlayRoulette from "./DailyGames/ModalPlayRoulette";
 import ModalPlayCupShuffle from "./DailyGames/ModalPlayCupShuffle";
+import ModalPlayColorGame from "./DailyGames/ModalPlayColorGame";
 
 interface ModalGetDailyActivitiesProps {
     data: any | null,
@@ -70,6 +71,20 @@ export default function ModalGetDailyActivities({ data, id, titleHeader, callbac
                             />
                         }
 
+                        {
+                            modalOpenIndex === 2 &&
+                            <ModalPlayColorGame
+                                data={modalOpenData}
+                                id={modalOpenId}
+                                titleHeader={'Color Game'}
+                                callbackFunction={(e) => {
+                                    setModalOpenData(null);
+                                    setModalOpenId(null);
+                                    setModalOpenIndex(null);
+                                }}
+                            />
+                        }
+
                         <img
                             src={'/system-images/furtune-wheel-btn.png'}
                             className="img-fluid mb-2 furtune_wheel_btn"
@@ -98,7 +113,9 @@ export default function ModalGetDailyActivities({ data, id, titleHeader, callbac
                             src={'/system-images/color-game-btn.png'}
                             className="img-fluid furtune_wheel_btn mt-1"
                             onClick={() => {
-                                alert('Oops! Umaasaaaaaa. 1XBET yarn?');
+                                setModalOpenData(null);
+                                setModalOpenId(2);
+                                setModalOpenIndex(2);
                             }}
                             data-toggle="modal"
                             data-target={`#play_color_game_2`}
