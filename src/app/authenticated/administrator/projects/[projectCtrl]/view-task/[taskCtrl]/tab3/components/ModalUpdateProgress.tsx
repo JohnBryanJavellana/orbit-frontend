@@ -2,6 +2,7 @@
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
 import { Divider, FormControl, MenuItem, Select } from "@mui/material";
@@ -24,10 +25,17 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const UpdateProgressStatus = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
+
             const token = getToken('csrf-token');
 
             const response = await axios.post(`${urlWithApi}/administrator/projects/get_projects/get_project_tasks/update_task_progress`, {
@@ -40,18 +48,29 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
                 }
             });
 
-            alert(response.data.message);
+            $(`#update_progress_status_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -68,6 +87,7 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`update_progress_status_${id}`}

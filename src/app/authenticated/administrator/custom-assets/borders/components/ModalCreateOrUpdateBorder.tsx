@@ -1,5 +1,4 @@
 'use client';
-import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
 /* global $ */
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
@@ -9,13 +8,9 @@ import { FormControl, Input, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs from "dayjs";
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalCreateOrUpdateBorderProps {
     data: any | null,
@@ -33,6 +28,7 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
     const { getToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#create_or_update_border_${id}`).modal('hide');
@@ -42,6 +38,11 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
     const SubmitCustomBorder = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -59,18 +60,29 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
                 }
             });
 
-            alert(response.data.message);
+            $(`#create_or_update_border_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -83,6 +95,7 @@ export default function ModalCreateOrUpdateBorder({ data, id, titleHeader, httpM
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`create_or_update_border_${id}`}

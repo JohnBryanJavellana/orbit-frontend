@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalChooseNewRareBorderProps {
     data: any,
@@ -25,6 +26,7 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [borderId, setBorderId] = useState<number[]>([]);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const GetAvailableBorders = async (isInitialLoad: boolean) => {
         try {
@@ -54,6 +56,11 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
     const AddToBorderInv = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -67,18 +74,29 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
                 }
             });
 
-            alert(response.data.message);
+            $(`#modal_modify_rare_borders_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -94,6 +112,8 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
 
     return (
         <>
+            <MessageAlertPopup />
+
             <ModalTemplate
                 id={`modal_modify_rare_borders_${id}`}
                 size={"md"}

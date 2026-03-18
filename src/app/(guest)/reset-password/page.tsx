@@ -8,6 +8,7 @@ import axios from 'axios';
 import useSystemURLCon from '@/app/hooks/useSystemURLCon';
 import ReactPasswordChecklist from 'react-password-checklist';
 import usePasswordEndadornment from '@/app/hooks/usePasswordEndadornment';
+import useMessageAlertPopup from '@/app/hooks/useMessageAlertPopup';
 
 interface PageProps { }
 
@@ -21,6 +22,7 @@ export default function ResetPassword({ }: PageProps) {
     const searchParams = useSearchParams();
     const [isPasswordRuleValid, setIsPasswordRuleValid] = useState<boolean>(false);
     const { EndAdornment, inputType } = usePasswordEndadornment();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     useEffect(() => {
         setEmail(String(searchParams.get('email')));
@@ -31,7 +33,11 @@ export default function ResetPassword({ }: PageProps) {
 
         try {
             setIsSubmitting(true);
-            setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const formData = new FormData();
             formData.append('token', String(searchParams.get('token')));
@@ -41,11 +47,22 @@ export default function ResetPassword({ }: PageProps) {
 
             const response = await axios.post(`${urlWithApi}/reset-password`, formData);
 
-            alert(response.data.message);
-            navigate.push('/');
+            setCallbackFunction({
+                callbackFunction: () => {
+                    navigate.push('/');
+                }
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                alert(error.response?.data.message);
+                setMessageAlert({
+                    message: error.response?.data.message,
+                    status: 'ERROR'
+                });
             }
         } finally {
             setIsSubmitting(false);
@@ -54,6 +71,7 @@ export default function ResetPassword({ }: PageProps) {
 
     return <>
         {isSubmitting && <LoadingPopup />}
+        <MessageAlertPopup />
 
         <div className="row d-flex align-items-center justify-content-center">
             <div className="col-xl-5">

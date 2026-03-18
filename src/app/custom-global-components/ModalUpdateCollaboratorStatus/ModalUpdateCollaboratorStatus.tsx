@@ -7,6 +7,7 @@ import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalUpdateCollaboratorStatusProps {
     data: any | null,
@@ -23,6 +24,7 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#update_collaborator_status_${id}`).modal('hide');
@@ -32,6 +34,12 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
     const UpdateCollaboratorStatus = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
+
             const token = getToken('csrf-token');
 
             const apiSrc = type === "MAIN_PROJECT"
@@ -58,18 +66,29 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
                 }
             });
 
-            alert(response.data.message);
+            $(`#update_collaborator_status_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -79,6 +98,8 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
 
     return (
         <>
+            <MessageAlertPopup />
+
             <ModalTemplate
                 id={`update_collaborator_status_${id}`}
                 size="md"

@@ -11,6 +11,7 @@ import LoadingPopup from "../LoadingPopup/LoadingPopup";
 import ReactPasswordChecklist from "react-password-checklist";
 import { FormControl, Input } from "@mui/material";
 import usePasswordEndadornment from "@/app/hooks/usePasswordEndadornment";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalChangePasswordProps {
     id: number | null,
@@ -28,6 +29,7 @@ export default function ModalChangePassword({ id, titleHeader, callbackFunction 
     const [confirm_password, setConfirmPassword] = useState<string>("");
     const [isPasswordRuleValid, setIsPasswordRuleValid] = useState<boolean>(false);
     const { EndAdornment, inputType } = usePasswordEndadornment();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#change_password_${id}`).modal('hide');
@@ -37,7 +39,11 @@ export default function ModalChangePassword({ id, titleHeader, callbackFunction 
     const ChangePassword = async () => {
         try {
             setIsSubmitting(true);
-            setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -51,16 +57,25 @@ export default function ModalChangePassword({ id, titleHeader, callbackFunction 
                 }
             });
 
-            alert(response.data.message);
-
             $(`#change_password_${id}`).modal('hide');
-            callbackFunction(true);
+
+            setCallbackFunction({
+                callbackFunction: () => callbackFunction(true)
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 500) {
                     navigate.push('/access-denied');
                 } else {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 }
             }
         } finally {
@@ -71,6 +86,7 @@ export default function ModalChangePassword({ id, titleHeader, callbackFunction 
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`change_password_${id}`}

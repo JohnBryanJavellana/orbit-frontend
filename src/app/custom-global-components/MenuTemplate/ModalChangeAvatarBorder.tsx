@@ -11,6 +11,7 @@ import CustomTab from "../CustomTab/CustomTab";
 import Checkbox from '@mui/material/Checkbox';
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import LoadingPopup from "../LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalChangeAvatarBorderProps {
     userBorderId: string,
@@ -30,6 +31,7 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
     const [tabId, setTabId] = useState<number>(0);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { userData } = useGetCurrentUser();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const GetAvailableBorders = async (isInitialLoad: boolean) => {
         try {
@@ -59,6 +61,11 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
     const SetAsCurrentBorder = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -70,19 +77,29 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
                 }
             });
 
-            alert(response.data.message);
-            window.location.reload();
+            $(`#change_avatar_border_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => window.location.reload()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -154,6 +171,7 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`change_avatar_border_${id}`}

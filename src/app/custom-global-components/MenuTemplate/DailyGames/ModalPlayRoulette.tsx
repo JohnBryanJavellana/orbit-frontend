@@ -10,6 +10,7 @@ import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
+import useMessageAlertPopup from '@/app/hooks/useMessageAlertPopup';
 
 interface ModalPlayRouletteProps {
     data: any | null,
@@ -76,6 +77,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     const { userData, refreshUser } = useGetCurrentUser();
     const [dailyFreeSpin, setDailyFreeSpin] = useState<string | 'PENDING' | 'TAKEN'>('');
     const spinAudio = useRef<HTMLAudioElement | null>(null);
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     useEffect(() => {
         spinAudio.current = new Audio('/spinning-wheel-sound-effect.mp3');
@@ -143,6 +145,11 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     const SubmitResult = async (score: string) => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_roulette_score`, {
@@ -158,7 +165,10 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
@@ -176,111 +186,115 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
     };
 
     return (
-        <ModalTemplate
-            id={`play_roulette_${id}`}
-            size={"md"}
-            modalParentStyle="bg-stack"
-            isModalCentered
-            modalContentClassName="text-white roulette-modal-custom"
-            headerClassName="border-0 pb-0"
-            header={
-                <div className="w-100">
-                    <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
-                    <hr className="style-two" />
-                </div>
-            }
-            body={
-                <>
-                    <div className={`roulette-container ${mustSpin ? "wheel-active-glow" : ""}`} style={{ userSelect: 'none' }}>
-                        <Wheel
-                            mustStartSpinning={mustSpin && !isFetching}
-                            prizeNumber={prizeNumber}
-                            data={wheelData}
-                            onStopSpinning={async () => {
-                                const prize = wheelData[prizeNumber];
-                                const isWin = prize?.option !== "0 Aura Point";
+        <>
+            <MessageAlertPopup />
 
-                                if (spinAudio.current) {
-                                    spinAudio.current.pause();
-                                    spinAudio.current.currentTime = 0;
-                                }
+            <ModalTemplate
+                id={`play_roulette_${id}`}
+                size={"md"}
+                modalParentStyle="bg-stack"
+                isModalCentered
+                modalContentClassName="text-white roulette-modal-custom"
+                headerClassName="border-0 pb-0"
+                header={
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
+                    </div>
+                }
+                body={
+                    <>
+                        <div className={`roulette-container ${mustSpin ? "wheel-active-glow" : ""}`} style={{ userSelect: 'none' }}>
+                            <Wheel
+                                mustStartSpinning={mustSpin && !isFetching}
+                                prizeNumber={prizeNumber}
+                                data={wheelData}
+                                onStopSpinning={async () => {
+                                    const prize = wheelData[prizeNumber];
+                                    const isWin = prize?.option !== "0 Aura Point";
 
-                                if (prize.option === "SPIN AGAIN") {
+                                    if (spinAudio.current) {
+                                        spinAudio.current.pause();
+                                        spinAudio.current.currentTime = 0;
+                                    }
+
+                                    if (prize.option === "SPIN AGAIN") {
+                                        setMustSpin(false);
+                                        setIsPlaying(false);
+                                        setSpinAgain(true);
+                                        return;
+                                    }
+
                                     setMustSpin(false);
                                     setIsPlaying(false);
-                                    setSpinAgain(true);
-                                    return;
-                                }
+                                    await SubmitResult(isWin ? prize.option.replace(' Aura Points', '') : '0');
+                                }}
+                                outerBorderColor="#d4af37"
+                                outerBorderWidth={8}
+                                innerRadius={10}
+                                innerBorderColor="#d4af37"
+                                innerBorderWidth={3}
+                                radiusLineColor="rgba(212, 175, 55, 0.2)"
+                                radiusLineWidth={1}
+                                fontSize={14}
+                                textDistance={65}
+                                perpendicularText={false}
+                                pointerProps={{
+                                    style: {
+                                        filter: 'drop-shadow(0 0 10px #d4af37)',
+                                        marginTop: '10px'
+                                    }
+                                }}
+                            />
 
-                                setMustSpin(false);
-                                setIsPlaying(false);
-                                await SubmitResult(isWin ? prize.option.replace(' Aura Points', '') : '0');
-                            }}
-                            outerBorderColor="#d4af37"
-                            outerBorderWidth={8}
-                            innerRadius={10}
-                            innerBorderColor="#d4af37"
-                            innerBorderWidth={3}
-                            radiusLineColor="rgba(212, 175, 55, 0.2)"
-                            radiusLineWidth={1}
-                            fontSize={14}
-                            textDistance={65}
-                            perpendicularText={false}
-                            pointerProps={{
-                                style: {
-                                    filter: 'drop-shadow(0 0 10px #d4af37)',
-                                    marginTop: '10px'
-                                }
-                            }}
-                        />
-
-                        <div className={`spin-button-outer ${mustSpin || isFetching ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
-                            <div className="spin-button-center text-center" onClick={handleSpinClick}>
-                                <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : spinAgain ? 'SPIN AGAIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'No APs found'}</span>
+                            <div className={`spin-button-outer ${mustSpin || isFetching ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
+                                <div className="spin-button-center text-center" onClick={handleSpinClick}>
+                                    <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : spinAgain ? 'SPIN AGAIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'No APs found'}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {returnResponse && (
-                        <>
-                            <div className="text-center mt-4">
-                                <h5>{returnResponse?.message}</h5>
-                                {returnResponse?.rare_border_img && <img src={`${urlWithoutApi}/${returnResponse?.rare_border_img}`} className="mt-2" height={150} />}
-                            </div>
-
-                            {
-                                (returnResponse.points_added > 0 || returnResponse?.rare_border_img) &&
-                                <div style={{
-                                    position: 'fixed',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    zIndex: 9999,
-                                    pointerEvents: 'none'
-                                }}>
-                                    <Confetti
-                                        mode="boom"
-                                        particleCount={100}
-                                        shapeSize={15}
-                                        colors={['#fff457', '#f30909']}
-                                    />
+                        {returnResponse && (
+                            <>
+                                <div className="text-center mt-4">
+                                    <h5>{returnResponse?.message}</h5>
+                                    {returnResponse?.rare_border_img && <img src={`${urlWithoutApi}/${returnResponse?.rare_border_img}`} className="mt-2" height={150} />}
                                 </div>
-                            }
 
-                        </>
-                    )}
-                </>
-            }
-            footerClassName="border-0 pb-0"
-            footer={
-                <div className="w-100 text-center">
-                    <hr className="style-two" />
-                    <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm custom-border-dark' onClick={handleClose} >
-                        Close
-                    </button >
-                </div>
-            }
-        />
+                                {
+                                    (returnResponse.points_added > 0 || returnResponse?.rare_border_img) &&
+                                    <div style={{
+                                        position: 'fixed',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        zIndex: 9999,
+                                        pointerEvents: 'none'
+                                    }}>
+                                        <Confetti
+                                            mode="boom"
+                                            particleCount={100}
+                                            shapeSize={15}
+                                            colors={['#fff457', '#f30909']}
+                                        />
+                                    </div>
+                                }
+
+                            </>
+                        )}
+                    </>
+                }
+                footerClassName="border-0 pb-0"
+                footer={
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
+                        <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm custom-border-dark' onClick={handleClose} >
+                            Close
+                        </button >
+                    </div>
+                }
+            />
+        </>
     );
 }

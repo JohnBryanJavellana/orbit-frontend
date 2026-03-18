@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalCreateOrUpdateAvatarProps {
     data: any | null,
@@ -27,6 +28,8 @@ export default function ModalCreateOrUpdateAvatar({ data, id, titleHeader, httpM
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
 
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
+
     const handleClose = () => {
         $(`#create_or_update_avatar_${id}`).modal('hide');
         callbackFunction(null);
@@ -35,6 +38,11 @@ export default function ModalCreateOrUpdateAvatar({ data, id, titleHeader, httpM
     const SubmitCustomAvatar = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -51,24 +59,36 @@ export default function ModalCreateOrUpdateAvatar({ data, id, titleHeader, httpM
                 }
             });
 
-            alert(response.data.message);
+            $(`#create_or_update_avatar_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`create_or_update_avatar_${id}`}

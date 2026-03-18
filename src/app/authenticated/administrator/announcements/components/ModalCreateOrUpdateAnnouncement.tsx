@@ -15,6 +15,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from "dayjs";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalCreateOrUpdateAnnouncementProps {
     data: any | null,
@@ -29,10 +30,10 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
     const [announcement, setAnnouncement] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [removalDate, setRemovalDate] = useState<any>(null);
-
     const { getToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#create_or_update_announcement_${id}`).modal('hide');
@@ -42,6 +43,11 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
     const SubmitAnnnouncement = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -60,18 +66,29 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                 }
             });
 
-            alert(response.data.message);
+            $(`#create_or_update_announcement_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -86,6 +103,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`create_or_update_announcement_${id}`}

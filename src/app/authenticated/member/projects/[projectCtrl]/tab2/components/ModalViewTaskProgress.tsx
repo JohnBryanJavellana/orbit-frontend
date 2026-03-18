@@ -17,6 +17,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalViewTaskProgressProps {
     data: any | null,
@@ -41,6 +42,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
     const { GenerateBase64 } = usePhotoToBase64();
     const [progressAttachments, setProgressAttachments] = useState<string[] | null>([]);
     const fileRef = useRef<any>(null);
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const GetSpecificTaskProgress = async (isInitialLoad: boolean) => {
         try {
@@ -75,6 +77,12 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
 
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
+
             const token = getToken('csrf-token');
             const formData = new FormData();
 
@@ -89,21 +97,31 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                 }
             });
 
-            alert(response.data.message);
+            setCallbackFunction({
+                callbackFunction: () => {
+                    setProgress('');
+                    setProgressAttachments([]);
+                    setIsSubmitting(false);
+                    GetSpecificTaskProgress(false);
+                }
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
-        } finally {
-            setProgress('');
-            setProgressAttachments([]);
-            setIsSubmitting(false);
-            GetSpecificTaskProgress(false);
-        }
+        } finally { }
     }
 
     useEffect(() => {
@@ -137,6 +155,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`view_task_progress_${id}`}

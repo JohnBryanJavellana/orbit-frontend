@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import LoadingPopup from '@/app/custom-global-components/LoadingPopup/LoadingPopup';
 import axios from 'axios';
 import useSystemURLCon from '@/app/hooks/useSystemURLCon';
+import useMessageAlertPopup from '@/app/hooks/useMessageAlertPopup';
 
 interface PageProps { }
 
@@ -17,23 +18,40 @@ export default function ForgotPassword({ }: PageProps) {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { urlWithApi } = useSystemURLCon();
 
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
+
     const SubmitEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
             setIsSubmitting(true);
-            setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const formData = new FormData();
             formData.append('email', String(email).toLocaleLowerCase());
 
             const response = await axios.post(`${urlWithApi}/forgot-password`, formData);
 
-            alert(response.data.message);
-            navigate.push('/');
+            setCallbackFunction({
+                callbackFunction: () => {
+                    navigate.push('/');
+                }
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                alert(error.response?.data.message);
+                setMessageAlert({
+                    message: error.response?.data.message,
+                    status: 'ERROR'
+                });
             }
         } finally {
             setIsSubmitting(false);
@@ -42,6 +60,7 @@ export default function ForgotPassword({ }: PageProps) {
 
     return <>
         {isSubmitting && <LoadingPopup />}
+        <MessageAlertPopup />
 
         <div className="row d-flex align-items-center justify-content-center">
             <div className="col-xl-5">

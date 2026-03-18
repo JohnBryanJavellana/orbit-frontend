@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalSubmitTodaysDocumentationProps {
     data: any | null,
@@ -26,6 +27,7 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
     const { getToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#submit_today_documentation_${id}`).modal('hide');
@@ -35,6 +37,11 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
     const SubmitDocumentation = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -47,24 +54,36 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
                 }
             });
 
-            alert(response.data.message);
+            $(`#submit_today_documentation_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`submit_today_documentation_${id}`}

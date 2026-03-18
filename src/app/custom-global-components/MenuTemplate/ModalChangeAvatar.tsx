@@ -12,6 +12,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import usePhotoToBase64 from "@/app/hooks/usePhotoToBase64";
 import LoadingPopup from "../LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalChangeAvatarProps {
     userCustomAvatarId?: number | null,
@@ -31,6 +32,7 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const fileRef = useRef<any>(null);
     const { GenerateBase64 } = usePhotoToBase64();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const GetAvailableAvatars = async (isInitialLoad: boolean) => {
         try {
@@ -64,6 +66,11 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
 
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -78,19 +85,29 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
                 }
             });
 
-            alert(response.data.message);
-            window.location.reload();
+            $(`#change_avatar_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => window.location.reload()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -113,6 +130,7 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`change_avatar_${id}`}

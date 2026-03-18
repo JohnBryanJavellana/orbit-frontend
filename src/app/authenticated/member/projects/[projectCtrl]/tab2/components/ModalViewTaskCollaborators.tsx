@@ -1,17 +1,12 @@
 'use client';
 
-import CustomAvatarWithOnlineBadge from "@/app/custom-global-components/CustomAvatarWithOnlineBadge/CustomAvatarWithOnlineBadge";
 import TablePaginationTemplate from "@/app/custom-global-components/CustomTablePaginationTemplate/CustomTablePaginationTemplate";
 import ModalViewUser from "@/app/custom-global-components/CustomUserPill/components/ModalViewUser";
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
-import useDateFormat from "@/app/hooks/useDateFormat";
-import useDetectMobileViewport from "@/app/hooks/useDetectMobileViewport";
-import useGetRankAttribute from "@/app/hooks/useGetRankAttribute";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
-import { Divider, FormControl, IconButton, Input, Tooltip } from "@mui/material";
+import { FormControl, Input } from "@mui/material";
 import axios from "axios";
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import ProfileParchment from "@/app/authenticated/member/leaderboard/components/ProfileParchment";
@@ -25,7 +20,6 @@ interface ModalViewTaskCollaboratorsProps {
 }
 
 export default function ModalViewTaskCollaborators({ data, id, titleHeader, httpMethod, callbackFunction }: ModalViewTaskCollaboratorsProps) {
-    const { FormatDatetimeToHumanReadable } = useDateFormat();
     const { getToken } = useWebToken();
     const { urlWithApi, urlWithoutApi } = useSystemURLCon();
     const navigate = useRouter();
@@ -37,8 +31,6 @@ export default function ModalViewTaskCollaborators({ data, id, titleHeader, http
     const [searchText, setSearchText] = useState<string>('');
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(12);
-    const isMobileViewPort = useDetectMobileViewport();
-    const { getRankAttribute } = useGetRankAttribute();
 
     const GetSpecificTaskCollaborators = async (isInitialLoad: boolean) => {
         try {

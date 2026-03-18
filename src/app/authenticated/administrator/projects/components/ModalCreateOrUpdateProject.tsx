@@ -4,6 +4,7 @@ import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPop
 /* global $ */
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
 import { FormControl, Input, MenuItem, Select } from "@mui/material";
@@ -28,6 +29,7 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
     const { getToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#create_or_update_project_${id}`).modal('hide');
@@ -37,6 +39,11 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
     const SubmitTask = async () => {
         try {
             setIsSubmitting(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
 
             const token = getToken('csrf-token');
             const formData = new FormData();
@@ -56,18 +63,29 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
                 }
             });
 
-            alert(response.data.message);
+            $(`#create_or_update_project_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -83,6 +101,7 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`create_or_update_project_${id}`}

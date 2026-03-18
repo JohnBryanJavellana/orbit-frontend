@@ -7,8 +7,8 @@ import Link from 'next/link';
 import axios from 'axios';
 import useWebToken from '../hooks/useWebToken';
 import useSystemURLCon from '../hooks/useSystemURLCon';
-import Custombtn from '../custom-global-components/Custombtn';
 import LoadingPopup from '../custom-global-components/LoadingPopup/LoadingPopup';
+import useMessageAlertPopup from '../hooks/useMessageAlertPopup';
 
 interface Props { }
 
@@ -19,11 +19,17 @@ export default function Login({ }: Props) {
     const { EndAdornment, inputType } = usePasswordEndadornment();
     const { setToken } = useWebToken();
     const { urlWithApi } = useSystemURLCon();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const LoginUser = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
+            setMessageAlert({
+                message: null,
+                status: null
+            });
+            setCallbackFunction({ callbackFunction: () => { } });
             setIsSubmitting(true);
 
             const formData = new FormData();
@@ -39,7 +45,10 @@ export default function Login({ }: Props) {
             window.location.replace(`/authenticated/${role}/profile`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                alert(error.response?.data.message);
+                setMessageAlert({
+                    message: error.response?.data.message,
+                    status: 'ERROR'
+                });
             }
         } finally {
             setIsSubmitting(false);
@@ -48,6 +57,7 @@ export default function Login({ }: Props) {
 
     return <>
         {isSubmitting && <LoadingPopup />}
+        <MessageAlertPopup />
 
         <div className="row d-flex align-items-center justify-content-center">
             <div className="col-xl-5">

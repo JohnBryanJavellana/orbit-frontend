@@ -16,6 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CustomWYSIWYG from "@/app/custom-global-components/CustomWYSIWYG/CustomWYSIWYG";
 import useGetCurrentUser from "@/app/hooks/useGetCurrentUser";
 import LoadingPopup from "@/app/custom-global-components/LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalCreateOrUpdateMemberProps {
     data: any | null,
@@ -41,6 +42,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
     const { userData } = useGetCurrentUser();
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#create_or_update_member_${id}`).modal('hide');
@@ -75,22 +77,35 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                 }
             });
 
-            alert(response.data.message);
+            $(`#create_or_update_member_${id}`).modal('hide');
 
-            if (data?.editor !== 'OMEGA' || data?.reloadAfter) {
-                window.location.reload();
-            }
+            setCallbackFunction({
+                callbackFunction: () => {
+                    if (data?.editor !== 'OMEGA' || data?.reloadAfter) {
+                        window.location.reload();
+                    } else {
+                        handleClose();
+                    }
+                }
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsSubmitting(false);
-            handleClose();
         }
     }
 
@@ -111,6 +126,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
     return (
         <>
             {isSubmitting && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`create_or_update_member_${id}`}

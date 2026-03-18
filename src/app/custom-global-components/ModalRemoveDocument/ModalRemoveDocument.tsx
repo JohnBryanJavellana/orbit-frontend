@@ -7,6 +7,7 @@ import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import LoadingPopup from "../LoadingPopup/LoadingPopup";
+import useMessageAlertPopup from "@/app/hooks/useMessageAlertPopup";
 
 interface ModalRemoveDocumentProps {
     apiSrc: string,
@@ -21,6 +22,7 @@ export default function ModalRemoveDocument({ apiSrc, id, message, titleHeader, 
     const { urlWithApi } = useSystemURLCon();
     const navigate = useRouter();
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
+    const { setMessageAlert, setCallbackFunction, MessageAlertPopup } = useMessageAlertPopup();
 
     const handleClose = () => {
         $(`#remove_document_${id}`).modal('hide');
@@ -30,6 +32,12 @@ export default function ModalRemoveDocument({ apiSrc, id, message, titleHeader, 
     const RemoveDocument = async () => {
         try {
             setIsProcessing(true);
+            setCallbackFunction({ callbackFunction: () => { } });
+            setMessageAlert({
+                message: null,
+                status: null
+            });
+
             const token = getToken('csrf-token');
 
             const response = await axios.delete(`${urlWithApi}/${apiSrc}/${id}`, {
@@ -38,24 +46,36 @@ export default function ModalRemoveDocument({ apiSrc, id, message, titleHeader, 
                 }
             });
 
-            alert(response.data.message);
+            $(`#remove_document_${id}`).modal('hide');
+
+            setCallbackFunction({
+                callbackFunction: () => handleClose()
+            });
+
+            setMessageAlert({
+                message: response.data.message,
+                status: 'SUCCESS'
+            });
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status !== 500) {
-                    alert(error.response?.data.message);
+                    setMessageAlert({
+                        message: error.response?.data.message,
+                        status: 'ERROR'
+                    });
                 } else {
                     navigate.push('/access-denied');
                 }
             }
         } finally {
             setIsProcessing(false);
-            handleClose();
         }
     }
 
     return (
         <>
             {isProcessing && <LoadingPopup />}
+            <MessageAlertPopup />
 
             <ModalTemplate
                 id={`remove_document_${id}`}
