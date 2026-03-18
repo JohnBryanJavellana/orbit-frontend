@@ -1,42 +1,11 @@
-/* Container & Grid */
 .game-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 12px;
     perspective: 1000px;
+    padding: 15px;
 }
 
-.game-grid-wrapper {
-    min-height: 280px;
-}
-
-/* Progress Bar Styling */
-.progress-container {
-    width: 100%;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.progress-fill {
-    height: 100%;
-    transition: width 1s linear;
-}
-
-.bg-gold-glow {
-    background: linear-gradient(90deg, #ffd700, #ffae00);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
-.bg-danger-glow {
-    background: linear-gradient(90deg, #ff4d4d, #b30000);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-    animation: critical-shake 0.2s infinite;
-}
-
-/* Card Flip Mechanics */
 .color-card {
     aspect-ratio: 1/1;
     cursor: pointer;
@@ -48,12 +17,6 @@
 .color-card.flipped,
 .color-card.matched {
     transform: rotateY(180deg);
-}
-
-.color-card.matched {
-    opacity: 0.7;
-    scale: 0.95;
-    cursor: default;
 }
 
 .card-inner {
@@ -69,17 +32,18 @@
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-front {
     background-color: #1a1a1a;
+    z-index: 2;
+    transform: rotateY(0deg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    z-index: 2;
 }
 
 .card-back {
@@ -87,28 +51,35 @@
     z-index: 1;
 }
 
-/* Overlay */
-.game-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+.progress-container {
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(4px);
-    z-index: 10;
-    border-radius: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.text-gold {
-    color: #ffd700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+.progress-fill {
+    height: 100%;
+    transition: width 1s linear, background-color 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Gold Theme */
+.bg-gold-glow {
+    background: linear-gradient(90deg, #ffd700, #ffae00);
+}
+
+/* Critical Alert State */
+.bg-danger-glow {
+    background: linear-gradient(90deg, #ff4d4d, #b30000);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    animation: critical-shake 0.2s infinite;
 }
 
 @keyframes critical-shake {
-
-    0%,
-    100% {
+    0% {
         transform: translateX(0);
     }
 
@@ -119,13 +90,17 @@
     75% {
         transform: translateX(-1px);
     }
+
+    100% {
+        transform: translateX(0);
+    }
 }
 
 .animate-pulse {
-    animation: pulse 1s infinite;
+    animation: pulse-text 1s infinite;
 }
 
-@keyframes pulse {
+@keyframes pulse-text {
 
     0%,
     100% {
@@ -133,6 +108,6 @@
     }
 
     50% {
-        opacity: 0.4;
+        opacity: 0.5;
     }
 }

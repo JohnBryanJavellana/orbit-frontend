@@ -127,7 +127,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
             .map((color, index) => ({
                 id: index,
                 color,
-                isFlipped: true,
+                isFlipped: false,
                 isMatched: false,
             }));
 
@@ -136,16 +136,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         setFlippedCards([]);
         setTimeLeft(60);
         setIsGameOver(false);
-        setIsPlaying(false);
-        setIsProcessing(true);
-
-        setTimeout(() => {
-            setCards(currentCards =>
-                currentCards.map(card => ({ ...card, isFlipped: false }))
-            );
-            setIsPlaying(true);
-            setIsProcessing(false);
-        }, 1500);
+        setIsPlaying(true);
     }, []);
 
     const handleFlip = (cardId: number) => {
@@ -242,7 +233,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                             ))}
                         </div>
 
-                        {(isGameOver || cards.length === 0 || (!isPlaying && !isGameOver && !cards.some(c => c.isFlipped))) && (
+                        {(isGameOver || !isPlaying) && (
                             <div className="game-overlay d-flex flex-column align-items-center justify-content-center">
                                 <h4 className={isGameOver ? "text-danger" : "text-gold"}>
                                     {isGameOver ? "TIME'S UP!" : "READY?"}
@@ -254,14 +245,9 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                                 <button
                                     className={`btn ${isGameOver ? 'btn-danger' : 'btn-warning'} btn-sm px-4`}
                                     onClick={initializeGame}
-                                    disabled={isFetching || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
+                                    disabled={isFetching || !userData || userData?.total_points < 5}
                                 >
-                                    {isGameOver || dailyFreeSpin === 'TAKEN'
-                                        ? 'RETRY FOR 5 APs'
-                                        : dailyFreeSpin === 'PENDING'
-                                            ? 'START FREE TRIAL'
-                                            : "START GAME"
-                                    }
+                                    {isGameOver || dailyFreeSpin === 'TAKEN' ? 'RETRY FOR 5 APs' : dailyFreeSpin === 'PENDING' ? 'START FREE TRIAL' : "START GAME"}
                                 </button>
                             </div>
                         )}
