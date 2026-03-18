@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import ModalSubmitTodaysDocumentation from "@/app/authenticated/administrator/projects/[projectCtrl]/view-task/[taskCtrl]/tab4/components/ModalSubmitTodaysDocumentation";
 import Link from "next/link";
+import PreloadImage from "@/app/custom-global-components/PreloadImage/PreloadImage";
 
 interface ModalViewTaskPhotoDocumentationProps {
     data: any | null,
@@ -156,7 +157,13 @@ export default function ModalViewTaskPhotoDocumentation({ data, id, titleHeader,
                                                             <div className="card custom-bg rounded-0 custom-border-dark elevation-1" key={index}>
                                                                 <div className="card-body text-center">
                                                                     <Link href={`${urlWithoutApi}/documentation-files/${documentation.filename}`} target="_blank">
-                                                                        <img src={`${urlWithoutApi}/documentation-files/${documentation.filename}`} className="img-fluid" />
+                                                                        <PreloadImage
+                                                                            src={`${urlWithoutApi}/documentation-files/${documentation.filename}`}
+                                                                            isRounded={false}
+                                                                            height={'100%'}
+                                                                            width={'100%'}
+                                                                            className="img-fluid"
+                                                                        />
                                                                     </Link>
                                                                 </div>
                                                                 <div className="card-footer py-1 custom-top-border-dark text-left text-sm text-muted">
