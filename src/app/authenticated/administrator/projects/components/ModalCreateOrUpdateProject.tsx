@@ -81,6 +81,7 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#create_or_update_project_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

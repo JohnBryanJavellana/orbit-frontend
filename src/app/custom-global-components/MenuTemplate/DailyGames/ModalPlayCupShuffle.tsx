@@ -98,8 +98,10 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
-                }
-                else navigate.push('/access-denied');
+                } else {
+                    $(`#play_cup_shuffle_${id}`).modal('hide');
+                    navigate.push('/access-denied')
+                };
             }
         } finally {
             await refreshUser();

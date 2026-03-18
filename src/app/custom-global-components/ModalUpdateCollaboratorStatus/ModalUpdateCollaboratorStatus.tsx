@@ -84,6 +84,7 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#update_collaborator_status_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }
@@ -160,7 +161,7 @@ export default function ModalUpdateCollaboratorStatus({ data, type, id, titleHea
                             Close
                         </button>
 
-                        <button type="button" onClick={() => UpdateCollaboratorStatus()} disabled={!status} className={`btn btn-danger btn-sm elevation-1`}>
+                        <button type="button" onClick={() => UpdateCollaboratorStatus()} disabled={!status} className={`btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white`}>
                             Update
                         </button>
                     </div>

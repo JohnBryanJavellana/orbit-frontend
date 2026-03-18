@@ -74,6 +74,7 @@ export default function ModalCreateOrUpdateRole({ data, id, titleHeader, httpMet
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#create_or_update_role_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

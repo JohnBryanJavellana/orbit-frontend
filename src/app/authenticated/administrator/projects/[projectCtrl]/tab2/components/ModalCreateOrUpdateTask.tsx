@@ -94,6 +94,7 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#task_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

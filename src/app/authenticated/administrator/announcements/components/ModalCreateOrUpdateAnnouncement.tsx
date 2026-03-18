@@ -84,6 +84,7 @@ export default function ModalCreateOrUpdateAnnouncement({ data, id, titleHeader,
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#create_or_update_announcement_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

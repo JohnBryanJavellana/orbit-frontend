@@ -66,6 +66,7 @@ export default function ModalUpdateProgress({ data, id, titleHeader, httpMethod,
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#update_progress_status_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

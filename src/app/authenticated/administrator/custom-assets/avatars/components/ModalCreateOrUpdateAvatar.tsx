@@ -77,6 +77,7 @@ export default function ModalCreateOrUpdateAvatar({ data, id, titleHeader, httpM
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#create_or_update_avatar_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

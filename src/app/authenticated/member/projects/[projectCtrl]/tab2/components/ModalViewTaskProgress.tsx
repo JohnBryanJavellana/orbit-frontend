@@ -118,6 +118,7 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#view_task_progress_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

@@ -72,6 +72,7 @@ export default function ModalSubmitTodaysDocumentation({ data, id, titleHeader, 
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#submit_today_documentation_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

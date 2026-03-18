@@ -115,6 +115,7 @@ export default function ModalAddCollaborator({ data, src, type, id, titleHeader,
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#add_collaborator_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

@@ -103,6 +103,7 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#change_avatar_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

@@ -101,6 +101,7 @@ export default function ModalCreateOrUpdateMember({ data, id, titleHeader, httpM
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#create_or_update_member_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

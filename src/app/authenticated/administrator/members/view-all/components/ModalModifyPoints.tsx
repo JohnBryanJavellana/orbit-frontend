@@ -70,6 +70,7 @@ export default function ModalModifyPoints({ data, id, titleHeader, callbackFunct
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#modal_modify_points_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

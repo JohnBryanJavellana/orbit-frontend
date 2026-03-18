@@ -64,6 +64,7 @@ export default function ModalRemoveDocument({ apiSrc, id, message, titleHeader, 
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#remove_document_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

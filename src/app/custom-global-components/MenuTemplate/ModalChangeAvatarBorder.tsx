@@ -95,6 +95,7 @@ export default function ModalChangeAvatarBorder({ userBorderId, id, titleHeader,
                         status: 'ERROR'
                     });
                 } else {
+                    $(`#change_avatar_border_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

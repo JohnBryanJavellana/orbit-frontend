@@ -170,8 +170,9 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                         status: 'ERROR'
                     });
                 } else {
-                    navigate.push('/access-denied');
-                }
+                    $(`#play_roulette_${id}`).modal('hide');
+                    navigate.push('/access-denied')
+                };
             }
         } finally {
             await refreshUser();
