@@ -255,9 +255,9 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
                             />
 
                             <div className={`spin-button-outer ${mustSpin || isFetching ? 'disabled' : ''}`} style={{ userSelect: 'none' }}>
-                                <div className="spin-button-center text-center" onClick={handleSpinClick}>
-                                    <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : spinAgain ? 'SPIN AGAIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'No APs found'}</span>
-                                </div>
+                                <button className="spin-button-center text-center" disabled={(dailyFreeSpin !== 'PENDING' && userData?.total_points < 25) || mustSpin || isFetching || isPlaying} onClick={handleSpinClick}>
+                                    <span className="spin-text">{mustSpin || isFetching ? '...' : dailyFreeSpin && dailyFreeSpin === 'PENDING' ? 'FREE DAILY SPIN' : spinAgain ? 'SPIN AGAIN' : userData?.total_points >= 25 ? 'SPIN AGAIN FOR 25 APs' : 'INSUFFICIENT APs'}</span>
+                                </button>
                             </div>
                         </div>
 
