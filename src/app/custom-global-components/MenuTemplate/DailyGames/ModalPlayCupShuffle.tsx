@@ -205,7 +205,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                         </div>
 
                         <div className="action-section mt-5 text-center">
-                            <div className={`btn-play-fantasy mt-5 ${isPlaying || isPreRevealing || isFetching || hasShuffled || (userData?.total_points < 5 && dailyFreeSpin !== 'PENDING') ? 'disabled' : ''}`} onClick={!(isPlaying || isPreRevealing || isFetching || hasShuffled) ? startShuffleSequence : undefined}>
+                            <div className={`btn-play-fantasy mt-5 ${isPlaying || isPreRevealing || isFetching || hasShuffled || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5) ? 'disabled' : ''}`} onClick={!(isPlaying || isPreRevealing || isFetching || hasShuffled || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)) ? startShuffleSequence : undefined}>
                                 <div className="fantasy-button-inner">
                                     {isPlaying || isPreRevealing || isFetching ? 'SHUFFLING...' :
                                         hasShuffled ? 'CHOOSE A CUP' :
