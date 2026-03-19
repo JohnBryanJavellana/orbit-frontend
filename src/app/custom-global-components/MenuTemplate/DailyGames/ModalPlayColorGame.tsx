@@ -90,7 +90,6 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         if (userData) CheckForFreeDailySpin(true);
     }, [userData]);
 
-    // Timer logic
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (timeLeft > 0 && isPlaying && !isGameOver && !isGameWon) {
@@ -103,7 +102,6 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         return () => clearTimeout(timer);
     }, [timeLeft, isPlaying, isGameOver, isGameWon]);
 
-    // Win condition check
     useEffect(() => {
         if (cards.length > 0 && cards.every(card => card.isMatched)) {
             setIsPlaying(false);
@@ -118,7 +116,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
             .map((color, index) => ({
                 id: index,
                 color,
-                isFlipped: true,
+                isFlipped: false,
                 isMatched: false,
             }));
 
@@ -131,14 +129,32 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         setIsPlaying(false);
         setIsProcessing(true);
 
-        // Preview Phase
-        setTimeout(() => {
-            setCards(currentCards =>
-                currentCards.map(card => ({ ...card, isFlipped: false }))
-            );
-            setIsPlaying(true);
-            setIsProcessing(false);
-        }, 1500);
+        const COLUMN_COUNT = 4;
+        const WAVE_STAGGER = 150;
+        const REVEAL_DURATION = 800;
+
+        deck.forEach((card, index) => {
+            const columnIndex = index % COLUMN_COUNT;
+            const startDelay = columnIndex * WAVE_STAGGER;
+
+            // 1. Flip TO color (Show)
+            setTimeout(() => {
+                setCards(prev => prev.map(c =>
+                    c.id === card.id ? { ...c, isFlipped: true } : c
+                ));
+            }, startDelay);
+
+            setTimeout(() => {
+                setCards(prev => prev.map(c =>
+                    c.id === card.id ? { ...c, isFlipped: false } : c
+                ));
+
+                if (index === deck.length - 1) {
+                    setIsPlaying(true);
+                    setIsProcessing(false);
+                }
+            }, startDelay + REVEAL_DURATION);
+        });
     }, []);
 
     const handleFlip = (cardId: number) => {
@@ -185,8 +201,6 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
 
     const percentageRemaining = (timeLeft / 20) * 100;
     const isCritical = timeLeft <= 5;
-
-    // Logic for showing the overlay
     const showOverlay = !isPlaying && !isProcessing && (cards.length === 0 || isGameOver || isGameWon || (!isGameOver && !isGameWon && !cards.some(c => c.isFlipped)));
 
     return (
