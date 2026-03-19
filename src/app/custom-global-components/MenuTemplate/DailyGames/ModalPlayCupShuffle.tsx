@@ -83,9 +83,10 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             });
 
             const token = getToken('csrf-token');
-            const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_cup_shuffle_score`, {
+            const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_game_r_cs_cg_score`, {
                 score: score,
-                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null,
+                gameService: 'cup_shuffle'
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });

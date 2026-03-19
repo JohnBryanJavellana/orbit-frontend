@@ -42,9 +42,10 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         try {
             setIsSubmitting(true);
             const token = getToken('csrf-token');
-            const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_color_game_score`, {
+            const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_game_r_cs_cg_score`, {
                 score: score,
-                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null,
+                gameService: 'color_game'
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
