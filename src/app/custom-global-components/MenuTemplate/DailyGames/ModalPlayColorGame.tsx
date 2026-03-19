@@ -27,7 +27,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [timeLeft, setTimeLeft] = useState(60);
+    const [timeLeft, setTimeLeft] = useState(20);
     const [isGameOver, setIsGameOver] = useState(false);
     const [isGameWon, setIsGameWon] = useState(false); // Added to track win state for overlay
     const [dailyFreeSpin, setDailyFreeSpin] = useState<string | 'PENDING' | 'TAKEN' | ''>('PENDING');
@@ -53,6 +53,8 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
             setReturnResponse(response.data);
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#play_color_game_${id}`).modal('hide');
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
@@ -123,7 +125,7 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         setReturnResponse(null);
         setCards(deck);
         setFlippedCards([]);
-        setTimeLeft(60);
+        setTimeLeft(20);
         setIsGameOver(false);
         setIsGameWon(false);
         setIsPlaying(false);
@@ -181,114 +183,118 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
         callbackFunction(null);
     };
 
-    const percentageRemaining = (timeLeft / 60) * 100;
+    const percentageRemaining = (timeLeft / 20) * 100;
     const isCritical = timeLeft <= 5;
 
     // Logic for showing the overlay
     const showOverlay = !isPlaying && !isProcessing && (cards.length === 0 || isGameOver || isGameWon || (!isGameOver && !isGameWon && !cards.some(c => c.isFlipped)));
 
     return (
-        <ModalTemplate
-            id={`play_color_game_${id}`}
-            size={"md"}
-            modalParentStyle="bg-stack"
-            isModalCentered
-            modalContentClassName="text-white"
-            headerClassName="border-0 pb-0"
-            header={
-                <div className="w-100">
-                    <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
-                    <hr className="style-two" />
-                </div>
-            }
-            bodyClassName="pb-0"
-            body={
-                <div className="w-100 px-3" style={{ userSelect: 'none', overflow: 'hidden' }}>
-                    <div className="text-center mb-4">
-                        <h5>Match all colors to win <span className="gold-text">10 APs</span></h5>
-                    </div>
+        <>
+            <MessageAlertPopup />
 
-                    <div className="d-flex justify-content-between align-items-center mb-1">
-                        <span className={`text-xs ${isCritical ? 'text-danger animate-pulse' : 'text-muted'}`}>
-                            {timeLeft}s remaining
-                        </span>
-                        <span className="text-xs text-muted">{Math.round(percentageRemaining)}%</span>
+            <ModalTemplate
+                id={`play_color_game_${id}`}
+                size={"md"}
+                modalParentStyle="bg-stack"
+                isModalCentered
+                modalContentClassName="text-white"
+                headerClassName="border-0 pb-0"
+                header={
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">{titleHeader}</div>
+                        <hr className="style-two" />
                     </div>
-
-                    <div className="progress-container mb-3">
-                        <div
-                            className={`progress-fill ${isCritical ? 'bg-danger-glow' : 'bg-gold-glow'}`}
-                            style={{ width: `${percentageRemaining}%` }}
-                        ></div>
-                    </div>
-
-                    <div className="game-grid-wrapper" style={{ position: 'relative' }}>
-                        <div className="game-grid">
-                            {cards.map((card) => (
-                                <div
-                                    key={card.id}
-                                    className={`color-card ${card.isFlipped || card.isMatched ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`}
-                                    onClick={() => handleFlip(card.id)}
-                                >
-                                    <div className="card-inner">
-                                        <div className="card-front">
-                                            <span style={{ opacity: 0.2 }}>?</span>
-                                        </div>
-                                        <div className="card-back" style={{ backgroundColor: card.color }}></div>
-                                    </div>
-                                </div>
-                            ))}
+                }
+                bodyClassName="pb-0"
+                body={
+                    <div className="w-100 px-3" style={{ userSelect: 'none', overflow: 'hidden' }}>
+                        <div className="text-center mb-4">
+                            <h5>Match all colors to win <span className="gold-text">10 APs</span></h5>
                         </div>
 
-                        {showOverlay && (
-                            <div className="game-overlay d-flex flex-column align-items-center justify-content-center">
-                                <h4 className={isGameOver ? "text-danger" : isGameWon ? "text-success-gold" : "text-gold"}>
-                                    {isGameOver ? "TIME'S UP!" : isGameWon ? "VICTORY!" : "READY?"}
-                                </h4>
-                                <p className="text-xs text-muted mb-3 text-center px-4">
-                                    {isGameOver ? "So close! Try again to claim those points." :
-                                        isGameWon ? "Great job! You've matched them all." :
-                                            "Match all pairs before the timer hits zero."}
-                                </p>
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                            <span className={`text-xs ${isCritical ? 'text-danger animate-pulse' : 'text-muted'}`}>
+                                {timeLeft}s remaining
+                            </span>
+                            <span className="text-xs text-muted">{Math.round(percentageRemaining)}%</span>
+                        </div>
 
-                                <button
-                                    className={`btn ${isGameOver ? 'btn-danger' : 'btn-warning'} btn-sm px-4`}
-                                    onClick={initializeGame}
-                                    disabled={isFetching || isSubmitting || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
-                                >
-                                    {isGameOver || isGameWon || dailyFreeSpin === 'TAKEN'
-                                        ? `RETRY (5 APs)`
-                                        : 'START FREE GAME'
-                                    }
-                                </button>
+                        <div className="progress-container mb-3">
+                            <div
+                                className={`progress-fill ${isCritical ? 'bg-danger-glow' : 'bg-gold-glow'}`}
+                                style={{ width: `${percentageRemaining}%` }}
+                            ></div>
+                        </div>
+
+                        <div className="game-grid-wrapper" style={{ position: 'relative' }}>
+                            <div className="game-grid">
+                                {cards.map((card) => (
+                                    <div
+                                        key={card.id}
+                                        className={`color-card ${card.isFlipped || card.isMatched ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`}
+                                        onClick={() => handleFlip(card.id)}
+                                    >
+                                        <div className="card-inner">
+                                            <div className="card-front">
+                                                <span style={{ opacity: 0.2 }}>?</span>
+                                            </div>
+                                            <div className="card-back" style={{ backgroundColor: card.color }}></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {showOverlay && (
+                                <div className="game-overlay d-flex flex-column align-items-center justify-content-center">
+                                    <h4 className={isGameOver ? "text-danger" : isGameWon ? "text-success-gold" : "text-gold"}>
+                                        {isGameOver ? "TIME'S UP!" : isGameWon ? "VICTORY!" : "READY?"}
+                                    </h4>
+                                    <p className="text-xs text-muted mb-3 text-center px-4">
+                                        {isGameOver ? "So close! Try again to claim those points." :
+                                            isGameWon ? "Great job! You've matched them all." :
+                                                "Match all pairs before the timer hits zero."}
+                                    </p>
+
+                                    <button
+                                        className={`btn ${isGameOver ? 'btn-danger' : 'btn-warning'} btn-sm px-4`}
+                                        onClick={initializeGame}
+                                        disabled={isFetching || isSubmitting || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
+                                    >
+                                        {isGameOver || isGameWon || dailyFreeSpin === 'TAKEN'
+                                            ? `RETRY (5 APs)`
+                                            : 'START FREE GAME'
+                                        }
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        {returnResponse && (
+                            <div className="response-message mt-4 text-center">
+                                <h5 className="text-gold-glow animate-pulse">
+                                    {returnResponse.message}
+                                </h5>
+                            </div>
+                        )}
+
+                        {(returnResponse && returnResponse?.points_added !== 0) && (
+                            <div className="confetti-container">
+                                <Confetti mode="boom" particleCount={150} shapeSize={12} colors={['#ffd700', '#ffffff', '#ffae00']} />
                             </div>
                         )}
                     </div>
-
-                    {returnResponse && (
-                        <div className="response-message mt-4 text-center">
-                            <h5 className="text-gold-glow animate-pulse">
-                                {returnResponse.message}
-                            </h5>
-                        </div>
-                    )}
-
-                    {(returnResponse && returnResponse?.points_added !== 0) && (
-                        <div className="confetti-container">
-                            <Confetti mode="boom" particleCount={150} shapeSize={12} colors={['#ffd700', '#ffffff', '#ffae00']} />
-                        </div>
-                    )}
-                </div>
-            }
-            footerClassName="border-0"
-            footer={
-                <div className="w-100 text-center">
-                    <hr className="style-two" />
-                    <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={handleClose}>
-                        CLOSE
-                    </button>
-                </div>
-            }
-        />
+                }
+                footerClassName="border-0"
+                footer={
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
+                        <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={handleClose}>
+                            CLOSE
+                        </button>
+                    </div>
+                }
+            />
+        </>
     );
 }
