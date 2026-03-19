@@ -275,9 +275,8 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                                         onClick={initializeGame}
                                         disabled={isFetching || isSubmitting || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
                                     >
-                                        {isGameOver || isGameWon || dailyFreeSpin === 'TAKEN'
-                                            ? `RETRY (5 APs)`
-                                            : 'START FREE GAME'
+                                        {
+                                            dailyFreeSpin === 'TAKEN' ? userData?.total_points >= 5 && isGameOver || isGameWon ? `RETRY (5 APs)` : 'INSUFFICIENT APs' : 'START FREE GAME'
                                         }
                                     </button>
                                 </div>
