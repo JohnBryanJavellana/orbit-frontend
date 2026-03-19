@@ -93,13 +93,18 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
             setReturnResponse(response.data);
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#play_cup_shuffle_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#play_cup_shuffle_${id}`).modal('hide');
                     navigate.push('/access-denied')
                 };
             }

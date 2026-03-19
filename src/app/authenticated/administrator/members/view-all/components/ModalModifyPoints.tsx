@@ -64,6 +64,12 @@ export default function ModalModifyPoints({ data, id, titleHeader, callbackFunct
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#modal_modify_points_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,

@@ -69,8 +69,13 @@ export default function ModalChangePassword({ id, titleHeader, callbackFunction 
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#change_password_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status === 500) {
-                    $(`#change_password_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 } else {
                     setMessageAlert({

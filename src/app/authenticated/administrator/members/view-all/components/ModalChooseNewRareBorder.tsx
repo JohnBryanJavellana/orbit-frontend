@@ -86,13 +86,18 @@ export default function ModalChooseNewRareBorder({ data, id, titleHeader, callba
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#modal_modify_rare_borders_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#modal_modify_rare_borders_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

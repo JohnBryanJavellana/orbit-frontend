@@ -98,13 +98,18 @@ export default function ModalChangeAvatar({ userCustomAvatarId, id, titleHeader,
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#change_avatar_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#change_avatar_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }
