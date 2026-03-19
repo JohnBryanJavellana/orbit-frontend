@@ -164,13 +164,18 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             setReturnResponse(response.data);
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#play_roulette_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#play_roulette_${id}`).modal('hide');
                     navigate.push('/access-denied')
                 };
             }

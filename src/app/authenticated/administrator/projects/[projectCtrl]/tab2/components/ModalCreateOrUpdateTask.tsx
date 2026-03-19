@@ -88,13 +88,18 @@ export default function ModalCreateOrUpdateTask({ data, id, titleHeader, httpMet
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#task_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#task_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

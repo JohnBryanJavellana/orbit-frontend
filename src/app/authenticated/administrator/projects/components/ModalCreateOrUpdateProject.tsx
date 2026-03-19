@@ -75,13 +75,18 @@ export default function ModalCreateOrUpdateProject({ data, id, titleHeader, http
             });
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                $(`#create_or_update_project_${id}`).modal('hide');
+
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
                         status: 'ERROR'
                     });
                 } else {
-                    $(`#create_or_update_project_${id}`).modal('hide');
                     navigate.push('/access-denied');
                 }
             }

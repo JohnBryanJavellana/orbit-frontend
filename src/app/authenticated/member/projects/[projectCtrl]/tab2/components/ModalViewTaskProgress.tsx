@@ -115,6 +115,10 @@ export default function ModalViewTaskProgress({ data, id, titleHeader, httpMetho
             if (axios.isAxiosError(error)) {
                 $(`#view_task_progress_${id}`).modal('hide');
 
+                setCallbackFunction({
+                    callbackFunction: () => handleClose()
+                });
+
                 if (error.response?.status !== 500) {
                     setMessageAlert({
                         message: error.response?.data.message,
