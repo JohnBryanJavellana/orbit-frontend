@@ -7,6 +7,7 @@ import './ModalGetDailyActivities.css';
 import ModalPlayRoulette from "./DailyGames/ModalPlayRoulette";
 import ModalPlayCupShuffle from "./DailyGames/ModalPlayCupShuffle";
 import ModalPlayColorGame from "./DailyGames/ModalPlayColorGame";
+import ModalPlayPlinko from "./DailyGames/ModalPlayPlinko";
 
 interface ModalGetDailyActivitiesProps {
     data: any | null,
@@ -77,7 +78,21 @@ export default function ModalGetDailyActivities({ data, id, titleHeader, callbac
                                 data={modalOpenData}
                                 id={modalOpenId}
                                 titleHeader={'Color Game'}
-                                callbackFunction={(e) => {
+                                callbackFunction={() => {
+                                    setModalOpenData(null);
+                                    setModalOpenId(null);
+                                    setModalOpenIndex(null);
+                                }}
+                            />
+                        }
+
+                        {
+                            modalOpenIndex === 3 &&
+                            <ModalPlayPlinko
+                                data={modalOpenData}
+                                id={modalOpenId}
+                                titleHeader={'Plinko Game'}
+                                callbackFunction={() => {
                                     setModalOpenData(null);
                                     setModalOpenId(null);
                                     setModalOpenIndex(null);
@@ -120,6 +135,20 @@ export default function ModalGetDailyActivities({ data, id, titleHeader, callbac
                             data-toggle="modal"
                             data-target={`#play_color_game_2`}
                         />
+
+                        <div className="px-2">
+                            <img
+                                src={'/system-images/plinko-game-btn.png'}
+                                className="img-fluid furtune_wheel_btn mt-1"
+                                onClick={() => {
+                                    setModalOpenData(null);
+                                    setModalOpenId(3);
+                                    setModalOpenIndex(3);
+                                }}
+                                data-toggle="modal"
+                                data-target={`#play_plinko_game_3`}
+                            />
+                        </div>
                     </>
                 }
                 footerClassName="border-0 pb-0"
