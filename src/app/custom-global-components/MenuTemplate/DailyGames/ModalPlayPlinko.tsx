@@ -344,10 +344,10 @@ export default function ModalPlayPlinko({ data, id, titleHeader, callbackFunctio
                         <div className="mt-3 w-100">
                             <button
                                 className='btn btn-danger btn-sm elevation-1 custom-border-dark custom-bg-maroon text-white w-100 py-2'
-                                disabled={isPlaying || isSubmitting || isFetching}
+                                disabled={isPlaying || isSubmitting || isFetching || userData?.total_points < 2}
                                 onClick={startGame}
                             >
-                                {isPlaying ? 'DROPPING...' : (dailyFreeSpin === 'PENDING' ? 'FREE DAILY PLAY' : 'PLAY FOR 2 AP')}
+                                {isPlaying ? 'DROPPING...' : userData?.total_points >= 2 ? (dailyFreeSpin === 'PENDING' ? 'FREE DAILY PLAY' : 'PLAY FOR 2 AP') : 'INSUFFICIENT APs'}
                             </button>
                         </div>
 
@@ -384,12 +384,12 @@ export default function ModalPlayPlinko({ data, id, titleHeader, callbackFunctio
                 }
                 footerClassName="border-0 pb-0"
                 footer={
-                    < div className="w-100 text-center" >
+                    <div className="w-100 text-center" >
                         <hr className="style-two" />
                         <button type='button' disabled={isPlaying || isSubmitting || isFetching} className='btn btn-dark btn-sm custom-border-dark' onClick={handleClose} >
                             Close
-                        </button >
-                    </div >
+                        </button>
+                    </div>
                 }
             />
         </>
