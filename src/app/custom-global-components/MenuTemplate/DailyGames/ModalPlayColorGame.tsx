@@ -271,12 +271,12 @@ export default function ModalPlayColorGame({ id, titleHeader, callbackFunction }
                                     </p>
 
                                     <button
-                                        className={`btn ${isGameOver ? 'btn-danger' : 'btn-warning'} btn-sm px-4`}
+                                        className={`btn ${isGameOver || (dailyFreeSpin === 'TAKEN' && userData?.total_points < 5) ? 'btn-danger' : 'btn-warning'} btn-sm px-4`}
                                         onClick={initializeGame}
-                                        disabled={isFetching || isSubmitting || !userData || (dailyFreeSpin !== 'PENDING' && userData?.total_points < 5)}
+                                        disabled={isFetching || isSubmitting || !userData || (dailyFreeSpin === 'TAKEN' && userData?.total_points < 5)}
                                     >
                                         {
-                                            dailyFreeSpin === 'TAKEN' ? userData?.total_points >= 5 && isGameOver || isGameWon ? `RETRY (5 APs)` : 'INSUFFICIENT APs' : 'START FREE GAME'
+                                            dailyFreeSpin === 'TAKEN' ? (userData?.total_points < 5 ? 'INSUFFICIENT APs' : `RETRY (5 APs)`) : 'START FREE GAME'
                                         }
                                     </button>
                                 </div>
