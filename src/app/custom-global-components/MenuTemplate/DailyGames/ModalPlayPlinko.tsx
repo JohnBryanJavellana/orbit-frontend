@@ -244,7 +244,7 @@ export default function ModalPlayPlinko({ data, id, titleHeader, callbackFunctio
                 }
             });
 
-            setDailyFreeSpin(response.data.activities.roulette);
+            setDailyFreeSpin(response.data.activities.plinkoGame);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 500) {
@@ -302,9 +302,9 @@ export default function ModalPlayPlinko({ data, id, titleHeader, callbackFunctio
                 };
             }
         } finally {
-            await refreshUser();
             setDailyFreeSpin('TAKEN');
             setIsSubmitting(false);
+            await refreshUser();
         }
     }
 
