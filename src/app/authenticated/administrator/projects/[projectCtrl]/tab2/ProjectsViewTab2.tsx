@@ -156,7 +156,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                     }
                 ];
 
-                if (!['ABANDONED', 'COMPLETED', 'IN PROGRESS'].includes(row?.status) && (row.creator.id === userData.id || userData.role === "SUPERADMIN")) {
+                if (!['ABANDONED', 'COMPLETED', 'IN PROGRESS'].includes(row?.status)) {
                     menuItems.push({
                         'icon': 'launch',
                         'url': '#',
@@ -203,12 +203,12 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
 
             <div className="card rounded-0 custom-bg elevation-0 mb-0">
                 {
-                    !isFetching && !['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") &&
+                    !isFetching && !['ABANDONED', 'COMPLETED'].includes(project?.status) &&
                     <div className="card-header pt-1 pb-0 border-0">
                         <div className="d-flex align-items-center justify-content-end">
                             <div>
                                 <Tooltip title="Add task">
-                                    <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id !== userData?.id && userData?.role !== "SUPERADMIN")} onClick={() => {
+                                    <IconButton disabled={['ABANDONED', 'COMPLETED'].includes(project?.status)} onClick={() => {
                                         setModalOpenData({
                                             projectCtrl: projectCtrl,
                                             trueData: false
@@ -225,7 +225,7 @@ export default function ProjectsViewTab2({ projectCtrl }: { projectCtrl: ParamVa
                     </div>
                 }
 
-                <div className={`card-body ${isFetching || ['ABANDONED', 'COMPLETED'].includes(project?.status) && (project?.creator_id === userData?.id || userData?.role === "SUPERADMIN") ? 'pt-4' : 'pt-0'}`}>
+                <div className={`card-body ${isFetching || ['ABANDONED', 'COMPLETED'].includes(project?.status) ? 'pt-4' : 'pt-0'}`}>
                     <OrbitDatatable
                         withExport
                         progressPending={isFetching}
