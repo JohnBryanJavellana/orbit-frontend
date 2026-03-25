@@ -39,7 +39,7 @@ export default function CustomAvatarWithOnlineBadge({
                     sx={{
                         position: 'absolute',
                         top: '-25px', // Lifted slightly higher to clear the avatar/border
-                        zIndex: 99,
+                        zIndex: 999,
                         backgroundColor: 'white',
                         borderRadius: '15px', // More rounded for that "pill" look
                         padding: '4px 12px',  // Increased padding for better breathing room
