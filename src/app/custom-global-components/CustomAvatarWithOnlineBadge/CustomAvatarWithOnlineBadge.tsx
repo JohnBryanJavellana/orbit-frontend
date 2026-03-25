@@ -38,7 +38,7 @@ export default function CustomAvatarWithOnlineBadge({
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: '-25px', // Lifted slightly higher to clear the avatar/border
+                        top: '-20px', // Lifted slightly higher to clear the avatar/border
                         zIndex: 999,
                         backgroundColor: 'white',
                         borderRadius: '15px', // More rounded for that "pill" look
