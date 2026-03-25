@@ -31,7 +31,7 @@ export default function CustomAvatarWithOnlineBadge({
 
     return (
         <Box className="position-relative d-flex align-items-center justify-content-center"
-            style={{ width: width * 1.4, height: height * 1.4 }}>
+            style={{ width: width * 1.4, height: height * 1.4, position: 'relative' }}>
 
             {/* Thought Bubble / Note */}
             {data?.custom_user_note && (
