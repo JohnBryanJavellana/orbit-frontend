@@ -22,6 +22,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ModalGetNotifications from './ModalGetNotifications';
 import ModalChangePassword from './ModalChangePassword';
 import PreloadImage from '../PreloadImage/PreloadImage';
+import ModalUserNote from './ModalUserNote';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -258,6 +259,24 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
+                modalOpenIndex === 8 &&
+                <ModalUserNote
+                    id={modalOpenId}
+                    data={modalOpenData}
+                    titleHeader={'Note'}
+                    callbackFunction={(e) => {
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+
+                        if (e) {
+                            if (e) window.location.reload();
+                        } else refreshUser();
+                    }}
+                />
+            }
+
+            {
                 !userData
                     ? <p className='p-4'>Please wait...</p>
                     : <>
@@ -403,6 +422,17 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                                 setModalOpenIndex(7);
                                             }} data-toggle="modal" data-target={`#change_password_${userData?.id}`}>
                                                 <Typography className='text-sm' sx={{ textAlign: 'left' }}>Change Password</Typography>
+                                            </MenuItem>
+
+                                            <MenuItem className='custom-bottom-border-dark' onClick={() => {
+                                                handleCloseUserMenu();
+                                                setModalOpenData(userData?.custom_user_note);
+                                                setModalOpenId(userData.id);
+                                                setModalOpenIndex(8);
+                                            }} data-toggle="modal" data-target={`#user_note_${userData?.id}`}>
+                                                <Typography className='text-sm' sx={{ textAlign: 'left' }}>
+                                                    {userData?.custom_user_note ? 'Update' : 'Create'} Note
+                                                </Typography>
                                             </MenuItem>
 
                                             {
