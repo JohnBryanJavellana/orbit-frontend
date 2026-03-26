@@ -72,6 +72,7 @@ const ModalViewEnlargeAvatar = ({ data, callbackFunction }: Props) => {
                             srcShown={data.custom_avatar.shown_avatar}
                             showNote
                             isAudioLoading={isAudioLoading}
+                            runAudio
                         />
                     </div>
                 </>
