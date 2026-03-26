@@ -4,17 +4,23 @@ import useGetRankAttribute2 from "@/app/hooks/useGetRankAttribute2";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import './ViewUserContent.css';
 import ModalViewEnlargeAvatar from "../../CustomAvatarWithOnlineBadge/ModalViewEnlargeAvatar";
+import { useState } from "react";
 
 export default function ViewUserContent({ user }: { user: any }) {
     const { getRankAttribute } = useGetRankAttribute2();
     const { urlWithoutApi } = useSystemURLCon();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     return (
         <>
-            <ModalViewEnlargeAvatar
-                data={user}
-                callbackFunction={() => { }}
-            />
+            {
+                isModalOpen &&
+                <ModalViewEnlargeAvatar
+                    data={user}
+                    callbackFunction={() => { }}
+                />
+            }
+
 
             <div className="row">
                 <div className="col-xl-8">
@@ -29,7 +35,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                                 position: 'relative',
                                 zIndex: 10
                             }}>
-                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`}>
+                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`} onClick={() => setIsModalOpen(true)}>
                                     <CustomAvatarWithOnlineBadge
                                         height={120}
                                         width={120}

@@ -66,7 +66,7 @@ export default function CustomAvatarWithOnlineBadge({
                                     ? JSON.parse(data?.custom_user_note.note_audio)
                                     : data?.custom_user_note.note_audio;
 
-                                if (!music || !runAudio) return null;
+                                if (!music) return null;
 
                                 return (
                                     <div className='w-100 rounded d-flex align-items-center' style={{
