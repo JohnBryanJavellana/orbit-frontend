@@ -2,21 +2,21 @@ import useSystemURLCon from '@/app/hooks/useSystemURLCon';
 import ModalTemplate from '../ModalTemplate/ModalTemplate';
 import CustomAvatarWithOnlineBadge from './CustomAvatarWithOnlineBadge';
 import { useEffect, useState } from 'react';
+import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
 
 interface Props {
     data: any,
     callbackFunction?: (e: any) => void
 }
 
-// 55180966-3e5ace594d1d6d2915e9b35b1 PIXIBAY API KEY
-
 const ModalViewEnlargeAvatar = ({ data, callbackFunction }: Props) => {
     const { urlWithoutApi } = useSystemURLCon();
     const [audioPlayer] = useState(new Audio());
+    const { userData } = useGetCurrentUser();
     const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (data?.custom_user_note?.note_audio) {
+        if (data?.custom_user_note?.note_audio && userData) {
             const music = typeof data?.custom_user_note.note_audio === 'string'
                 ? JSON.parse(data?.custom_user_note.note_audio)
                 : data?.custom_user_note.note_audio;
@@ -31,7 +31,21 @@ const ModalViewEnlargeAvatar = ({ data, callbackFunction }: Props) => {
                 audioPlayer.play();
             };
         }
-    }, [data]);
+    }, [data, userData]);
+
+    const getRemainingHours = (createdAt: string): string => {
+        if (!createdAt) return '';
+
+        const start = new Date(createdAt).getTime();
+        const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+        const deadline = start + twentyFourHoursInMs;
+        const now = new Date().getTime();
+        const diffInMs = deadline - now;
+        const hoursRemaining = Math.floor(diffInMs / (1000 * 60 * 60));
+        const val = hoursRemaining > 0 ? hoursRemaining : 0;
+
+        return `${val} ${val > 0 ? 'hrs' : 'hr'}`;
+    };
 
     const handleClose = () => {
         if (audioPlayer) {
@@ -54,7 +68,16 @@ const ModalViewEnlargeAvatar = ({ data, callbackFunction }: Props) => {
             isModalCentered
             header={
                 <div className="w-100">
-                    <div className="text-sm text-bold text-center w-100">{`${data.first_name} ${data.middle_name} ${data.last_name} ${data.suffix ?? ''}`}</div>
+                    <div className="text-sm text-bold text-center w-100">
+                        {`${data.first_name} ${data.middle_name} ${data.last_name} ${data.suffix ?? ''}`}
+                        {
+                            userData?.id === data?.id && <>
+                                <div className="w-100 text-secondary small">Shared with Friends</div>
+                                <div className="w-100 text-secondary small">Expires in {getRemainingHours(data?.custom_user_note.created_at)}</div>
+                            </>
+                        }
+
+                    </div>
                     <hr className="style-two" />
                 </div>
             }

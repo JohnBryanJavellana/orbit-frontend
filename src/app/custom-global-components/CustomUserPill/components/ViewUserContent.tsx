@@ -17,7 +17,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                 isModalOpen &&
                 <ModalViewEnlargeAvatar
                     data={user}
-                    callbackFunction={() => { }}
+                    callbackFunction={() => setIsModalOpen(false)}
                 />
             }
 
