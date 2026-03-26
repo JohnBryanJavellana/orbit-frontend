@@ -10,12 +10,12 @@ import axios from "axios";
 import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
 import useMessageAlertPopup from '@/app/hooks/useMessageAlertPopup';
 
-const RARE_SLOT_WIDTH = 40;
+const RARE_SLOT_WIDTH = 25;
 const CANVAS_WIDTH = 450;
 const CANVAS_HEIGHT = 400;
 const ROWS = 6;
 const PEGS_IN_ROW = 9;
-const MULTIPLIERS = ['RARE BORDER', 0, 4, 0, 3, 0, 5, 0, 6];
+const MULTIPLIERS = [1, 'RARE BORDER', 0, 4, 0, 3, 0, 5, 0, 6];
 const SLOT_COUNT = MULTIPLIERS.length;
 const SLOT_WIDTH = CANVAS_WIDTH / SLOT_COUNT;
 const NORMAL_SLOT_COUNT = MULTIPLIERS.length - 1;
