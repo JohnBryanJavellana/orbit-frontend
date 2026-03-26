@@ -41,6 +41,7 @@ export default function useGetRankAttribute() {
                     userSelect: 'none',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '10px',
                     position: 'relative',
                     padding: '5px 12px',
@@ -127,7 +128,7 @@ export default function useGetRankAttribute() {
 
                 {
                     showLabel &&
-                    <div className="ml-2" style={{ display: 'flex', flexDirection: 'column', zIndex: 2 }}>
+                    <div className="ml-1" style={{ display: 'flex', flexDirection: 'column', zIndex: 2 }}>
                         <span style={{
                             fontSize: '0.75rem',
                             fontWeight: '900',
@@ -140,6 +141,7 @@ export default function useGetRankAttribute() {
                         }}>
                             {tierName}
                         </span>
+
                         <span style={{
                             fontSize: '0.65rem',
                             color: (isSuperior || isOmega) ? '#fff' : '#adb5bd',

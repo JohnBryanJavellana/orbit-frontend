@@ -131,8 +131,8 @@
     background-color: white;
     border-radius: 10px;
     padding: 4px 7px;
-    min-width: 30px;
-    max-width: 110px;
+    min-width: 40px;
+    max-width: 120px;
     width: max-content;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
     border: 1px solid #e0e0e0;

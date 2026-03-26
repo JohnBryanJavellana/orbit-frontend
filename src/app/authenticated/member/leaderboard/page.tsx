@@ -129,13 +129,15 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                         />
                                     </FormControl>
 
-                                    {
-                                        filteredFriends.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
-                                            <div key={index} className={`mb-2`}>
-                                                <ProfileParchment user={friend} callbackFunction={(e) => GetFriends(e)} />
-                                            </div>
-                                        ))
-                                    }
+                                    <div className="row">
+                                        {
+                                            filteredFriends.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
+                                                <div key={index} className={`mb-3 col-6 col-xl-2`}>
+                                                    <ProfileParchment user={friend} callbackFunction={(e) => GetFriends(e)} />
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
 
                                     <TablePaginationTemplate
                                         dataset={filteredFriends}

@@ -48,7 +48,7 @@ export default function CustomAvatarWithOnlineBadge({
                             <Typography
                                 variant="caption"
                                 sx={{
-                                    fontSize: '0.58rem',
+                                    fontSize: '0.65rem',
                                     color: '#444',
                                     display: 'block',
                                     fontWeight: 500,
@@ -91,7 +91,7 @@ export default function CustomAvatarWithOnlineBadge({
                                         {/* 2. Text Container: Takes up remaining space */}
                                         <div className="flex-grow-1 overflow-hidden" style={{ position: 'relative' }}>
                                             <div className="marquee-active" style={{
-                                                fontSize: '0.5rem',
+                                                fontSize: '0.6rem',
                                                 fontWeight: 600,
                                                 color: '#444',
                                                 whiteSpace: 'nowrap',
