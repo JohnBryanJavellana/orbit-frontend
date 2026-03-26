@@ -2,8 +2,10 @@
 /* global $ */
 
 import ModalTemplate from "@/app/custom-global-components/ModalTemplate/ModalTemplate";
-import './ModalViewAnnouncement.css';
 import useDateFormat from "@/app/hooks/useDateFormat";
+import 'primereact/resources/themes/lara-dark-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'quill/dist/quill.snow.css';
 
 interface ModalViewAnnouncementProps {
     data: any | null,
@@ -24,32 +26,41 @@ export default function ModalViewAnnouncement({ data, id, callbackFunction }: Mo
             <ModalTemplate
                 id={`view_announcement_popup_${id}`}
                 size={"lg"}
-                modalDialogStyle="parchment bg-transparent"
                 isModalScrollable={false}
-                bodyClassName="mx-5"
-                modalContentClassName="bg-transparent border-0 elevation-0 shadow-0"
+                modalContentClassName="text-white"
+                isModalCentered
+                headerClassName="border-0 pb-0"
+                header={
+                    <div className="w-100">
+                        <div className="text-sm text-bold text-center w-100">Announcement</div>
+                        <hr className="style-two" />
+                    </div>
+                }
+                bodyClassName="px-3 text-sm pt-2 pb-0"
                 body={
                     <div style={{ userSelect: 'none' }}>
-                        <div className="parchment-content">
-                            <div className="text-dark text-bold h2 text-center mb-5">Announcement</div>
-
-                            {
-                                data?.map((a: any, index: number) => (
-                                    <div key={index}>
-                                        <div className="text-dark mb-2" dangerouslySetInnerHTML={{ __html: a.content }} />
-
-                                        <div className="mt-1 text-muted text-sm">{FormatDatetimeToHumanReadable(a.created_at, true)}</div>
-                                        {index < data?.length - 1 && <hr className="style-two" />}
+                        {
+                            data?.map((a: any, index: number) => (
+                                <div key={index} className="card custom-border-dark custom-bg rounded-0">
+                                    <div className="card-body ql-snow">
+                                        <div className="ql-editor" dangerouslySetInnerHTML={{ __html: a.content }} />
                                     </div>
-                                ))
-                            }
 
-                            <div className="d-flex align-items-center justify-content-center mt-4">
-                                <button type="button" onClick={() => handleClose()} className="rpg-button px-4 shadow">
-                                    CLOSE
-                                </button>
-                            </div>
-                        </div>
+                                    <div className="card-footer custom-top-border-dark py-1">
+                                        <div className="text-muted text-sm">{FormatDatetimeToHumanReadable(a.created_at, true)}</div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
+                footerClassName="border-0 pb-0"
+                footer={
+                    <div className="w-100 text-center">
+                        <hr className="style-two" />
+                        <button type='button' className='btn btn-dark btn-sm mr-1 custom-border-dark' onClick={() => handleClose()}>
+                            Close
+                        </button>
                     </div>
                 }
             />

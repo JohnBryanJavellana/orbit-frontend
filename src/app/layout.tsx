@@ -11,7 +11,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
     title: "Orbit",
-    description: "Powered by Next.JS + AdminLTE + MUI",
+    description: "Powered by Next.JS + AdminLTE + MUI"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
@@ -21,7 +21,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <link rel="stylesheet" href="/admin-lte/plugins/aos/aos.css" />
                 <link rel="stylesheet" href="/admin-lte/css/adminlte.min.css" />
                 <link rel="stylesheet" href="/admin-lte/css/custom.css" />
-                <link rel="icon" href="/system-images/orbit-logo.png" sizes="any" />
                 <link rel="stylesheet" href="/fontawesome-free/css/all.min.css"></link>
                 <link rel="stylesheet" href="/admin-lte/css/cropper.min.css" />
                 <Script src="/admin-lte/plugins/jquery/jquery.min.js"></Script>
