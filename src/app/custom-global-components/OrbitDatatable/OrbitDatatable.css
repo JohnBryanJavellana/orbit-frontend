@@ -1,11 +1,25 @@
+/* Allow the bubble to overflow the table boundaries */
+.rdt_Table {
+    overflow: visible !important;
+}
+
+/* Ensure the table body and cells don't clip the bubble */
+.rdt_TableBody,
+.rdt_TableCell {
+    overflow: visible !important;
+}
+
+.rdt_TableRow {
+    position: relative;
+    /* Required for z-index to work */
+    overflow: visible !important;
+}
+
 .rdt_TableRow:hover {
     z-index: 999;
+    /* This brings the current row to the front */
     background-color: rgba(0, 0, 0, 0.151) !important;
     border: 1px solid rgba(0, 0, 0, 0.2);
     box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.068);
     cursor: pointer;
-}
-
-.rdt_Table {
-    overflow: hidden !important;
 }

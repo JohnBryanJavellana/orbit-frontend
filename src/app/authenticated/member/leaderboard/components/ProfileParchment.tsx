@@ -8,6 +8,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { useState } from "react";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ModalViewUser from "@/app/custom-global-components/CustomUserPill/components/ModalViewUser";
+import ModalViewEnlargeAvatar from "@/app/custom-global-components/CustomAvatarWithOnlineBadge/ModalViewEnlargeAvatar";
 
 export default function ProfileParchment({ user, callbackFunction, nextStringAfterAccountStatus = '' }: { user: any, callbackFunction: (e: boolean) => void, nextStringAfterAccountStatus?: string }) {
     const isMobileViewPort = useDetectMobileViewport();
@@ -33,10 +34,27 @@ export default function ProfileParchment({ user, callbackFunction, nextStringAft
                 />
             }
 
+            {
+                modalOpenIndex === 2 &&
+                <ModalViewEnlargeAvatar
+                    data={modalOpenData}
+                    callbackFunction={() => {
+                        callbackFunction(false);
+                        setModalOpenData(null);
+                        setModalOpenId(null);
+                        setModalOpenIndex(null);
+                    }}
+                />
+            }
+
             <div className={`px-2 row`}>
                 <div className={`col-xl-12 py-1 custom-bg custom-border-dark`}>
                     <div className="row">
-                        <div className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`}>
+                        <div data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`} className={`col-${isMobileViewPort ? 2 : 1} d-flex align-items-center justify-content-center text-center`} onClick={() => {
+                            setModalOpenData(user);
+                            setModalOpenId(user.id);
+                            setModalOpenIndex(2);
+                        }}>
                             <CustomAvatarWithOnlineBadge
                                 data={user}
                                 height={50}
@@ -45,6 +63,7 @@ export default function ProfileParchment({ user, callbackFunction, nextStringAft
                                 isOnline={user.is_online}
                                 isAdmin={user.role === "SUPERADMIN"}
                                 srcShown={user.custom_avatar?.shown_avatar}
+                                showNote
                             />
                         </div>
 

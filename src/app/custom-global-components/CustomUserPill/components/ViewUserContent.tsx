@@ -3,6 +3,7 @@ import CustomAvatarWithOnlineBadge from "../../CustomAvatarWithOnlineBadge/Custo
 import useGetRankAttribute2 from "@/app/hooks/useGetRankAttribute2";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import './ViewUserContent.css';
+import ModalViewEnlargeAvatar from "../../CustomAvatarWithOnlineBadge/ModalViewEnlargeAvatar";
 
 export default function ViewUserContent({ user }: { user: any }) {
     const { getRankAttribute } = useGetRankAttribute2();
@@ -10,6 +11,11 @@ export default function ViewUserContent({ user }: { user: any }) {
 
     return (
         <>
+            <ModalViewEnlargeAvatar
+                data={user}
+                callbackFunction={() => { }}
+            />
+
             <div className="row">
                 <div className="col-xl-8">
                     <div className="card custom-bg custom-border-dark rounded-0 elevation-1">
@@ -23,7 +29,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                                 position: 'relative',
                                 zIndex: 10
                             }}>
-                                <div style={{ transform: 'translateY(60px)' }}>
+                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`}>
                                     <CustomAvatarWithOnlineBadge
                                         height={120}
                                         width={120}
@@ -32,6 +38,7 @@ export default function ViewUserContent({ user }: { user: any }) {
                                         isOnline={user.is_online}
                                         isAdmin={user.role === "SUPERADMIN"}
                                         srcShown={user.custom_avatar.shown_avatar}
+                                        showNote
                                     />
                                 </div>
                             </Box>
