@@ -15,7 +15,8 @@ interface CustomAvatarWithOnlineBadgeProps {
     isOnline?: boolean;
     withBadge?: boolean;
     isAdmin?: boolean;
-    isAudioLoading?: boolean
+    isAudioLoading?: boolean;
+    runAudio?: boolean
 }
 
 export default function CustomAvatarWithOnlineBadge({
@@ -24,6 +25,7 @@ export default function CustomAvatarWithOnlineBadge({
     srcShown,
     src = "/static/images/avatar/1.jpg",
     data,
+    runAudio = false,
     showNote = false,
     isAudioLoading = false
 }: CustomAvatarWithOnlineBadgeProps) {
@@ -64,7 +66,7 @@ export default function CustomAvatarWithOnlineBadge({
                                     ? JSON.parse(data?.custom_user_note.note_audio)
                                     : data?.custom_user_note.note_audio;
 
-                                if (!music) return null;
+                                if (!music || !runAudio) return null;
 
                                 return (
                                     <div className='w-100 rounded d-flex align-items-center' style={{
