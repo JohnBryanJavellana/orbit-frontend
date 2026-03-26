@@ -38,11 +38,11 @@ export default function CustomAvatarWithOnlineBadge({
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: '-25px', // Lifted slightly higher to clear the avatar/border
+                        top: '-20px', // Lifted slightly higher to clear the avatar/border
                         zIndex: 999,
                         backgroundColor: 'white',
                         borderRadius: '15px', // More rounded for that "pill" look
-                        padding: '4px 12px',  // Increased padding for better breathing room
+                        padding: '4px 8px',  // Increased padding for better breathing room
 
                         // THE FIX:
                         minWidth: '40px',     // Prevents it from being a tiny circle for 1-char notes
@@ -54,6 +54,7 @@ export default function CustomAvatarWithOnlineBadge({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        textAlign: 'center',
 
                         '&::after': {
                             content: '""',
@@ -75,7 +76,8 @@ export default function CustomAvatarWithOnlineBadge({
                             fontSize: '0.65rem',
                             color: '#333',
                             overflow: 'hidden',
-                            fontWeight: 500
+                            fontWeight: 500,
+                            lineHeight: '12px'
                         }}
                     >
                         {data?.custom_user_note.note}
