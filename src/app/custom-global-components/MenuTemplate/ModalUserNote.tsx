@@ -139,6 +139,11 @@ export default function ModalUserNote({ data, id, titleHeader, callbackFunction 
                                 {note.length} / {MAX_CHARS}
                             </Box>
                         </FormHelperText>
+
+                        <div className="d-flex flex-column" style={{ height: 30 }}>
+                            <div></div>
+                            <div className="mt-auto small text-muted">Your note stays up for 24 hours. We won't notify anyone when you post.</div>
+                        </div>
                     </>
                 }
                 footerClassName="border-0 pb-0"
