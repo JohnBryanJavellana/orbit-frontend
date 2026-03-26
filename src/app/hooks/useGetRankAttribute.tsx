@@ -127,7 +127,7 @@ export default function useGetRankAttribute() {
 
                 {
                     showLabel &&
-                    <div style={{ display: 'flex', flexDirection: 'column', zIndex: 2 }}>
+                    <div className="ml-2" style={{ display: 'flex', flexDirection: 'column', zIndex: 2 }}>
                         <span style={{
                             fontSize: '0.75rem',
                             fontWeight: '900',

@@ -1,9 +1,8 @@
-import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import './CustomAvatarWithOnlineBadge.css';
 import useSystemURLCon from '@/app/hooks/useSystemURLCon';
 import PreloadImage from '../PreloadImage/PreloadImage';
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 interface CustomAvatarWithOnlineBadgeProps {
     height?: any;
@@ -12,9 +11,11 @@ interface CustomAvatarWithOnlineBadgeProps {
     srcShown: 'MAIN' | 'CUSTOM';
     data?: any,
     statusColor?: string;
+    showNote?: boolean;
     isOnline?: boolean;
     withBadge?: boolean;
     isAdmin?: boolean;
+    isAudioLoading?: boolean
 }
 
 export default function CustomAvatarWithOnlineBadge({
@@ -22,7 +23,9 @@ export default function CustomAvatarWithOnlineBadge({
     width = 30,
     srcShown,
     src = "/static/images/avatar/1.jpg",
-    data
+    data,
+    showNote = false,
+    isAudioLoading = false
 }: CustomAvatarWithOnlineBadgeProps) {
     const { urlWithoutApi } = useSystemURLCon();
 
@@ -30,99 +33,117 @@ export default function CustomAvatarWithOnlineBadge({
     const finalUrlSrc = `${urlWithoutApi}/${srcShown === "MAIN" ? 'user-images' : 'custom-avatar-images'}/${initSource}`;
 
     return (
-        <Box className="position-relative d-flex align-items-center justify-content-center"
-            style={{ width: width * 1.4, height: height * 1.4, position: 'relative' }}>
+        <>
+            <Box className="position-relative d-flex align-items-center justify-content-center" sx={{
+                width: width * 1.4,
+                height: height * 1.4,
+                position: 'relative',
+                cursor: 'pointer'
+            }}>
+                {data?.custom_user_note && showNote && (
+                    <div className="note-bubble">
+                        <div className="text-center">
+                            <Typography
+                                variant="caption"
+                                sx={{
+                                    fontSize: '0.58rem',
+                                    color: '#444',
+                                    display: 'block',
+                                    fontWeight: 500,
+                                    lineHeight: '1.0'
+                                }}
+                            >
+                                {data?.custom_user_note.note}
+                            </Typography>
+                        </div>
 
-            {/* Thought Bubble / Note */}
-            {data?.custom_user_note && (
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '-20px', // Lifted slightly higher to clear the avatar/border
-                        zIndex: 999,
-                        backgroundColor: 'white',
-                        borderRadius: '15px', // More rounded for that "pill" look
-                        padding: '4px 8px',  // Increased padding for better breathing room
 
-                        // THE FIX:
-                        minWidth: '40px',     // Prevents it from being a tiny circle for 1-char notes
-                        maxWidth: '120px',    // Increased to allow more of the 50 chars to show
-                        width: 'max-content', // Important: tells the box to grow with the text
+                        {!isAudioLoading ? (() => {
+                            try {
+                                const music = typeof data?.custom_user_note.note_audio === 'string'
+                                    ? JSON.parse(data?.custom_user_note.note_audio)
+                                    : data?.custom_user_note.note_audio;
 
-                        boxShadow: '0px 3px 10px rgba(0,0,0,0.2)',
-                        border: '1px solid #e0e0e0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign: 'center',
+                                if (!music) return null;
 
-                        '&::after': {
-                            content: '""',
-                            position: 'absolute',
-                            bottom: '-6px', // Adjusted to match the new padding
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: 0,
-                            height: 0,
-                            borderLeft: '6px solid transparent',
-                            borderRight: '6px solid transparent',
-                            borderTop: '6px solid white',
-                        }
-                    }}
-                >
-                    <Typography
-                        variant="caption"
-                        sx={{
-                            fontSize: '0.65rem',
-                            color: '#333',
-                            overflow: 'hidden',
-                            fontWeight: 500,
-                            lineHeight: '12px'
-                        }}
-                    >
-                        {data?.custom_user_note.note}
-                    </Typography>
-                </Box>
-            )}
+                                return (
+                                    <div className='w-100 rounded d-flex align-items-center' style={{
+                                        height: '16px',
+                                        overflow: 'hidden',
+                                        padding: '0 4px'
+                                    }}>
+                                        <div className="d-flex align-items-end justify-content-between flex-shrink-0"
+                                            style={{ width: '8px', height: '8px', marginRight: '6px' }}>
+                                            {[1, 2, 3].map((bar) => (
+                                                <div key={bar} className="bg-primary" style={{
+                                                    width: '2px',
+                                                    height: '100%',
+                                                    borderRadius: '1px',
+                                                    transformOrigin: 'bottom',
+                                                    animation: 'mini-bars 0.6s ease-in-out infinite alternate',
+                                                    animationDelay: `${bar * 0.2}s`
+                                                }} />
+                                            ))}
+                                        </div>
 
-            <Link
-                href={finalUrlSrc}
-                target='_blank'
-                className="position-relative d-flex align-items-center justify-content-center"
-                style={{
+                                        {/* 2. Text Container: Takes up remaining space */}
+                                        <div className="flex-grow-1 overflow-hidden" style={{ position: 'relative' }}>
+                                            <div className="marquee-active" style={{
+                                                fontSize: '0.5rem',
+                                                fontWeight: 600,
+                                                color: '#444',
+                                                whiteSpace: 'nowrap',
+                                                display: 'inline-block'
+                                            }}>
+                                                {/* Double the text for a seamless loop */}
+                                                <span>{music.name} • {music.artist_name}</span>
+                                                <span style={{ paddingLeft: '30px' }}>{music.name} • {music.artist_name}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            } catch (e) {
+                                console.error("Error parsing note_audio:", e);
+                                return null;
+                            }
+                        })() : <div className='d-flex align-items-center justify-content-center mt-2'><CircularProgress size={10} /></div>}
+                    </div>
+                )}
+
+                <div className="position-relative d-flex align-items-center justify-content-center" style={{
                     width: width * 1.1,
                     height: height * 1.1,
-                }}
-            >
-                <PreloadImage
-                    src={finalUrlSrc}
-                    height={height}
-                    width={width}
-                    isRounded
-                    preStyles={{
-                        zIndex: 1,
-                        backgroundColor: '#1a1a1a',
-                        border: '2px solid transparent'
-                    }}
-                />
-
-                {data?.custom_border && (
-                    <img
-                        src={`${urlWithoutApi}/border-images/${data?.custom_border.filename}`}
-                        className={`position-absolute`}
-                        style={{
-                            width: width * 1.4,
-                            height: height * 1.4,
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            zIndex: 2,
-                            pointerEvents: 'none',
-                            filter: 'drop-shadow(0px 4px 4px rgba(0,0,0,0.5))'
+                }}>
+                    <PreloadImage
+                        src={finalUrlSrc}
+                        height={height}
+                        width={width}
+                        isRounded
+                        preStyles={{
+                            zIndex: 1,
+                            backgroundColor: '#1a1a1a',
+                            border: '2px solid transparent'
                         }}
                     />
-                )}
-            </Link>
-        </Box>
+
+                    {data?.custom_border && (
+                        <img
+                            src={`${urlWithoutApi}/border-images/${data?.custom_border.filename}`}
+                            className={`position-absolute`}
+                            style={{
+                                width: width * 1.4,
+                                height: height * 1.4,
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                zIndex: 2,
+                                pointerEvents: 'none',
+                                filter: 'drop-shadow(0px 4px 4px rgba(0,0,0,0.5))'
+                            }}
+                        />
+                    )}
+                </div>
+            </Box>
+        </>
     );
 }

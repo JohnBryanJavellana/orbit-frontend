@@ -19,9 +19,9 @@ interface ModalTemplateProps {
 
 export default function ModalTemplate({
     id,
-    rounded = false,
+    rounded,
     modalParentStyle,
-    isModalCentered,
+    isModalCentered = true,
     modalDialogStyle,
     isModalScrollable = true,
     headerClassName,
