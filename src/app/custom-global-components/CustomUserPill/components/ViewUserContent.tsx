@@ -4,12 +4,47 @@ import useGetRankAttribute2 from "@/app/hooks/useGetRankAttribute2";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import './ViewUserContent.css';
 import ModalViewEnlargeAvatar from "../../CustomAvatarWithOnlineBadge/ModalViewEnlargeAvatar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function ViewUserContent({ user }: { user: any }) {
+export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { user: any, autoPlayNoteAudio?: boolean }) {
     const { getRankAttribute } = useGetRankAttribute2();
     const { urlWithoutApi } = useSystemURLCon();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
+    const [audioPlayer] = useState(new Audio());
+
+    const EndExistingPlayingAudio = () => {
+        if (audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.src = "";
+        }
+    }
+
+    const PlayAudio = (user: any) => {
+        if (user?.custom_user_note?.note_audio && autoPlayNoteAudio) {
+            const music = typeof user?.custom_user_note.note_audio === 'string'
+                ? JSON.parse(user?.custom_user_note.note_audio)
+                : user?.custom_user_note.note_audio;
+
+            setIsAudioLoading(true);
+            audioPlayer.src = music.audio;
+            audioPlayer.loop = true;
+            audioPlayer.load();
+
+            audioPlayer.oncanplay = () => {
+                setIsAudioLoading(false);
+                audioPlayer.play();
+            };
+        }
+    }
+
+    useEffect(() => {
+        if (user?.custom_user_note?.note_audio && autoPlayNoteAudio) {
+            PlayAudio(user);
+        }
+
+        return () => EndExistingPlayingAudio();
+    }, [user, autoPlayNoteAudio]);
 
     return (
         <>
@@ -17,7 +52,10 @@ export default function ViewUserContent({ user }: { user: any }) {
                 isModalOpen &&
                 <ModalViewEnlargeAvatar
                     data={user}
-                    callbackFunction={() => setIsModalOpen(false)}
+                    callbackFunction={() => {
+                        setIsModalOpen(false);
+                        PlayAudio(user);
+                    }}
                 />
             }
 
@@ -35,7 +73,10 @@ export default function ViewUserContent({ user }: { user: any }) {
                                 position: 'relative',
                                 zIndex: 10
                             }}>
-                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`} onClick={() => setIsModalOpen(true)}>
+                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`} onClick={() => {
+                                    setIsModalOpen(true);
+                                    EndExistingPlayingAudio();
+                                }}>
                                     <CustomAvatarWithOnlineBadge
                                         height={120}
                                         width={120}
@@ -45,6 +86,8 @@ export default function ViewUserContent({ user }: { user: any }) {
                                         isAdmin={user.role === "SUPERADMIN"}
                                         srcShown={user.custom_avatar.shown_avatar}
                                         showNote
+                                        isAudioLoading={autoPlayNoteAudio && isAudioLoading}
+                                        runAudio={autoPlayNoteAudio}
                                     />
                                 </div>
                             </Box>
