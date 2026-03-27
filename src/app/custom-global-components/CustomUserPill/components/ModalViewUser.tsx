@@ -23,7 +23,7 @@ export default function ModalViewUser({ user, callbackFunction }: ModalViewUserP
                 bodyClassName="pb-0 bg-dark"
                 body={
                     <>
-                        <ViewUserContent user={user} />
+                        <ViewUserContent autoPlayNoteAudio user={user} />
                     </>
                 }
                 footer={
