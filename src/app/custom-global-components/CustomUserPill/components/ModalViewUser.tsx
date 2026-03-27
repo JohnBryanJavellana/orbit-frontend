@@ -1,12 +1,14 @@
+import { useEffect, useState } from "react";
 import ModalTemplate from "../../ModalTemplate/ModalTemplate";
 import ViewUserContent from "./ViewUserContent";
 
 interface ModalViewUserProps {
     user: any,
-    callbackFunction?: (e: any) => void
+    callbackFunction?: (e: any) => void,
+    playAudio?: boolean
 }
 
-export default function ModalViewUser({ user, callbackFunction }: ModalViewUserProps) {
+export default function ModalViewUser({ user, callbackFunction, playAudio = true }: ModalViewUserProps) {
     const handleClose = () => {
         $(`#view_user_details_${user?.id}`).modal('hide');
         callbackFunction?.(null);
@@ -23,7 +25,7 @@ export default function ModalViewUser({ user, callbackFunction }: ModalViewUserP
                 bodyClassName="pb-0 bg-dark"
                 body={
                     <>
-                        <ViewUserContent autoPlayNoteAudio user={user} />
+                        <ViewUserContent autoPlayNoteAudio={playAudio} user={user} />
                     </>
                 }
                 footer={

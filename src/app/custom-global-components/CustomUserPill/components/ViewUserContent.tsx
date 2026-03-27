@@ -4,46 +4,53 @@ import useGetRankAttribute2 from "@/app/hooks/useGetRankAttribute2";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import './ViewUserContent.css';
 import ModalViewEnlargeAvatar from "../../CustomAvatarWithOnlineBadge/ModalViewEnlargeAvatar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { user: any, autoPlayNoteAudio?: boolean }) {
     const { getRankAttribute } = useGetRankAttribute2();
     const { urlWithoutApi } = useSystemURLCon();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
-    const [audioPlayer] = useState(new Audio());
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const EndExistingPlayingAudio = () => {
-        if (audioPlayer) {
-            audioPlayer.pause();
-            audioPlayer.src = "";
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = "";
+            audioRef.current.load();
+            audioRef.current = null;
         }
     }
 
-    const PlayAudio = (user: any) => {
-        if (user?.custom_user_note?.note_audio && autoPlayNoteAudio) {
-            const music = typeof user?.custom_user_note.note_audio === 'string'
-                ? JSON.parse(user?.custom_user_note.note_audio)
-                : user?.custom_user_note.note_audio;
+    const PlayAudio = (userData: any) => {
+        if (userData?.custom_user_note?.note_audio && autoPlayNoteAudio) {
+            const music = typeof userData.custom_user_note.note_audio === 'string'
+                ? JSON.parse(userData.custom_user_note.note_audio)
+                : userData.custom_user_note.note_audio;
+
+            if (!audioRef.current) {
+                audioRef.current = new Audio();
+            }
 
             setIsAudioLoading(true);
-            audioPlayer.src = music.audio;
-            audioPlayer.loop = true;
-            audioPlayer.load();
+            audioRef.current.src = music.audio;
+            audioRef.current.loop = true;
 
-            audioPlayer.oncanplay = () => {
+            audioRef.current.oncanplay = () => {
                 setIsAudioLoading(false);
-                audioPlayer.play();
+                audioRef.current?.play().catch(err => console.error("Audio playback failed:", err));
             };
         }
     }
 
     useEffect(() => {
-        if (user?.custom_user_note?.note_audio && autoPlayNoteAudio) {
+        if (user && autoPlayNoteAudio) {
             PlayAudio(user);
         }
 
-        return () => EndExistingPlayingAudio();
+        return () => {
+            EndExistingPlayingAudio();
+        };
     }, [user, autoPlayNoteAudio]);
 
     return (
