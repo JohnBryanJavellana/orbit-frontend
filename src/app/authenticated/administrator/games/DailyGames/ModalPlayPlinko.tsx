@@ -347,7 +347,7 @@ export default function ModalPlayPlinko({ data, id, titleHeader, callbackFunctio
                                 disabled={isPlaying || isSubmitting || isFetching || userData?.total_points < 2}
                                 onClick={startGame}
                             >
-                                {isPlaying ? 'DROPPING...' : userData?.total_points >= 2 ? (dailyFreeSpin === 'PENDING' ? 'FREE DAILY PLAY' : 'PLAY FOR 2 AP') : 'INSUFFICIENT APs'}
+                                {isPlaying ? 'DROPPING...' : userData?.total_points >= 2 ? (dailyFreeSpin === 'PENDING' ? 'FREE DAILY PLAY' : 'PLAY AGAIN FOR 2 AP') : 'INSUFFICIENT APs'}
                             </button>
                         </div>
 

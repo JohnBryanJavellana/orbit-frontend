@@ -210,7 +210,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                                     {isPlaying || isPreRevealing || isFetching ? 'SHUFFLING...' :
                                         hasShuffled ? 'CHOOSE A CUP' :
                                             dailyFreeSpin === 'PENDING' ? 'FREE DAILY SHUFFLE' :
-                                                userData?.total_points >= 5 ? 'REPLAY FOR 5 APs' : 'INSUFFICIENT APs'}
+                                                userData?.total_points >= 5 ? 'PLAY AGAIN FOR 5 APs' : 'INSUFFICIENT APs'}
                                 </div>
                             </div>
 
