@@ -1,38 +1,38 @@
 'use client';
 
-import CustomAvatarWithOnlineBadge from "@/app/custom-global-components/CustomAvatarWithOnlineBadge/CustomAvatarWithOnlineBadge";
-import ModalViewUser from "@/app/custom-global-components/CustomUserPill/components/ModalViewUser";
-import useDetectMobileViewport from "@/app/hooks/useDetectMobileViewport";
-import useGetRankAttribute from "@/app/hooks/useGetRankAttribute";
 import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import useWebToken from "@/app/hooks/useWebToken";
-import { Button, FormControl, IconButton, Input, Tooltip } from "@mui/material";
+import { FormControl, Input, Tooltip } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import TablePaginationTemplate from "@/app/custom-global-components/CustomTablePaginationTemplate/CustomTablePaginationTemplate";
 import './leaderboard.css';
-import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import ModalViewLeaderboardGuide from "./components/ModalViewLeaderboardGuide";
 import ProfileParchment from "./components/ProfileParchment";
 import LeaderboardSkeleton from "./LeaderboardSkeleton";
 
-interface LeaderboardProp { }
+import GridViewIcon from '@mui/icons-material/GridView';
+import ViewListIcon from '@mui/icons-material/ViewList';
 
-export default function Leaderboard({ }: LeaderboardProp) {
+interface LeaderboardProp {
+    providedData?: any | null
+    providedCallbackFunction?: () => {} | null
+    tablePaginationText?: string
+    inModal?: boolean
+}
+
+export default function Leaderboard({ providedData, tablePaginationText = 'Friends', providedCallbackFunction, inModal = false }: LeaderboardProp) {
     const { getToken } = useWebToken();
-    const { urlWithApi, urlWithoutApi } = useSystemURLCon();
+    const { urlWithApi } = useSystemURLCon();
     const [friends, setFriends] = useState<any>([]);
     const navigate = useRouter();
     const [isFetching, setIsFetching] = useState<boolean>(true);
-    const { getRankAttribute } = useGetRankAttribute();
     const [searchText, setSearchText] = useState<string>('');
     const [modalOpenData, setModalOpenData] = useState<any>(null);
     const [modalOpenId, setModalOpenId] = useState<null | number>(null);
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
-    const isMobileViewPort = useDetectMobileViewport();
-
+    const [view, setView] = useState<'LIST' | 'GRID'>('LIST');
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(12);
 
@@ -60,9 +60,14 @@ export default function Leaderboard({ }: LeaderboardProp) {
     }
 
     useEffect(() => {
-        GetFriends(true);
-        return () => { };
-    }, []);
+        if (!providedData) {
+            GetFriends(true);
+            return () => { };
+        } else {
+            setFriends(providedData);
+            setIsFetching(false);
+        }
+    }, [providedData]);
 
     const filteredFriends = useMemo(() => {
         let result = Array.isArray(friends) ? friends : [];
@@ -101,14 +106,23 @@ export default function Leaderboard({ }: LeaderboardProp) {
                         }
 
                         <div className="text-right d-flex align-items-center justify-content-end mb-2">
+                            <Tooltip title={`Change to ${view === 'LIST' ? 'GRID' : 'LIST'} view.`} arrow>
+                                <button style={{ height: 35 }} onClick={() => {
+                                    setView(view === 'LIST' ? 'GRID' : 'LIST');
+                                }} className="rpg-button px-3">
+                                    {view === 'LIST' ? <ViewListIcon color="inherit" /> : <GridViewIcon color="inherit" />}
+                                </button>
+                            </Tooltip>
+
                             <Tooltip title="Master the Ascension Hierarchy" arrow>
                                 <button data-toggle="modal"
+                                    style={{ height: 35 }}
                                     data-target={`#view_leaderboard_guide_0`}
                                     onClick={() => {
                                         setModalOpenData(null);
                                         setModalOpenId(0);
                                         setModalOpenIndex(2);
-                                    }} className="rpg-button px-3">View Rank Protocol</button>
+                                    }} className="rpg-button px-3">View Tiers</button>
                             </Tooltip>
                         </div>
 
@@ -125,15 +139,15 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                             disableUnderline
                                             size="small"
                                             autoComplete='off'
-                                            placeholder='Search friend...'
+                                            placeholder={`Search ${tablePaginationText}...`}
                                         />
                                     </FormControl>
 
                                     <div className="row">
                                         {
                                             filteredFriends.slice((page * rowsPerPage), ((page * rowsPerPage) + rowsPerPage)).map((friend: any, index: number) => (
-                                                <div key={index} className={`mb-3 col-6 col-xl-2`}>
-                                                    <ProfileParchment user={friend} callbackFunction={(e) => GetFriends(e)} />
+                                                <div key={index} className={`col-${view === 'LIST' ? '12 mb-2' : `6 col-xl-${inModal ? 3 : 2} mb-3`}`}>
+                                                    <ProfileParchment user={friend} callbackFunction={(e) => providedCallbackFunction ?? GetFriends(e)} preview={view} />
                                                 </div>
                                             ))
                                         }
@@ -144,14 +158,14 @@ export default function Leaderboard({ }: LeaderboardProp) {
                                         rowsPerPage={rowsPerPage}
                                         rowsPerPageOptions={[12, 24, 36, 50]}
                                         page={page}
-                                        labelRowsPerPage={"Friends per page:"}
+                                        labelRowsPerPage={`${tablePaginationText} per page:`}
                                         callbackFunction={(e) => {
                                             setRowsPerPage(e.rows);
                                             setPage(e.page);
                                         }}
 
                                     />
-                                </div> : <p>You do not have any friends.</p>
+                                </div> : <p>No {tablePaginationText} found.</p>
                         }
                     </>
             }

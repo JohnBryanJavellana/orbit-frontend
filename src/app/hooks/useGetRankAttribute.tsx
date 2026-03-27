@@ -1,5 +1,5 @@
 export default function useGetRankAttribute() {
-    const getRankAttribute = (points: number | '∞' | 'Ω', showLabel: boolean = true, showEmblem: boolean = true) => {
+    const getRankAttribute = (points: number | '∞' | 'Ω', showLabel: boolean = true, showEmblem: boolean = true, center: boolean = false) => {
         let tierName = "Novice";
         let tierColor = "cyan";
         let iconPath = "/system-images/ranks/1._NOVICE_v1.png";
@@ -41,7 +41,7 @@ export default function useGetRankAttribute() {
                     userSelect: 'none',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: center ? 'center' : 'left',
                     gap: '10px',
                     position: 'relative',
                     padding: '5px 12px',
