@@ -38,7 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } else if (location.includes('/authenticated/administrator/custom-assets')) {
             return setCurrentActiveLink('custom-assets');
         } else {
-            return navigate.push('/access-denied');
+            return setCurrentActiveLink('');
         }
     }, [location]);
 

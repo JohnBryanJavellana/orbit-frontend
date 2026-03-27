@@ -16,7 +16,6 @@ import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members
 import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
 import ModalChangeAvatar from './ModalChangeAvatar';
-import ModalGetDailyActivities from './ModalGetDailyActivities';
 import ModalUserLogout from './ModalUserLogout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ModalGetNotifications from './ModalGetNotifications';
@@ -194,23 +193,6 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
-                modalOpenIndex === 4 &&
-                <ModalGetDailyActivities
-                    data={userData?.user_custom_avatar_id}
-                    id={modalOpenId}
-                    titleHeader={'Play Games'}
-                    callbackFunction={(e) => {
-                        refreshUser();
-                        setModalOpenData(null);
-                        setModalOpenId(null);
-                        setModalOpenIndex(null);
-
-                        if (e) window.location.reload();
-                    }}
-                />
-            }
-
-            {
                 modalOpenIndex === 5 &&
                 <ModalUserLogout
                     id={modalOpenId}
@@ -339,14 +321,13 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                         </Tooltip>
 
                                         <Tooltip title="Play Games">
-                                            <IconButton className='mx-3' sx={{ p: 0 }} onClick={() => {
-                                                handleCloseUserMenu();
-                                                setModalOpenData(null);
-                                                setModalOpenId(userData.id);
-                                                setModalOpenIndex(4);
-                                            }} data-toggle="modal" data-target={`#get_daily_activities_${userData?.id}`}>
-                                                <PreloadImage isRounded={false} src={`/system-images/play_now.gif`} height={'50'} width={'50'} />
-                                            </IconButton>
+                                            <Link href={`/authenticated/${String(['SUPERADMIN', 'ADMINISTRATOR'].includes(userData?.role) ? 'administrator' : 'member').toLowerCase()}/games/`}>
+                                                <IconButton className='mx-3' sx={{ p: 0 }} onClick={() => {
+                                                    handleCloseUserMenu();
+                                                }}>
+                                                    <PreloadImage isRounded={false} src={`/system-images/play_now.gif`} height={'50'} width={'50'} />
+                                                </IconButton>
+                                            </Link>
                                         </Tooltip>
 
                                         <Tooltip title="Open settings">

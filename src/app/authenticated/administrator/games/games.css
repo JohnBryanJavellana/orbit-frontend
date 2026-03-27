@@ -1,0 +1,20 @@
+.banner-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 14%;
+    width: 100%;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.596);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-weight: bold;
+    display: none;
+}
+
+.pc:hover .banner-name {
+    display: block;
+}
