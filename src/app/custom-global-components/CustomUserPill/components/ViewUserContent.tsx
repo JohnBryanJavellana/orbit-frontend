@@ -13,7 +13,14 @@ export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { u
     const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
     const [audioPlayer] = useState(new Audio());
 
-    useEffect(() => {
+    const EndExistingPlayingAudio = () => {
+        if (audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.src = "";
+        }
+    }
+
+    const PlayAudio = (user: any) => {
         if (user?.custom_user_note?.note_audio && autoPlayNoteAudio) {
             const music = typeof user?.custom_user_note.note_audio === 'string'
                 ? JSON.parse(user?.custom_user_note.note_audio)
@@ -29,13 +36,14 @@ export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { u
                 audioPlayer.play();
             };
         }
+    }
 
-        return () => {
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer.src = "";
-            }
+    useEffect(() => {
+        if (user?.custom_user_note?.note_audio && autoPlayNoteAudio) {
+            PlayAudio(user);
         }
+
+        return () => EndExistingPlayingAudio();
     }, [user, autoPlayNoteAudio]);
 
     return (
@@ -44,7 +52,10 @@ export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { u
                 isModalOpen &&
                 <ModalViewEnlargeAvatar
                     data={user}
-                    callbackFunction={() => setIsModalOpen(false)}
+                    callbackFunction={() => {
+                        setIsModalOpen(false);
+                        PlayAudio(user);
+                    }}
                 />
             }
 
@@ -62,7 +73,10 @@ export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { u
                                 position: 'relative',
                                 zIndex: 10
                             }}>
-                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`} onClick={() => setIsModalOpen(true)}>
+                                <div style={{ transform: 'translateY(60px)' }} data-toggle="modal" data-target={`#view_enlarge_avatar_${user?.id}`} onClick={() => {
+                                    setIsModalOpen(true);
+                                    EndExistingPlayingAudio();
+                                }}>
                                     <CustomAvatarWithOnlineBadge
                                         height={120}
                                         width={120}
