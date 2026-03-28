@@ -139,7 +139,10 @@ export default function ModalPlayRPS({ data, id, titleHeader, callbackFunction }
 
             setGameResult(result);
             setIsPlaying(false);
-            await SubmitResult(result === 'WIN' ? '7' : '0');
+
+            if (result !== 'DRAW') {
+                await SubmitResult(result === 'WIN' ? '7' : '0');
+            }
         }, 2000);
     };
 
