@@ -1,6 +1,6 @@
 export default function useSystemURLCon() {
-    const urlWithApi = 'http://5.5.55.186:8000/api';
-    const urlWithoutApi = 'http://5.5.55.186:8000';
+    const urlWithApi = 'http://192.168.255.127:8000/api';
+    const urlWithoutApi = 'http://192.168.255.127:8000';
 
     return { urlWithApi, urlWithoutApi };
 }
