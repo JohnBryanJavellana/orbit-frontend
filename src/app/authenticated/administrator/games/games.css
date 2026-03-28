@@ -18,3 +18,36 @@
 .pc:hover .banner-name {
     display: block;
 }
+
+/* game.css */
+.spotlight-card {
+    position: relative;
+    overflow: hidden;
+    /* Subtle border */
+    display: block;
+}
+
+/* The Spotlight Overlay */
+.spotlight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    z-index: 10;
+    pointer-events: none;
+    /* Allows clicking the image underneath */
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+            rgba(255, 255, 255, 0.12),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.spotlight-card:hover::before {
+    opacity: 1;
+}
+
+.spotlight-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { AppBar, Box, Toolbar, IconButton, Container, Tooltip, Avatar, Menu, MenuItem, Typography, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
@@ -11,7 +12,7 @@ import axios from 'axios';
 import useWebToken from '@/app/hooks/useWebToken';
 import useDetectMobileViewport from '@/app/hooks/useDetectMobileViewport';
 import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
-import ModalViewUser from '../CustomUserPill/components/ModalViewUser';
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members/view-all/components/ModalCreateOrUpdateMember';
 import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
@@ -22,6 +23,7 @@ import ModalGetNotifications from './ModalGetNotifications';
 import ModalChangePassword from './ModalChangePassword';
 import PreloadImage from '../PreloadImage/PreloadImage';
 import ModalUserNote from './ModalUserNote';
+import PlayGames from '../../../../public/system-images/game-assets/play-games.json';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -320,15 +322,22 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                             </IconButton>
                                         </Tooltip>
 
-                                        <Tooltip title="Play Games">
-                                            <Link href={`/authenticated/${String(['SUPERADMIN', 'ADMINISTRATOR'].includes(userData?.role) ? 'administrator' : 'member').toLowerCase()}/games/`}>
-                                                <IconButton className='mx-3' sx={{ p: 0 }} onClick={() => {
-                                                    handleCloseUserMenu();
-                                                }}>
-                                                    <PreloadImage isRounded={false} src={`/system-images/play_now.gif`} height={'50'} width={'50'} />
-                                                </IconButton>
-                                            </Link>
-                                        </Tooltip>
+                                        <Link href={`/authenticated/${String(['SUPERADMIN', 'ADMINISTRATOR'].includes(userData?.role) ? 'administrator' : 'member').toLowerCase()}/games/`}>
+                                            <button className='btn btn-sm custom-bg custom-border-dark text-white mx-3 play-games-button' onClick={() => {
+                                                handleCloseUserMenu();
+                                            }}>
+                                                <div className="d-flex align-items-center justify-content-center">
+                                                    <Lottie
+                                                        animationData={PlayGames}
+                                                        loop={true}
+                                                        style={{ width: 30, height: 30 }}
+                                                        className='mr-2'
+                                                    />
+
+                                                    <span>Play Games</span>
+                                                </div>
+                                            </button>
+                                        </Link>
 
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

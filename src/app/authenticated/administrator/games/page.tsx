@@ -2,7 +2,7 @@
 
 import '../../member/leaderboard/components/ProfileParchment.css';
 import './games.css';
-import { useState } from 'react';
+import { useRef, useState, MouseEvent } from 'react';
 import ModalPlayCupShuffle from './DailyGames/ModalPlayCupShuffle';
 import ModalPlayColorGame from './DailyGames/ModalPlayColorGame';
 import ModalPlayPlinko from './DailyGames/ModalPlayPlinko';
@@ -15,6 +15,18 @@ const Games = ({ }: Props) => {
     const [modalOpenData, setModalOpenData] = useState<any>(null);
     const [modalOpenId, setModalOpenId] = useState<null | number>(null);
     const [modalOpenIndex, setModalOpenIndex] = useState<null | number>(null);
+    const divRef = useRef<HTMLDivElement | null>(null);
+
+    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+        if (!divRef.current) return;
+
+        const rect = divRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        divRef.current.style.setProperty("--mouse-x", `${x}px`);
+        divRef.current.style.setProperty("--mouse-y", `${y}px`);
+    };
 
     return <div>
         {
@@ -89,7 +101,13 @@ const Games = ({ }: Props) => {
 
         <h3 className='text-bold'>Play Games</h3>
 
-        <div className="row mt-3">
+        <div className="row my-3 mb-5">
+            <div className="col-xl-12 mb-3">
+                <div ref={divRef} onMouseMove={handleMouseMove} className="spotlight-card rounded-lg elevation-1">
+                    <img src={'/system-images/game-assets/game-banner.png'} className='img-fluid' />
+                </div>
+            </div>
+
             <div className="parchment-card col-6 col-xl-2 mb-2 position-relative pc" onClick={() => {
                 setModalOpenData(null);
                 setModalOpenId(0);
@@ -142,12 +160,6 @@ const Games = ({ }: Props) => {
             }} data-toggle="modal" data-target={`#play_rock_paper_scissor_5`} >
                 <img src={'/system-images/game-assets/rock-paper-scissor.png'} className='img-fluid elevation-1 rounded-lg' />
                 <div className='banner-name pl-3 pt-2'>Rock, Paper & Scissor</div>
-            </div>
-        </div>
-
-        <div className="row mt-2 mb-5">
-            <div className="col-xl-12">
-                <img src={'/system-images/game-assets/game-banner.png'} className='img-fluid elevation-1 rounded-lg' />
             </div>
         </div>
     </div>

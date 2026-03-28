@@ -154,7 +154,7 @@ export default function ModalPlayRoulette({ data, id, titleHeader, callbackFunct
             const token = getToken('csrf-token');
             const response = await axios.post(`${urlWithApi}/member/daily-activities/daily-activities/save_game_r_cs_cg_score`, {
                 score: score,
-                usingActualAPs: dailyFreeSpin === "TAKEN" ? 5 : null,
+                usingActualAPs: dailyFreeSpin === "TAKEN" ? 25 : null,
                 gameService: 'daily_roulette'
             }, {
                 headers: {

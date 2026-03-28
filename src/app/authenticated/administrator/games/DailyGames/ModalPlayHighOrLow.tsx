@@ -134,7 +134,7 @@ export default function ModalPlayHighOrLow({ id, titleHeader, callbackFunction }
             : drawnCard.rank <= currentCard!.rank;
 
         setGameState('GAMEOVER');
-        SubmitResult(isWin ? '10' : '0');
+        SubmitResult(isWin ? '7' : '0');
     };
 
     const SubmitResult = async (finalScore: string) => {
@@ -224,6 +224,10 @@ export default function ModalPlayHighOrLow({ id, titleHeader, callbackFunction }
                 bodyClassName="pb-0"
                 body={
                     <div className="d-flex flex-column align-items-center">
+                        <div className="text-center mb-4">
+                            <h5>Play & Win to get <span className="gold-text">7 APs</span></h5>
+                        </div>
+
                         {returnResponse && (
                             <>
                                 <div className="text-center mb-4">
