@@ -322,7 +322,7 @@ export default function ModalPlayPlinko({ data, id, titleHeader, callbackFunctio
                 size={"md"}
                 modalParentStyle="bg-stack"
                 isModalCentered
-                modalContentClassName="text-white roulette-modal-custom"
+                modalContentClassName="text-white custom-modal-dialog"
                 headerClassName="border-0 pb-0"
                 header={
                     <div className="w-100">

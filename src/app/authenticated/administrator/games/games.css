@@ -51,3 +51,7 @@
     width: 100%;
     height: auto;
 }
+
+.custom-modal-dialog {
+    border: 2px solid #d4bc37 !important;
+}

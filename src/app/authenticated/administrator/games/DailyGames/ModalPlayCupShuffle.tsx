@@ -171,7 +171,7 @@ export default function ModalPlayCupShuffle({ data, id, titleHeader, callbackFun
                 size={"md"}
                 modalParentStyle="bg-stack"
                 isModalCentered
-                modalContentClassName="text-white"
+                modalContentClassName="text-white custom-modal-dialog"
                 headerClassName="border-0 pb-0"
                 header={
                     <div className="w-100">
