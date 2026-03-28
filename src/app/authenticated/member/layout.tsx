@@ -23,7 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } else if (location.includes('/authenticated/member/projects')) {
             return setCurrentActiveLink('projects');
         } else {
-            return navigate.push('/access-denied');
+            return setCurrentActiveLink('');
         }
     }, [location]);
 
