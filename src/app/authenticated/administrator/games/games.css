@@ -1,0 +1,57 @@
+.banner-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 14%;
+    width: 100%;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.596);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-weight: bold;
+    display: none;
+}
+
+.pc:hover .banner-name {
+    display: block;
+}
+
+/* game.css */
+.spotlight-card {
+    position: relative;
+    overflow: hidden;
+    /* Subtle border */
+    display: block;
+}
+
+/* The Spotlight Overlay */
+.spotlight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    z-index: 10;
+    pointer-events: none;
+    /* Allows clicking the image underneath */
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+            rgba(255, 255, 255, 0.12),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.spotlight-card:hover::before {
+    opacity: 1;
+}
+
+.spotlight-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.custom-modal-dialog {
+    /* border: 2px solid #d4bc37 !important; */
+}

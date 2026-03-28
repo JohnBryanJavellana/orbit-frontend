@@ -47,3 +47,56 @@
         filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.4));
     }
 }
+
+.play-games-button {
+    background: #111;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.play-games-button::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50% 50%, 50% 50%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-image: conic-gradient(transparent, #ff3300, transparent 30%);
+    animation: rotate 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.play-games-button::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 1px;
+    top: 1px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    background: inherit;
+    border-radius: inherit;
+}
+
+.play-games-button:hover::before {
+    opacity: 1;
+}
+
+.play-games-button:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    transform: scale(1.02);
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(1turn);
+    }
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { AppBar, Box, Toolbar, IconButton, Container, Tooltip, Avatar, Menu, MenuItem, Typography, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
@@ -11,18 +12,18 @@ import axios from 'axios';
 import useWebToken from '@/app/hooks/useWebToken';
 import useDetectMobileViewport from '@/app/hooks/useDetectMobileViewport';
 import useGetCurrentUser from '@/app/hooks/useGetCurrentUser';
-import ModalViewUser from '../CustomUserPill/components/ModalViewUser';
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 import ModalCreateOrUpdateMember from '@/app/authenticated/administrator/members/view-all/components/ModalCreateOrUpdateMember';
 import ModalShowMyPointsRecord from './ModalShowMyPointsRecord';
 import ModalChangeAvatarBorder from './ModalChangeAvatarBorder';
 import ModalChangeAvatar from './ModalChangeAvatar';
-import ModalGetDailyActivities from './ModalGetDailyActivities';
 import ModalUserLogout from './ModalUserLogout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ModalGetNotifications from './ModalGetNotifications';
 import ModalChangePassword from './ModalChangePassword';
 import PreloadImage from '../PreloadImage/PreloadImage';
 import ModalUserNote from './ModalUserNote';
+import PlayGames from '../../../../public/system-images/game-assets/play-games.json';
 
 export default function MenuTemplate({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -194,23 +195,6 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
             }
 
             {
-                modalOpenIndex === 4 &&
-                <ModalGetDailyActivities
-                    data={userData?.user_custom_avatar_id}
-                    id={modalOpenId}
-                    titleHeader={'Play Games'}
-                    callbackFunction={(e) => {
-                        refreshUser();
-                        setModalOpenData(null);
-                        setModalOpenId(null);
-                        setModalOpenIndex(null);
-
-                        if (e) window.location.reload();
-                    }}
-                />
-            }
-
-            {
                 modalOpenIndex === 5 &&
                 <ModalUserLogout
                     id={modalOpenId}
@@ -338,16 +322,22 @@ export default function MenuTemplate({ children, menuItems }: { children: React.
                                             </IconButton>
                                         </Tooltip>
 
-                                        <Tooltip title="Play Games">
-                                            <IconButton className='mx-3' sx={{ p: 0 }} onClick={() => {
+                                        <Link href={`/authenticated/${String(['SUPERADMIN', 'ADMINISTRATOR'].includes(userData?.role) ? 'administrator' : 'member').toLowerCase()}/games/`}>
+                                            <button className='btn btn-sm custom-bg custom-border-dark text-white mx-3 play-games-button' onClick={() => {
                                                 handleCloseUserMenu();
-                                                setModalOpenData(null);
-                                                setModalOpenId(userData.id);
-                                                setModalOpenIndex(4);
-                                            }} data-toggle="modal" data-target={`#get_daily_activities_${userData?.id}`}>
-                                                <PreloadImage isRounded={false} src={`/system-images/play_now.gif`} height={'50'} width={'50'} />
-                                            </IconButton>
-                                        </Tooltip>
+                                            }}>
+                                                <div className="d-flex align-items-center justify-content-center">
+                                                    <Lottie
+                                                        animationData={PlayGames}
+                                                        loop={true}
+                                                        style={{ width: 30, height: 30 }}
+                                                        className='mr-2'
+                                                    />
+
+                                                    <span>Play Games</span>
+                                                </div>
+                                            </button>
+                                        </Link>
 
                                         <Tooltip title="Open settings">
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
