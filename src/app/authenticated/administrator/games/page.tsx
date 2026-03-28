@@ -8,6 +8,7 @@ import ModalPlayColorGame from './DailyGames/ModalPlayColorGame';
 import ModalPlayPlinko from './DailyGames/ModalPlayPlinko';
 import ModalPlayRoulette from './DailyGames/ModalPlayRoulette';
 import ModalPlayHighOrLow from './DailyGames/ModalPlayHighOrLow';
+import ModalPlayRPS from './DailyGames/ModalPlayRPS';
 
 interface Props { }
 
@@ -99,6 +100,20 @@ const Games = ({ }: Props) => {
             />
         }
 
+        {
+            modalOpenIndex === 5 &&
+            <ModalPlayRPS
+                data={modalOpenData}
+                id={modalOpenId}
+                titleHeader={'Rock, Paper & Scissor Game'}
+                callbackFunction={() => {
+                    setModalOpenData(null);
+                    setModalOpenId(null);
+                    setModalOpenIndex(null);
+                }}
+            />
+        }
+
         <h3 className='text-bold'>Play Games</h3>
 
         <div className="row my-3 mb-5">
@@ -157,7 +172,7 @@ const Games = ({ }: Props) => {
                 setModalOpenData(null);
                 setModalOpenId(5);
                 setModalOpenIndex(5);
-            }} data-toggle="modal" data-target={`#play_rock_paper_scissor_5`} >
+            }} data-toggle="modal" data-target={`#play_rock_paper_scissors_5`} >
                 <img src={'/system-images/game-assets/rock-paper-scissor.png'} className='img-fluid elevation-1 rounded-lg' />
                 <div className='banner-name pl-3 pt-2'>Rock, Paper & Scissor</div>
             </div>
