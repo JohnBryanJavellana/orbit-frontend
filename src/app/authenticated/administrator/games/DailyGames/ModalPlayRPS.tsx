@@ -220,7 +220,17 @@ export default function ModalPlayRPS({ data, id, titleHeader, callbackFunction }
 
                         {!isPlaying && !gameResult ? (
                             <div className="choice-selection py-4">
-                                <h6 className="text-muted mb-4">Choose & Play for <span className="text-warning">5 APs</span></h6>
+
+                                {
+                                    isFetching
+                                        ? <div className="text-center">Loading...</div>
+                                        : userData?.total_slot < 5 && dailyFreeSpin === 'TAKEN'
+                                            ? <h6 className="text-muted mb-4">INSUFFICIENT APs</h6>
+                                            : dailyFreeSpin === 'PENDING'
+                                                ? <h6 className="text-muted mb-4">Daily Free Spin Available</h6>
+                                                : <h6 className="text-muted mb-4">Choose & Play for <span className="text-warning">5 APs</span></h6>
+                                }
+
                                 <div className="d-flex justify-content-center gap-3">
                                     {choices.map((c) => (
                                         <button
