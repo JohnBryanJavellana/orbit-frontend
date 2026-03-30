@@ -71,7 +71,7 @@ const ModalViewEnlargeAvatar = ({ data, callbackFunction }: Props) => {
                     <div className="text-sm text-bold text-center w-100">
                         {`${data.first_name} ${data.middle_name} ${data.last_name} ${data.suffix ?? ''}`}
                         {
-                            userData?.id === data?.id && <>
+                            (userData?.id === data?.id && data?.custom_user_note) && <>
                                 <div className="w-100 text-secondary small">Shared with Friends</div>
                                 <div className="w-100 text-secondary small">Expires in {getRemainingHours(data?.custom_user_note.created_at)}</div>
                             </>
