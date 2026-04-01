@@ -5,12 +5,14 @@ import useSystemURLCon from "@/app/hooks/useSystemURLCon";
 import './ViewUserContent.css';
 import ModalViewEnlargeAvatar from "../../CustomAvatarWithOnlineBadge/ModalViewEnlargeAvatar";
 import { useEffect, useRef, useState } from "react";
+import useDetectMobileViewport from "@/app/hooks/useDetectMobileViewport";
 
 export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { user: any, autoPlayNoteAudio?: boolean }) {
     const { getRankAttribute } = useGetRankAttribute2();
     const { urlWithoutApi } = useSystemURLCon();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
+    const isMobileViewPort = useDetectMobileViewport();
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const EndExistingPlayingAudio = () => {
@@ -120,12 +122,12 @@ export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { u
                                             ? <>
                                                 <div className="row">
                                                     <div className="col-xl-12">
-                                                        <div className="row elevation-1 rounded-sm custom-border-dark">
-                                                            <div className="col-6 p-4 text-center">
+                                                        <div className="row elevation-1 rounded-sm custom-border-dark border-bottom-0">
+                                                            <div className="col-xl-6 p-4 text-center custom-bottom-border-dark">
                                                                 <div className="text-bold">Task Deployed</div>
                                                                 <div className="h3">{user.user_profile_view.stats?.deployed_tasks}</div>
                                                             </div>
-                                                            <div className="col-6 p-4 custom-left-border-dark text-center">
+                                                            <div className={`col-xl-6 p-4 ${isMobileViewPort ? '' : 'custom-left-border-dark'} custom-bottom-border-dark text-center`}>
                                                                 <div className="text-bold">Task Accomplished</div>
                                                                 <div className="h3">{user.user_profile_view.stats?.accomplished_tasks}</div>
                                                             </div>
@@ -160,13 +162,13 @@ export default function ViewUserContent({ user, autoPlayNoteAudio = false }: { u
                                             </> : <>
                                                 <div className="row">
                                                     <div className="col-xl-12">
-                                                        <div className="row elevation-1 rounded-sm custom-border-dark">
-                                                            <div className="col-6 p-4 text-center">
-                                                                <div className="h4 text-bold">Task Applied</div>
+                                                        <div className="row elevation-1 rounded-sm custom-border-dark border-bottom-0">
+                                                            <div className="col-xl-6 p-4 text-center custom-bottom-border-dark">
+                                                                <div className="text-bold">Task Applied</div>
                                                                 <div className="h3">{user.user_profile_view.stats?.assigned_tasks}</div>
                                                             </div>
-                                                            <div className="col-6 p-4 custom-left-border-dark text-center">
-                                                                <div className="h4 text-bold">Task Accomplished</div>
+                                                            <div className={`col-xl-6 p-4 ${isMobileViewPort ? '' : 'custom-left-border-dark'} custom-bottom-border-dark text-center`}>
+                                                                <div className="text-bold">Task Accomplished</div>
                                                                 <div className="h3">{user.user_profile_view.stats?.finished_tasks}</div>
                                                             </div>
                                                         </div>
