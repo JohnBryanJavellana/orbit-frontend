@@ -96,6 +96,11 @@ export default function ModalUserNote({ data, id, titleHeader, callbackFunction 
 
     const UpdateUserNote = async () => {
         try {
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer.src = "";
+            }
+
             setIsSubmitting(true);
             setCallbackFunction({ callbackFunction: () => { } });
             setMessageAlert({
