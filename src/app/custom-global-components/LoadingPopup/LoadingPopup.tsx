@@ -1,9 +1,13 @@
-export default function LoadingPopup() {
+interface LoadingPopupProps {
+    isMainDarkBg?: boolean
+}
+
+export default function LoadingPopup({ isMainDarkBg = false }: LoadingPopupProps) {
     return (
         <>
             <div className="position-fixed top-0 start-0 w-100 vh-100 d-flex align-items-center justify-content-center"
                 style={{
-                    background: 'rgba(0, 0, 0, 0.5)',
+                    background: isMainDarkBg ? 'rgb(20, 20, 20)' : 'rgba(0, 0, 0, 0.5)',
                     backdropFilter: 'blur(4px)',
                     zIndex: 9999,
                     position: 'fixed',

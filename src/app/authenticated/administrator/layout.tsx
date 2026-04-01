@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, MenuItem } from "@mui/material";
 import useGetCurrentUser from "../../hooks/useGetCurrentUser";
+import AuthGuard from "@/app/guard/AuthGuard";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { getToken } = useWebToken();
@@ -51,89 +52,91 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
     }, [userData]);
 
-    return showMenu ? <>
-        <MenuTemplate
-            children={children}
-            menuItems={
-                <>
-                    <Link href='/authenticated/administrator/profile' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'profile' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Profile</Link>
-                    <Link href='/authenticated/administrator/projects' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'projects' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Projects</Link>
-                    <Link href='/authenticated/administrator/leaderboard' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'leaderboard' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Leaderboard</Link>
+    return <AuthGuard children={
+        showMenu ? <>
+            <MenuTemplate
+                children={children}
+                menuItems={
+                    <>
+                        <Link href='/authenticated/administrator/profile' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'profile' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Profile</Link>
+                        <Link href='/authenticated/administrator/projects' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'projects' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Projects</Link>
+                        <Link href='/authenticated/administrator/leaderboard' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'leaderboard' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Leaderboard</Link>
 
-                    {
-                        userData?.role === "SUPERADMIN" &&
-                        <>
-                            <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
+                        {
+                            userData?.role === "SUPERADMIN" &&
+                            <>
+                                <Link href='/authenticated/administrator/announcements' style={{ height: '50px' }} className={`nav-link-orbit ${currentActiveLink === 'announcements' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Announcements</Link>
 
-                            <span
-                                onClick={handleOpenAssetsMenu}
-                                className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'custom-assets' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                Custom Assets {anchorElAssets ? '▴' : '▾'}
-                            </span>
+                                <span
+                                    onClick={handleOpenAssetsMenu}
+                                    className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'custom-assets' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    Custom Assets {anchorElAssets ? '▴' : '▾'}
+                                </span>
 
-                            <Menu
-                                sx={{ mt: '13.4px' }}
-                                anchorEl={anchorElAssets}
-                                open={Boolean(anchorElAssets)}
-                                onClose={handleCloseAssetsMenu}
-                                disableScrollLock={true}
-                                slotProps={{
-                                    paper: {
-                                        className: 'custom-bg custom-border-dark rounded-0'
-                                    }
-                                }}
-                            >
-                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/custom-assets/borders') && 'bg-dark'}`} onClick={handleCloseAssetsMenu}>
-                                    <Link href='/authenticated/administrator/custom-assets/borders' style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        Borders
-                                    </Link>
-                                </MenuItem>
+                                <Menu
+                                    sx={{ mt: '13.4px' }}
+                                    anchorEl={anchorElAssets}
+                                    open={Boolean(anchorElAssets)}
+                                    onClose={handleCloseAssetsMenu}
+                                    disableScrollLock={true}
+                                    slotProps={{
+                                        paper: {
+                                            className: 'custom-bg custom-border-dark rounded-0'
+                                        }
+                                    }}
+                                >
+                                    <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/custom-assets/borders') && 'bg-dark'}`} onClick={handleCloseAssetsMenu}>
+                                        <Link href='/authenticated/administrator/custom-assets/borders' style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            Borders
+                                        </Link>
+                                    </MenuItem>
 
-                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/custom-assets/avatars') && 'bg-dark'}`} onClick={handleCloseAssetsMenu}>
-                                    <Link href='/authenticated/administrator/custom-assets/avatars' style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        Avatars
-                                    </Link>
-                                </MenuItem>
-                            </Menu>
+                                    <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/custom-assets/avatars') && 'bg-dark'}`} onClick={handleCloseAssetsMenu}>
+                                        <Link href='/authenticated/administrator/custom-assets/avatars' style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            Avatars
+                                        </Link>
+                                    </MenuItem>
+                                </Menu>
 
-                            <span
-                                onClick={handleOpenMembersMenu}
-                                className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'members' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                Members {anchorElMembers ? '▴' : '▾'}
-                            </span>
+                                <span
+                                    onClick={handleOpenMembersMenu}
+                                    className={`nav-link-orbit cursor-pointer ${currentActiveLink === 'members' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    Members {anchorElMembers ? '▴' : '▾'}
+                                </span>
 
-                            <Menu
-                                sx={{ mt: '13.4px' }}
-                                anchorEl={anchorElMembers}
-                                open={Boolean(anchorElMembers)}
-                                onClose={handleCloseMembersMenu}
-                                disableScrollLock={true}
-                                slotProps={{
-                                    paper: {
-                                        className: 'custom-bg custom-border-dark rounded-0'
-                                    }
-                                }}
-                            >
-                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/members/view-all') && 'bg-dark'}`} onClick={handleCloseMembersMenu}>
-                                    <Link href='/authenticated/administrator/members/view-all' style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        View All Members
-                                    </Link>
-                                </MenuItem>
+                                <Menu
+                                    sx={{ mt: '13.4px' }}
+                                    anchorEl={anchorElMembers}
+                                    open={Boolean(anchorElMembers)}
+                                    onClose={handleCloseMembersMenu}
+                                    disableScrollLock={true}
+                                    slotProps={{
+                                        paper: {
+                                            className: 'custom-bg custom-border-dark rounded-0'
+                                        }
+                                    }}
+                                >
+                                    <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/members/view-all') && 'bg-dark'}`} onClick={handleCloseMembersMenu}>
+                                        <Link href='/authenticated/administrator/members/view-all' style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            View All Members
+                                        </Link>
+                                    </MenuItem>
 
-                                <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/members/roles') && 'bg-dark'}`} onClick={handleCloseMembersMenu}>
-                                    <Link href='/authenticated/administrator/members/roles' style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        Member Roles
-                                    </Link>
-                                </MenuItem>
-                            </Menu>
-                        </>
-                    }
-                </>
-            }
-        />
-    </> : <></>
+                                    <MenuItem className={`text-sm ${location.includes('/authenticated/administrator/members/roles') && 'bg-dark'}`} onClick={handleCloseMembersMenu}>
+                                        <Link href='/authenticated/administrator/members/roles' style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            Member Roles
+                                        </Link>
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        }
+                    </>
+                }
+            />
+        </> : <></>
+    } />
 };

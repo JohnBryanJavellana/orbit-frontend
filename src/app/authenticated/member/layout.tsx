@@ -6,6 +6,7 @@ import useWebToken from "../../hooks/useWebToken";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import useGetCurrentUser from "../../hooks/useGetCurrentUser";
+import AuthGuard from "@/app/guard/AuthGuard";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { getToken } = useWebToken();
@@ -36,16 +37,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
     }, [userData]);
 
-    return showMenu ? <>
-        <MenuTemplate
-            children={children}
-            menuItems={
-                <>
-                    <Link href='/authenticated/member/profile' className={`nav-link-orbit ${currentActiveLink === 'profile' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Profile</Link>
-                    <Link href='/authenticated/member/leaderboard' className={`nav-link-orbit ${currentActiveLink === 'leaderboard' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Leaderboard</Link>
-                    <Link href='/authenticated/member/projects' className={`nav-link-orbit ${currentActiveLink === 'projects' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>My Projects</Link>
-                </>
-            }
-        />
-    </> : <></>
+    return <AuthGuard children={
+        showMenu ? <>
+            <MenuTemplate
+                children={children}
+                menuItems={
+                    <>
+                        <Link href='/authenticated/member/profile' className={`nav-link-orbit ${currentActiveLink === 'profile' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Profile</Link>
+                        <Link href='/authenticated/member/leaderboard' className={`nav-link-orbit ${currentActiveLink === 'leaderboard' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>Leaderboard</Link>
+                        <Link href='/authenticated/member/projects' className={`nav-link-orbit ${currentActiveLink === 'projects' ? 'rpg-button px-3' : 'd-flex align-items-center justify-content-center'}`}>My Projects</Link>
+                    </>
+                }
+            />
+        </> : <></>
+    } />
 };
